@@ -1,5 +1,7 @@
 *.~dsk
 *.exe
 *.dcu
-Fonte/__history/
-Fonte/bin/
+fonte/__history/
+fonte/bin/
+fonte/backup/
+fonte/lib/
