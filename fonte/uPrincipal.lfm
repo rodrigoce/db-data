@@ -1,0 +1,146 @@
+object FormPrincipal: TFormPrincipal
+  Left = 519
+  Height = 746
+  Top = 139
+  Width = 720
+  Caption = 'DigsER - Visualizador de Modelo de Dados'
+  ClientHeight = 746
+  ClientWidth = 720
+  Color = clGray
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  KeyPreview = True
+  Menu = MainMenu1
+  OnClose = FormClose
+  OnDestroy = FormDestroy
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  LCLVersion = '3.4.0.0'
+  WindowState = wsMaximized
+  object pnEntidades: TPanel
+    Left = 0
+    Height = 723
+    Top = 0
+    Width = 185
+    Align = alLeft
+    BevelInner = bvRaised
+    BevelOuter = bvLowered
+    ClientHeight = 723
+    ClientWidth = 185
+    ParentBackground = False
+    TabOrder = 0
+    Visible = False
+    object Memo1: TMemo
+      Left = 8
+      Height = 697
+      Top = 16
+      Width = 169
+      ScrollBars = ssBoth
+      TabOrder = 0
+    end
+  end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Height = 23
+    Top = 723
+    Width = 720
+    Panels = <    
+      item
+        Width = 300
+      end    
+      item
+        Width = 50
+      end>
+  end
+  object MainMenu1: TMainMenu
+    Left = 304
+    Top = 48
+    object Arquivo11: TMenuItem
+      Caption = '&Modelo'
+      object Novo1: TMenuItem
+        Caption = '&Novo'
+        OnClick = Novo1Click
+      end
+      object AbrirModelo1: TMenuItem
+        Caption = '&Abrir'
+        OnClick = AbrirModelo1Click
+      end
+      object Fechar1: TMenuItem
+        Caption = '&Fechar'
+        OnClick = Fechar1Click
+      end
+      object SalvarModelo1: TMenuItem
+        Caption = 'Salva&r'
+        OnClick = SalvarModelo1Click
+      end
+      object N2: TMenuItem
+        Caption = '-'
+      end
+      object ConfigurarConexo1: TMenuItem
+        Caption = 'Configurar Conexão'
+        OnClick = ConfigurarConexo1Click
+      end
+      object N1: TMenuItem
+        Caption = '-'
+      end
+      object Sair1: TMenuItem
+        Caption = '&Sair'
+        OnClick = Sair1Click
+      end
+    end
+    object Diagrama1: TMenuItem
+      Caption = '&Diagrama'
+      object NovoDiagrama1: TMenuItem
+        Caption = '&Novo'
+        OnClick = NovoDiagrama1Click
+      end
+      object AdicionarEntidade1: TMenuItem
+        Caption = 'Adicionar &Tabela'
+        OnClick = AdicionarEntidade1Click
+      end
+      object Abrirdiagrama1: TMenuItem
+        Caption = '&Abrir'
+        OnClick = Abrirdiagrama1Click
+      end
+      object Remover1: TMenuItem
+        Caption = '&Remover'
+        OnClick = Remover1Click
+      end
+      object Renomear1: TMenuItem
+        Caption = 'R&enomear'
+        OnClick = Renomear1Click
+      end
+      object ExportarparaImagem1: TMenuItem
+        Caption = '&Exportar para Imagem'
+        OnClick = ExportarparaImagem1Click
+      end
+    end
+    object Janelas1: TMenuItem
+      Caption = '&Janelas'
+    end
+    object Ferramentas1: TMenuItem
+      Caption = '&Ferramentas'
+      object PesquisarObjetos1: TMenuItem
+        Caption = '&Pesquisar Objetos'
+        OnClick = PesquisarObjetos1Click
+      end
+      object MoverObjetos1: TMenuItem
+        Caption = '&Mover Objetos'
+        OnClick = MoverObjetos1Click
+      end
+    end
+    object Ajuda1: TMenuItem
+      Caption = '&Ajuda'
+      object Sobre1: TMenuItem
+        Caption = '&Sobre'
+        OnClick = Sobre1Click
+      end
+      object eladeTestes1: TMenuItem
+        Caption = 'Tela de Testes'
+        Visible = False
+        OnClick = eladeTestes1Click
+      end
+    end
+  end
+end

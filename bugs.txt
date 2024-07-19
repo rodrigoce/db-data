@@ -1,0 +1,3 @@
+ao remover diagrama, ele continua para ser aberto no menu rápido.
+sobreposição de constraints (FK)
+ao remover entidade, retitar setinha remanecentes

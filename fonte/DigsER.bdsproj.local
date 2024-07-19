@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2014/10/08 11:35:03.757.pas,C:\Users\rceleoterio\Documents\digsER\Fonte\Unit1.pas=C:\Users\rceleoterio\Documents\digsER\Fonte\uMoverObjetos.pas</Transaction>
+    <Transaction>2014/10/08 11:35:03.757.dfm,C:\Users\rceleoterio\Documents\digsER\Fonte\Unit1.dfm=C:\Users\rceleoterio\Documents\digsER\Fonte\uMoverObjetos.dfm</Transaction>
+    <Transaction>2014/11/07 10:42:09.900.pas,C:\Users\rceleoterio\Documents\digsER\Fonte\Unit1.pas=C:\Users\rceleoterio\Documents\digsER\Fonte\uFrameConsultaDados.pas</Transaction>
+    <Transaction>2014/11/07 10:42:09.900.dfm,C:\Users\rceleoterio\Documents\digsER\Fonte\Unit1.dfm=C:\Users\rceleoterio\Documents\digsER\Fonte\uFrameConsultaDados.dfm</Transaction>
+  </Transactions>
+</BorlandProject>

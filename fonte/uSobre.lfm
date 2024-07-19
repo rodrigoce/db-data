@@ -1,0 +1,31 @@
+object FormSobre: TFormSobre
+  Left = 752
+  Height = 145
+  Top = 302
+  Width = 274
+  BorderStyle = bsDialog
+  Caption = 'Sobre'
+  ClientHeight = 145
+  ClientWidth = 274
+  Color = clBtnFace
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Position = poScreenCenter
+  LCLVersion = '3.4.0.0'
+  object Memo1: TMemo
+    Left = 8
+    Height = 129
+    Top = 8
+    Width = 257
+    Lines.Strings = (
+      'DigsER 1.4'
+      ''
+      'Desenvolvido por: Rodrigo Castro Eleotério'
+      'E-mail: rodrigo.ce@gmail.com'
+      'https://sites.google.com/site/modelodigser/'
+    )
+    ReadOnly = True
+    TabOrder = 0
+  end
+end

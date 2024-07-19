@@ -1,0 +1,112 @@
+object FormPesquisarRelacionamentos: TFormPesquisarRelacionamentos
+  Left = 792
+  Height = 302
+  Top = 408
+  Width = 541
+  ActiveControl = edNome
+  BorderStyle = bsToolWindow
+  Caption = 'Buscar Tabelas Relacionadas'
+  ClientHeight = 302
+  ClientWidth = 541
+  Color = clBtnFace
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  FormStyle = fsStayOnTop
+  Position = poScreenCenter
+  LCLVersion = '3.4.0.0'
+  object Label1: TLabel
+    Left = 8
+    Height = 13
+    Top = 8
+    Width = 59
+    Caption = 'Ordenar por'
+  end
+  object Label2: TLabel
+    Left = 8
+    Height = 13
+    Top = 34
+    Width = 146
+    Caption = 'Pesquisar por nome da tabela:'
+  end
+  object labQtde: TLabel
+    Left = 8
+    Height = 13
+    Top = 281
+    Width = 107
+    Caption = '0 tabelas encontradas'
+  end
+  object DBGrid1: TDBGrid
+    Left = 8
+    Height = 207
+    Top = 58
+    Width = 525
+    Color = clWindow
+    Columns = <    
+      item
+        Color = clInfoBk
+        Title.Caption = 'Owner'
+        Width = 232
+        FieldName = 'Owner'
+      end    
+      item
+        Title.Caption = 'Tabela'
+        Width = 254
+        FieldName = 'Tabela'
+      end>
+    DataSource = Ds
+    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+    TabOrder = 0
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+  end
+  object btAdd: TButton
+    Left = 416
+    Height = 25
+    Top = 271
+    Width = 117
+    Caption = 'Adicionar ao diagrama'
+    TabOrder = 1
+    OnClick = btAddClick
+  end
+  object rbTabela: TRadioButton
+    Left = 73
+    Height = 17
+    Top = 8
+    Width = 95
+    Caption = 'Nome da Tabela'
+    Checked = True
+    TabOrder = 2
+    TabStop = True
+    OnClick = rbTabelaClick
+  end
+  object rbOwner: TRadioButton
+    Left = 175
+    Height = 17
+    Top = 8
+    Width = 50
+    Caption = 'Owner'
+    TabOrder = 3
+    OnClick = rbTabelaClick
+  end
+  object edNome: TEdit
+    Left = 160
+    Height = 21
+    Top = 31
+    Width = 373
+    TabOrder = 4
+    OnChange = edNomeChange
+  end
+  object Ds: TDataSource
+    AutoEdit = False
+    DataSet = cds
+    Left = 128
+    Top = 96
+  end
+  object cds: TBufDataset
+    FieldDefs = <>
+    Left = 219
+    Top = 109
+  end
+end

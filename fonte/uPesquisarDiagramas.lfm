@@ -1,0 +1,73 @@
+object FormPesquisarDiagramas: TFormPesquisarDiagramas
+  Left = 694
+  Height = 310
+  Top = 330
+  Width = 646
+  BorderStyle = bsDialog
+  Caption = 'Pesquisar Diagramas'
+  ClientHeight = 310
+  ClientWidth = 646
+  Color = clBtnFace
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Position = poScreenCenter
+  LCLVersion = '3.4.0.0'
+  object Label1: TLabel
+    Left = 8
+    Height = 13
+    Top = 12
+    Width = 89
+    Caption = 'Título do Diagrama'
+  end
+  object DBGrid1: TDBGrid
+    Left = 8
+    Height = 241
+    Top = 35
+    Width = 630
+    Color = clWindow
+    Columns = <    
+      item
+        Title.Caption = 'Título'
+        Width = 581
+        FieldName = 'titulo'
+      end>
+    DataSource = ds
+    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+    TabOrder = 1
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    OnDblClick = DBGrid1DblClick
+  end
+  object edPesquisa: TEdit
+    Left = 103
+    Height = 21
+    Top = 8
+    Width = 535
+    TabOrder = 0
+    OnChange = edPesquisaChange
+  end
+  object btCarregar: TButton
+    Left = 383
+    Height = 25
+    Top = 282
+    Width = 174
+    Caption = 'Carregar Diagrama Selecionado'
+    TabOrder = 2
+    OnClick = btCarregarClick
+  end
+  object btFechar: TButton
+    Left = 563
+    Height = 25
+    Top = 282
+    Width = 75
+    Caption = 'Fechar'
+    TabOrder = 3
+    OnClick = btFecharClick
+  end
+  object ds: TDataSource
+    Left = 144
+    Top = 72
+  end
+end

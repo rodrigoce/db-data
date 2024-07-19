@@ -1,0 +1,77 @@
+object FrameConsultaDados: TFrameConsultaDados
+  Left = 0
+  Height = 304
+  Top = 0
+  Width = 451
+  Align = alClient
+  ClientHeight = 304
+  ClientWidth = 451
+  TabOrder = 0
+  DesignLeft = 384
+  DesignTop = 303
+  object memoSQL: TMemo
+    Left = 0
+    Height = 33
+    Top = 0
+    Width = 451
+    Align = alTop
+    TabOrder = 0
+  end
+  object DBGrid1: TDBGrid
+    Left = 0
+    Height = 230
+    Top = 33
+    Width = 451
+    Align = alClient
+    Color = clWindow
+    Columns = <>
+    DataSource = Ds
+    Font.CharSet = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Calibri'
+    ParentFont = False
+    TabOrder = 1
+  end
+  object Panel1: TPanel
+    Left = 0
+    Height = 41
+    Top = 263
+    Width = 451
+    Align = alBottom
+    BevelOuter = bvNone
+    ClientHeight = 41
+    ClientWidth = 451
+    TabOrder = 2
+    object btFechar: TButton
+      Left = 370
+      Height = 25
+      Top = 6
+      Width = 75
+      Anchors = [akTop, akRight]
+      Caption = 'Fechar'
+      TabOrder = 1
+      OnClick = btFecharClick
+    end
+    object btAtualizar: TButton
+      Left = 264
+      Height = 25
+      Top = 6
+      Width = 100
+      Anchors = [akTop, akRight]
+      Caption = 'Atualizar Consulta'
+      TabOrder = 0
+      OnClick = btAtualizarClick
+    end
+  end
+  object Ds: TDataSource
+    DataSet = cds
+    Left = 224
+    Top = 144
+  end
+  object cds: TBufDataset
+    FieldDefs = <>
+    Left = 112
+    Top = 143
+  end
+end

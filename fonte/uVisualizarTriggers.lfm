@@ -1,0 +1,118 @@
+object FormVisualizarTriggers: TFormVisualizarTriggers
+  Left = 612
+  Height = 506
+  Top = 288
+  Width = 796
+  BorderWidth = 7
+  Caption = 'Visualizar Triggers'
+  ClientHeight = 506
+  ClientWidth = 796
+  Color = clBtnFace
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  LCLVersion = '3.4.0.0'
+  WindowState = wsMaximized
+  object DBGrid1: TDBGrid
+    Left = 7
+    Height = 120
+    Top = 7
+    Width = 782
+    Align = alTop
+    Color = clWindow
+    Columns = <    
+      item
+        Title.Caption = 'Owner'
+        Width = 121
+        FieldName = 'owner'
+      end    
+      item
+        Title.Caption = 'Trigger Name'
+        Width = 249
+        FieldName = 'trigger_name'
+      end    
+      item
+        Title.Caption = 'Trigger Type'
+        Width = 180
+        FieldName = 'trigger_type'
+      end    
+      item
+        Title.Caption = 'Triggering Event'
+        Width = 256
+        FieldName = 'triggering_event'
+      end    
+      item
+        Title.Caption = 'Status'
+        FieldName = 'status'
+      end>
+    DataSource = Ds
+    TabOrder = 0
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+  end
+  object Memo1: TMemo
+    Left = 7
+    Height = 316
+    Top = 152
+    Width = 782
+    Align = alClient
+    Font.CharSet = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Courier New'
+    ParentFont = False
+    ScrollBars = ssBoth
+    TabOrder = 1
+  end
+  object Panel1: TPanel
+    Left = 7
+    Height = 25
+    Top = 127
+    Width = 782
+    Align = alTop
+    BevelOuter = bvNone
+    ClientHeight = 25
+    ClientWidth = 782
+    ParentBackground = False
+    TabOrder = 2
+    object Label1: TLabel
+      Left = 0
+      Height = 13
+      Top = 6
+      Width = 64
+      Caption = 'Código Fonte'
+    end
+  end
+  object Panel2: TPanel
+    Left = 7
+    Height = 31
+    Top = 468
+    Width = 782
+    Align = alBottom
+    BevelOuter = bvNone
+    ClientHeight = 31
+    ClientWidth = 782
+    ParentBackground = False
+    TabOrder = 3
+    object Fechar: TButton
+      Left = 704
+      Height = 25
+      Top = 6
+      Width = 75
+      Caption = 'Fechar'
+      TabOrder = 0
+    end
+  end
+  object Ds: TDataSource
+    AutoEdit = False
+    DataSet = cds
+    Left = 160
+    Top = 264
+  end
+  object cds: TBufDataset
+    FieldDefs = <>
+    Left = 118
+    Top = 276
+  end
+end
