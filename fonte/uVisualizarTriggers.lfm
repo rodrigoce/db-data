@@ -1,7 +1,7 @@
 object FormVisualizarTriggers: TFormVisualizarTriggers
-  Left = 612
+  Left = 613
   Height = 506
-  Top = 288
+  Top = 256
   Width = 796
   BorderWidth = 7
   Caption = 'Visualizar Triggers'

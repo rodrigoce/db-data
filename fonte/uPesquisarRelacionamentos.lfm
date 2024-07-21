@@ -1,7 +1,7 @@
 object FormPesquisarRelacionamentos: TFormPesquisarRelacionamentos
-  Left = 792
+  Left = 793
   Height = 302
-  Top = 408
+  Top = 409
   Width = 541
   ActiveControl = edNome
   BorderStyle = bsToolWindow

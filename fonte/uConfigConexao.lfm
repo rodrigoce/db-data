@@ -1,7 +1,7 @@
 object FormConfigConexao: TFormConfigConexao
-  Left = 739
+  Left = 741
   Height = 247
-  Top = 361
+  Top = 363
   Width = 477
   BorderStyle = bsDialog
   Caption = 'Configurar Conexão com o SGBDR'

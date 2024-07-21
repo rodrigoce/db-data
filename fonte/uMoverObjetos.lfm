@@ -1,7 +1,7 @@
 object FormMoverObjetos: TFormMoverObjetos
-  Left = 851
+  Left = 852
   Height = 118
-  Top = 346
+  Top = 347
   Width = 255
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle

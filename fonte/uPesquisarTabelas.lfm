@@ -1,7 +1,7 @@
 object FormPesquisarTabelas: TFormPesquisarTabelas
-  Left = 660
+  Left = 662
   Height = 399
-  Top = 317
+  Top = 318
   Width = 623
   BorderStyle = bsDialog
   Caption = 'Pesquisar Objetos'

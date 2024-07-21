@@ -1,10 +1,10 @@
 object FormPrincipal: TFormPrincipal
-  Left = 519
-  Height = 746
-  Top = 139
+  Left = 489
+  Height = 668
+  Top = 253
   Width = 720
   Caption = 'DigsER - Visualizador de Modelo de Dados'
-  ClientHeight = 746
+  ClientHeight = 668
   ClientWidth = 720
   Color = clGray
   Font.Color = clWindowText
@@ -20,13 +20,13 @@ object FormPrincipal: TFormPrincipal
   WindowState = wsMaximized
   object pnEntidades: TPanel
     Left = 0
-    Height = 723
+    Height = 645
     Top = 0
     Width = 185
     Align = alLeft
     BevelInner = bvRaised
     BevelOuter = bvLowered
-    ClientHeight = 723
+    ClientHeight = 645
     ClientWidth = 185
     ParentBackground = False
     TabOrder = 0
@@ -43,7 +43,7 @@ object FormPrincipal: TFormPrincipal
   object StatusBar1: TStatusBar
     Left = 0
     Height = 23
-    Top = 723
+    Top = 645
     Width = 720
     Panels = <    
       item

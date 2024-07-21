@@ -1,7 +1,7 @@
 object FormExibeTexto: TFormExibeTexto
-  Left = 701
+  Left = 703
   Height = 376
-  Top = 361
+  Top = 363
   Width = 561
   BorderStyle = bsDialog
   ClientHeight = 376

@@ -18,7 +18,7 @@ type
   TDiagramaManager = class
     private
       FNomeModeloAberto: string;
-      FDiagramas: IXMLDiagramasType;
+      FFileContent: TFileContent;
       FListEntityContainerCarregados: TStringList;
       FListMenusDeDiagramasAbertos: TStringList;
       FOpenDialog: TOpenDialog;
@@ -102,7 +102,7 @@ end;
 
 function TDiagramaManager.GetTemModeloParaSalvar: Boolean;
 begin
-  Result := Assigned(FDiagramas);
+  Result := Assigned(FFileContent);
 end;
 
 procedure TDiagramaManager.ClickMenuItemDiagAberto(Sender: TObject);
@@ -160,7 +160,7 @@ end;
 procedure TDiagramaManager.FecharModelo;
 begin
   FNomeModeloAberto := '';
-  FDiagramas := nil;
+  FreeAndNil(FFileContent);
   FreeAllEntityContainer;
 
   if Assigned(FOnMudancaEstadoModelo) then
@@ -200,7 +200,7 @@ end;
 
 procedure TDiagramaManager.NovoModelo;
 begin
-  FDiagramas := { aqui Newdiagramas} nil;
+  FFileContent := { aqui Newdiagramas} nil;
 
   if Assigned(FOnMudancaEstadoModelo) then
       FOnMudancaEstadoModelo(Self);
@@ -208,7 +208,6 @@ end;
 
 procedure TDiagramaManager.OpenModelo(digsERFile: string);
 var
-  diagrama: IXMLDiagramaType;
   i: Integer;
 begin
   // se o nome do arquivo não vier como parâmetro, então carregar pela janela
@@ -222,10 +221,11 @@ begin
 
   if FNomeModeloAberto <> '' then
   begin
-    {aquiFDiagramas :=  Loaddiagramas(FNomeModeloAberto) ;
-    for i := 0 to FDiagramas.Count - 1 do
+    começar a implementar aqui o carregamento
+    {aqui FFileContent :=  Loaddiagramas(FNomeModeloAberto) ;
+    for i := 0 to FFileContent.Count - 1 do
     begin
-      diagrama := FDiagramas.Diagrama[i];
+      diagrama := FFileContent.Diagrama[i];
       FCdsDiagramas.Append;
       FCdsDiagramas.FieldByName('id').AsString := diagrama.Id;
       FCdsDiagramas.FieldByName('titulo').AsString := diagrama.Titulo;
@@ -407,34 +407,32 @@ end;
 procedure TDiagramaManager.RenderizarDiagrama(Id: string;
   entityContainer: TEntityContainer);
 var
-  diagrama: IXMLDiagramaType;
-  entidades: IXMLEntidadesType;
-  entidade: IXMLEntidadeType;
-  relacionamentos: IXMLRelacionamentosType;
-  relacionamento: IXMLRelacionamentoType;
+  diagrama: TDiagrama;
+  //entidades: IXMLEntidadesType;
+  entidade: TEntidade;
+  //relacionamentos: IXMLRelacionamentosType;
+  relacionamento: TRelacionamento;
   relationship: TEntityRelationship;
   i, k: Integer;
 begin
   // nao processar a posição das setas sem ter terminado de carregar o diagrama
   entityContainer.NaoRenderizarArrows := True;
   
-  {aqui for i := 0 to FDiagramas.Count - 1 do
-    if FDiagramas.Diagrama[i].Id = Id then
+    for i := 0 to FFileContent.Diagramas.Count - 1 do
+    if FFileContent.Diagramas[i].Id = Id then
     begin
-      diagrama := FDiagramas.Diagrama[i];
+      diagrama := FFileContent.Diagramas[i];
       // adiciona as entidades
-      entidades := diagrama.Entidades;
-      for k := 0 to entidades.Count - 1 do
+      for k := 0 to diagrama.Entidades.Count - 1 do
       begin
-        entidade := entidades.Entidade[k];
+        entidade := diagrama.Entidades[k];
         entityContainer.AddEntity(entidade.Owner, entidade.Tabela, entidade.Top, entidade.Left, entidade.TodosOsCampos);
       end;
       // reposiciona o relacionamento conforme salvo em disco
-      relacionamentos := diagrama.Relacionamentos;
       for k := 0 to diagrama.Relacionamentos.Count - 1 do
       begin
-        relacionamento := relacionamentos[k];
-        relationship := entityContainer.FindRelacionamento(relacionamento.Onwer, relacionamento.ConstraintName);
+        relacionamento := diagrama.Relacionamentos[k];
+        relationship := entityContainer.FindRelacionamento(relacionamento.Owner, relacionamento.ConstraintName);
         if relationship <> nil then
         begin
           relationship.DistanciaLateral := relacionamento.DistanciaLateral;
@@ -444,7 +442,7 @@ begin
         
       Break;
     end;
-  entityContainer.NaoRenderizarArrows := False;}
+  entityContainer.NaoRenderizarArrows := False;
 end;
 
 procedure TDiagramaManager.RenomearDiagrama(Id: string);
@@ -491,7 +489,7 @@ begin
 end;
 
 procedure TDiagramaManager.WriteFile;
-var
+(*var
   diagrama: IXMLDiagramaType;
   entidades: IXMLEntidadesType;
   entidade: IXMLEntidadeType;
@@ -538,7 +536,7 @@ var
   end;
 
 begin
-  FDiagramas.Versao := '1.0';
+  FFileContent.Versao := '1.0';
 
   FCdsDiagramas.First;
   while not FCdsDiagramas.Eof do
@@ -546,7 +544,7 @@ begin
     // se tem algo de novo no diagrama
     if FCdsDiagramas.FieldByName('status').AsString = 'N' then // novo
     begin
-      diagrama := FDiagramas.Add;
+      diagrama := FFileContent.Add;
       diagrama.Titulo := FCdsDiagramas.FieldByName('titulo').AsString;
       diagrama.Id := FCdsDiagramas.FieldByName('id').AsString;
       WriteEntidades(diagrama.Id);
@@ -556,19 +554,19 @@ begin
     end
     else if FCdsDiagramas.FieldByName('status').AsString = 'E' then // excluído
     begin
-      {aqui for i := FDiagramas.Count - 1 downto 0 do
+      {aqui for i := FFileContent.Count - 1 downto 0 do
       begin
-        if FDiagramas.Diagrama[i].Id = FCdsDiagramas.FieldByName('id').AsString then
-          FDiagramas.Delete(i);
+        if FFileContent.Diagrama[i].Id = FCdsDiagramas.FieldByName('id').AsString then
+          FFileContent.Delete(i);
       end;  }
     end
     else if FCdsDiagramas.FieldByName('status').AsString = 'A' then // alterado
     begin
-      {aqui for i := 0 to FDiagramas.Count - 1 do
+      {aqui for i := 0 to FFileContent.Count - 1 do
       begin
-        if FDiagramas.Diagrama[i].Id = FCdsDiagramas.FieldByName('id').AsString then
+        if FFileContent.Diagrama[i].Id = FCdsDiagramas.FieldByName('id').AsString then
         begin
-          diagrama := FDiagramas.Diagrama[i];
+          diagrama := FFileContent.Diagrama[i];
           diagrama.Titulo := FCdsDiagramas.FieldByName('titulo').AsString;
           while diagrama.Entidades.Count > 0 do
             diagrama.Entidades.Delete(0);
@@ -585,7 +583,7 @@ begin
   if LowerCase(ExtractFileExt(FNomeModeloAberto)) <> '.dger' then
     FNomeModeloAberto := FNomeModeloAberto + '.dger';
 
-  {aqui FDiagramas.OwnerDocument.SaveToFile(FNomeModeloAberto);}
-end;
+  {aqui FFileContent.OwnerDocument.SaveToFile(FNomeModeloAberto);}
+end;  *) begin end;
 
 end.
