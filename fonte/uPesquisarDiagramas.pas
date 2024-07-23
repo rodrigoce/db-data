@@ -20,6 +20,7 @@ type
   TFormPesquisarDiagramas = class(TForm)
     DBGrid1: TDBGrid;
     ds: TDataSource;
+    Edit1: TEdit;
     Label1: TLabel;
     edPesquisa: TEdit;
     btCarregar: TButton;
@@ -66,7 +67,12 @@ end;
 procedure TFormPesquisarDiagramas.edPesquisaChange(Sender: TObject);
 begin
   //ds.DataSet.Locate('titulo', edPesquisa.Text, [loPartialKey, loCaseInsensitive])
-  ds.DataSet.Filter := FDefaultFilter + ' and lower(titulo) like ''%' + LowerCase(edPesquisa.Text) + '%''';
+  if edPesquisa.GetTextLen > 0 then
+    ds.DataSet.Filter := FDefaultFilter + ' and lower(titulo) = ''*' + LowerCase(edPesquisa.Text) + '*'''
+  else
+    ds.DataSet.Filter := FDefaultFilter;
+  edit1.Tag:= edit1.Tag + 1;
+  edit1.Text := ds.DataSet.Filter + ' - ' + inttostr(edit1.Tag);
 end;
 
 procedure TFormPesquisarDiagramas.HabilitaBotoes;

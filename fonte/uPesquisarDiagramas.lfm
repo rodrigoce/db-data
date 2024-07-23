@@ -66,6 +66,14 @@ object FormPesquisarDiagramas: TFormPesquisarDiagramas
     TabOrder = 3
     OnClick = btFecharClick
   end
+  object Edit1: TEdit
+    Left = 11
+    Height = 21
+    Top = 282
+    Width = 253
+    TabOrder = 4
+    Text = 'Edit1'
+  end
   object ds: TDataSource
     Left = 144
     Top = 72

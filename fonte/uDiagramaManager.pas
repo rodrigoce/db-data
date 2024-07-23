@@ -18,7 +18,7 @@ type
   TDiagramaManager = class
     private
       FNomeModeloAberto: string;
-      FFileContent: TFileContent;
+      FAppFileFormat: TAppFileFormat;
       FListEntityContainerCarregados: TStringList;
       FListMenusDeDiagramasAbertos: TStringList;
       FOpenDialog: TOpenDialog;
@@ -102,7 +102,7 @@ end;
 
 function TDiagramaManager.GetTemModeloParaSalvar: Boolean;
 begin
-  Result := Assigned(FFileContent);
+  Result := Assigned(FAppFileFormat);
 end;
 
 procedure TDiagramaManager.ClickMenuItemDiagAberto(Sender: TObject);
@@ -160,7 +160,7 @@ end;
 procedure TDiagramaManager.FecharModelo;
 begin
   FNomeModeloAberto := '';
-  FreeAndNil(FFileContent);
+  FreeAndNil(FAppFileFormat);
   FreeAllEntityContainer;
 
   if Assigned(FOnMudancaEstadoModelo) then
@@ -200,7 +200,7 @@ end;
 
 procedure TDiagramaManager.NovoModelo;
 begin
-  FFileContent := { aqui Newdiagramas} nil;
+  FAppFileFormat := { aqui Newdiagramas} nil;
 
   if Assigned(FOnMudancaEstadoModelo) then
       FOnMudancaEstadoModelo(Self);
@@ -209,6 +209,7 @@ end;
 procedure TDiagramaManager.OpenModelo(digsERFile: string);
 var
   i: Integer;
+  diagrama: TDiagrama;
 begin
   // se o nome do arquivo não vier como parâmetro, então carregar pela janela
   if digsERFile = '' then
@@ -221,17 +222,18 @@ begin
 
   if FNomeModeloAberto <> '' then
   begin
-    começar a implementar aqui o carregamento
-    {aqui FFileContent :=  Loaddiagramas(FNomeModeloAberto) ;
-    for i := 0 to FFileContent.Count - 1 do
+    FAppFileFormat := TAppFileFormat.Create();
+    FAppFileFormat.OpenFile(FNomeModeloAberto);
+    for i := 0 to FAppFileFormat.Diagramas.Count - 1 do
     begin
-      diagrama := FFileContent.Diagrama[i];
+      diagrama := FAppFileFormat.Diagramas[i];
       FCdsDiagramas.Append;
       FCdsDiagramas.FieldByName('id').AsString := diagrama.Id;
       FCdsDiagramas.FieldByName('titulo').AsString := diagrama.Titulo;
       FCdsDiagramas.FieldByName('status').AsString := '0';
       FCdsDiagramas.Post;
-    end;}
+    end;
+    FCdsDiagramas.First;
 
     if Assigned(FOnMudancaEstadoModelo) then
       FOnMudancaEstadoModelo(Self);
@@ -418,10 +420,10 @@ begin
   // nao processar a posição das setas sem ter terminado de carregar o diagrama
   entityContainer.NaoRenderizarArrows := True;
   
-    for i := 0 to FFileContent.Diagramas.Count - 1 do
-    if FFileContent.Diagramas[i].Id = Id then
+    for i := 0 to FAppFileFormat.Diagramas.Count - 1 do
+    if FAppFileFormat.Diagramas[i].Id = Id then
     begin
-      diagrama := FFileContent.Diagramas[i];
+      diagrama := FAppFileFormat.Diagramas[i];
       // adiciona as entidades
       for k := 0 to diagrama.Entidades.Count - 1 do
       begin

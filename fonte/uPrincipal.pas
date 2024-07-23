@@ -213,7 +213,7 @@ begin
   MemoLog := Memo1;
 
   // ganhar tempo em debug
-  //FDiagramaManager.OpenModelo('C:\Users\rceleoterio\Documents\prontuario.dger');
+  FDiagramaManager.OpenModelo('C:\Users\rceleoterio\Documents\sistemas hc.dger');
   //FDiagramaManager.OpenEntityContainer('{EF6BD092-6957-4324-A7F5-09C510A8519B}');
 end;
 
