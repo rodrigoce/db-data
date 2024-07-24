@@ -1,11 +1,11 @@
 object FormPesquisarDiagramas: TFormPesquisarDiagramas
   Left = 696
-  Height = 310
+  Height = 317
   Top = 332
   Width = 646
   BorderStyle = bsDialog
   Caption = 'Pesquisar Diagramas'
-  ClientHeight = 310
+  ClientHeight = 317
   ClientWidth = 646
   Color = clBtnFace
   Font.Color = clWindowText
@@ -65,14 +65,6 @@ object FormPesquisarDiagramas: TFormPesquisarDiagramas
     Caption = 'Fechar'
     TabOrder = 3
     OnClick = btFecharClick
-  end
-  object Edit1: TEdit
-    Left = 11
-    Height = 21
-    Top = 282
-    Width = 253
-    TabOrder = 4
-    Text = 'Edit1'
   end
   object ds: TDataSource
     Left = 144

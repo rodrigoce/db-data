@@ -18,14 +18,16 @@ uses
 type
   TTipoRelacionamento = (pai, filha);
 
+  { TObterMetaDados }
+
   TObterMetaDados = class
     private
       class procedure AdicionarCamposDeFormaOrdenada(EntityOndeInserir: TEntity; fonte: TDataSet);
       class function montarHint(dataType, dataLength: string): string;
     public
       class procedure ObterChavesDaEntidade(EntityOndeInserir: TEntity);
-      class procedure ObterTabelasRelacionadasFilhas(OwnerDaPK, NomeDaConstraintPK, NomeTabelaPai: string; buffer: TDataSet);
-      class procedure ObterTabelasRelacionadasPai(Owner, Tabela: string; buffer: TDataSet);
+      class procedure ObterTabelasRelacionadasFilhas(OwnerDaPK, NomeDaConstraintPK, NomeTabelaPai: string; buffer: TBufDataSet);
+      class procedure ObterTabelasRelacionadasPai(Owner, Tabela: string; buffer: TBufDataSet);
       class procedure ObterTabelaEColunaRelacionada(EntityConstraint: TEntityConstraint);
       class procedure ObterCamposNaoChave(EntityOndeInserir: TEntity);
       class function TabelaExiste(Owner, Tabela: string): boolean;
@@ -315,7 +317,7 @@ begin
 end;
 
 class procedure TObterMetaDados.ObterTabelasRelacionadasFilhas(
-  OwnerDaPK, NomeDaConstraintPK, NomeTabelaPai: string; buffer: TDataSet);
+  OwnerDaPK, NomeDaConstraintPK, NomeTabelaPai: string; buffer: TBufDataSet);
 var
   q: TSQLQuery;
 begin
@@ -334,13 +336,15 @@ begin
   else
     q.Params[1].Value := NomeTabelaPai;
 
-  buffer.Open;
+  q.Open;
+  buffer.CopyFromDataset(q);
+  buffer.First;
 
   q.Free;
 end;
 
 class procedure TObterMetaDados.ObterTabelasRelacionadasPai(Owner,
-  Tabela: string; buffer: TDataSet);
+  Tabela: string;buffer: TBufDataSet);
 var
   q: TSQLQuery;
 begin
@@ -362,7 +366,10 @@ begin
 
   q.Params[0].Value := Owner;
   q.Params[1].Value := Tabela;
-  buffer.Open;
+
+  q.Open;
+  buffer.CopyFromDataset(q);
+  buffer.First;
 
   q.Free;
 end;
@@ -380,7 +387,10 @@ begin
   q.Params[0].Value := Owner;
   q.Params[1].Value := Tabela;
 
-  buffer.Open;
+  q.Open;
+  buffer.CopyFromDataset(q);
+  buffer.First;
+
   q.Free;
 end;
 
@@ -447,7 +457,10 @@ begin
   if Trim(owner) <> '' then
     q.Params.ParamByName('owner').Value := UpperCase(Owner);
 
-  buffer.Open;
+  q.Open;
+  buffer.CopyFromDataset(q);
+  buffer.First;
+
   q.Free;
 end;
 
@@ -461,7 +474,9 @@ begin
 
   q.SQL.Add(sql);
 
-  buffer.Open;
+  q.Open;
+  buffer.CopyFromDataset(q);
+  buffer.First;
 
   q.Free;
 end;

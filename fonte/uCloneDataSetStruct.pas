@@ -13,12 +13,12 @@ uses
   LCLIntf, LCLType, LMessages, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, StrUtils,
   Dialogs, ExtCtrls, Menus, StdCtrls, Types, DB, {DBClient,} TypInfo;
 
-procedure CopyFields(SourceDataset, DestDataset: TDataset; doAdd: Boolean);
-function CloneField(Source: TField; AOwner: TComponent): TField;
+{procedure CopyFields(SourceDataset, DestDataset: TDataset; doAdd: Boolean);
+function CloneField(Source: TField; AOwner: TComponent): TField;}
 
 implementation
 
-procedure CopyFields(SourceDataset, DestDataset: TDataset; doAdd: Boolean);
+{procedure CopyFields(SourceDataset, DestDataset: TDataset; doAdd: Boolean);
 var
   i: integer;
   Fld: TField;
@@ -85,6 +85,6 @@ begin
   begin
     SetProp(CloneProperty[i]);
   end;
-end;
+end;}
 
 end.

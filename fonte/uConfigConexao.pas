@@ -9,11 +9,15 @@ Data: 01/10/2013
 interface
 
 uses
-  LCLIntf, LCLType, LMessages, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, IniFiles, ExtCtrls;
+  LCLIntf, LCLType, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, IniFiles, ExtCtrls, EditBtn;
 
 type
+
+  { TFormConfigConexao }
+
   TFormConfigConexao = class(TForm)
+    edTNS: TFileNameEdit;
     Label1: TLabel;
     Label2: TLabel;
     edUser: TEdit;
@@ -22,6 +26,7 @@ type
     Label4: TLabel;
     edSID: TEdit;
     btOK: TButton;
+    Label5: TLabel;
     rgBanco: TRadioGroup;
     lbl1: TLabel;
     procedure btOKClick(Sender: TObject);
@@ -52,6 +57,7 @@ begin
   IniFile.WriteString('conexao', 'sid', edSID.Text);
   IniFile.WriteString('conexao', 'user', edUser.Text);
   IniFile.WriteString('conexao', 'pwd', EnDeCrypt(edSenha.Text));
+  IniFile.WriteString('conexao', 'tnsnames', edTNS.Text);
 
   TConexao.FecharConexao;
   try
@@ -81,6 +87,7 @@ begin
     edSID.Text := IniFile.ReadString('conexao', 'sid', '');
     edUser.Text := IniFile.ReadString('conexao', 'user', '');
     edSenha.Text := EnDeCrypt(IniFile.ReadString('conexao', 'pwd', ''));
+    edTNS.Text := IniFile.ReadString('conexao', 'tnsnames', '');
     ShowModal;
     Free;
   end;

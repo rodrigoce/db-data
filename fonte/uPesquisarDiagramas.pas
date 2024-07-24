@@ -10,8 +10,8 @@ Data: 10/10/2013
 interface
 
 uses
-  LCLIntf, LCLType, LMessages, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, BufDataset, DB, Grids, DBGrids, StdCtrls, uDiagramaManager;
+  LCLIntf, LCLType, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, BufDataset, DB, DBGrids, StdCtrls, uDiagramaManager;
 
 type
 
@@ -20,7 +20,6 @@ type
   TFormPesquisarDiagramas = class(TForm)
     DBGrid1: TDBGrid;
     ds: TDataSource;
-    Edit1: TEdit;
     Label1: TLabel;
     edPesquisa: TEdit;
     btCarregar: TButton;
@@ -34,7 +33,7 @@ type
     { Private declarations }
 
     FDiagramaManager: TDiagramaManager;
-    const FDefaultFilter = 'status <> ''E''';
+    const FDefaultFilter = 'status <> "E"';
   public
     { Public declarations }
     class procedure PesquiarDiagramas(cdsDiagramas: TBufDataSet; diagramaManager: TDiagramaManager);
@@ -65,14 +64,18 @@ begin
 end;
 
 procedure TFormPesquisarDiagramas.edPesquisaChange(Sender: TObject);
+var
+  filter: string;
 begin
-  //ds.DataSet.Locate('titulo', edPesquisa.Text, [loPartialKey, loCaseInsensitive])
+  ds.DataSet.FilterOptions := [foCaseInsensitive];
+
   if edPesquisa.GetTextLen > 0 then
-    ds.DataSet.Filter := FDefaultFilter + ' and lower(titulo) = ''*' + LowerCase(edPesquisa.Text) + '*'''
+    filter := FDefaultFilter + ' and titulo = "*' + edPesquisa.Text + '*"'
   else
-    ds.DataSet.Filter := FDefaultFilter;
-  edit1.Tag:= edit1.Tag + 1;
-  edit1.Text := ds.DataSet.Filter + ' - ' + inttostr(edit1.Tag);
+    filter := FDefaultFilter;
+
+  ds.DataSet.Filter := filter;
+  ds.DataSet.First;
 end;
 
 procedure TFormPesquisarDiagramas.HabilitaBotoes;
