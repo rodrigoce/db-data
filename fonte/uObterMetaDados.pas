@@ -135,8 +135,7 @@ var
 begin
   temp := TBufDataSet.Create(nil);
   //clona a estrututa de dados da tabela fonte criando seus fields
-  CopyFields(fonte, temp, False);
-  temp.CreateDataSet;
+  temp.CopyFromDataset(fonte, False); //CopyFields(fonte, temp, False); temp.CreateDataSet;
   // indexa por position para inserir na mesna ordem da constraint
   temp.IndexFieldNames := 'POSITION';
   // filtra a chave primária
@@ -156,8 +155,7 @@ begin
   // agora que está ordenado por column id, copiar para outra cds ordenando por position
   temp2 := TBufDataSet.Create(nil);
   // clona estrututa de dados
-  CopyFields(fonte, temp2, False);
-  temp2.CreateDataSet;
+  temp2.CopyFromDataset(fonte, False); //CopyFields(fonte, temp2, False); temp2.CreateDataSet;
   // ordena por position
   temp2.IndexFieldNames := 'POSITION';
   temp.First;

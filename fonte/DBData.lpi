@@ -5,7 +5,7 @@
     <PathDelim Value="\"/>
     <General>
       <SessionStorage Value="InProjectDir"/>
-      <Title Value="DigsER"/>
+      <Title Value="DBData"/>
       <UseAppBundle Value="False"/>
       <ResourceType Value="res"/>
     </General>
@@ -32,7 +32,7 @@
     </RequiredPackages>
     <Units>
       <Unit>
-        <Filename Value="DigsER.lpr"/>
+        <Filename Value="DBData.lpr"/>
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
@@ -63,10 +63,6 @@
         <ComponentName Value="FormPesquisarRelacionamentos"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-      </Unit>
-      <Unit>
-        <Filename Value="uCloneDataSetStruct.pas"/>
-        <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="uLog.pas"/>

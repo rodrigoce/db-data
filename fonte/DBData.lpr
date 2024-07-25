@@ -1,4 +1,4 @@
-program DigsER;
+program DBData;
 
 {$MODE Delphi}
 
@@ -9,7 +9,6 @@ uses
   uConnection in 'uConnection.pas',
   uObterMetaDados in 'uObterMetaDados.pas',
   uPesquisarRelacionamentos in 'uPesquisarRelacionamentos.pas' {FormPesquisarRelacionamentos},
-  uCloneDataSetStruct in 'uCloneDataSetStruct.pas',
   uLog in 'uLog.pas',
   uVariaveisGlobais in 'uVariaveisGlobais.pas',
   uFuncoes in 'uFuncoes.pas',

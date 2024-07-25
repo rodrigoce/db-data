@@ -324,7 +324,7 @@ begin
   else
   // se ele ainda não foi aberto, entao abre
   begin
-    // testa se a conexão está funcionando ou dá pau no ato
+    // testa se a conexão está funcionando
     TConexao.GetConexao;
     if FCdsDiagramas.Locate('id', Id, []) then
     begin
