@@ -1,10 +1,3 @@
-
-{**********************************************************************************************}
-
-{                                       XML Data Binding                                       }
-
-{**********************************************************************************************}
-
 unit uDigsERFile;
 
 {$mode objfpc}{$H+}
@@ -16,7 +9,7 @@ Data: 14/10/2013
 
 interface
 
-uses SysUtils, Dialogs, Contnrs, Generics.Collections, DOM, XMLRead, XMLWrite;
+uses SysUtils, Dialogs, Generics.Collections, DOM, XMLRead, XMLWrite;
 
 type
 
@@ -39,6 +32,7 @@ type
     constructor Create;
     destructor Destroy; override;
     procedure OpenFile(FileName: string);
+    procedure SaveFile(FileName: string);
     property Versao: string read FVersao write FVersao;
     property Diagramas: specialize TObjectList<TDiagrama> read FDiagramas write FDiagramas;
   end;
@@ -97,32 +91,12 @@ type
 
   { Global Functions }
 
-(*function Getdiagramas(Doc: IXMLDocument): IXMLDiagramasType;
-function Loaddiagramas(const FileName: WideString): IXMLDiagramasType;
-function Newdiagramas: IXMLDiagramasType;        *)
 function IsDigsERFile(fileName: string): boolean;
 
 const
   TargetNamespace = '';
 
 implementation
-
-{ Global Functions }
-
-(*function Getdiagramas(Doc: IXMLDocument): IXMLDiagramasType;
-begin
-  Result := Doc.GetDocBinding('diagramas', TXMLDiagramasType, TargetNamespace) as IXMLDiagramasType;
-end;
-
-function Loaddiagramas(const FileName: WideString): IXMLDiagramasType;
-begin
-  Result := LoadXMLDocument(FileName).GetDocBinding('diagramas', TXMLDiagramasType, TargetNamespace) as IXMLDiagramasType;
-end;
-
-function Newdiagramas: IXMLDiagramasType;
-begin
-  Result := NewXMLDocument.GetDocBinding('diagramas', TXMLDiagramasType, TargetNamespace) as IXMLDiagramasType;
-end; *)
 
 function IsDigsERFile(fileName: string): boolean;
 begin
@@ -252,7 +226,68 @@ begin
     diagramaNode := diagramaNode.NextSibling;
   end;
 
-  // Libera o documento da memória
+  Doc.Free;
+end;
+
+procedure TAppFileFormat.SaveFile(FileName: string);
+var
+  Doc: TXMLDocument;
+  diagrama: TDiagrama;
+  entidade: TEntidade;
+  relacionamento: TRelacionamento;
+  diagramasNode, diagramaNode: TDOMNode;
+  entidadesNode, entidadeNode: TDOMNode;
+  relacionamentosNode, relacionamentoNode: TDOMNode;
+begin
+  Doc := TXMLDocument.Create;
+
+  // cria o Document Element
+  diagramasNode := Doc.CreateElement('diagramas');
+  TDOMElement(diagramasNode).SetAttribute('versao', '1.0');
+  Doc.AppendChild(diagramasNode);
+
+  for diagrama in Diagramas do
+  begin
+    // cria o diagrama
+    diagramaNode := Doc.CreateElement('diagrama');
+    TDOMElement(diagramaNode).SetAttribute('titulo', diagrama.Titulo);
+    TDOMElement(diagramaNode).SetAttribute('id', diagrama.ID);
+    diagramasNode.AppendChild(diagramaNode);
+
+    // cria o entidades
+    entidadesNode := Doc.CreateElement('entidades');
+    diagramaNode.AppendChild(entidadesNode);
+
+    for entidade in diagrama.Entidades do
+    begin
+      // cria o entidade
+      entidadeNode := Doc.CreateElement('entidade');
+      TDOMElement(entidadeNode).SetAttribute('top', IntToStr(entidade.Top));
+      TDOMElement(entidadeNode).SetAttribute('left', IntToStr(entidade.Left));
+      TDOMElement(entidadeNode).SetAttribute('owner', entidade.Owner);
+      TDOMElement(entidadeNode).SetAttribute('tabela', entidade.Tabela);
+      TDOMElement(entidadeNode).SetAttribute('todosOsCampos', BoolToStr(entidade.TodosOsCampos, True));
+      entidadesNode.AppendChild(entidadeNode);
+    end;
+
+    // cria o relacionamentos
+    relacionamentosNode := Doc.CreateElement('relacionamentos');
+    diagramaNode.AppendChild(relacionamentosNode);
+
+    for relacionamento in diagrama.Relacionamentos do
+    begin
+      // cria o relacionamento
+      relacionamentoNode := Doc.CreateElement('relacionamento');
+      TDOMElement(relacionamentoNode).SetAttribute('nomeCaminho', relacionamento.NomeCaminho);
+      TDOMElement(relacionamentoNode).SetAttribute('distanciaLateral', IntToStr(relacionamento.DistanciaLateral));
+      TDOMElement(relacionamentoNode).SetAttribute('owner', relacionamento.Owner);
+      TDOMElement(relacionamentoNode).SetAttribute('constraintName', relacionamento.ConstraintName);
+      relacionamentosNode.AppendChild(relacionamentoNode);
+    end;
+  end;
+
+  WriteXMLFile(Doc, FileName);
+
   Doc.Free;
 end;
 

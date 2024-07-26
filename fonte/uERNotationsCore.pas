@@ -879,8 +879,12 @@ begin
 end;
 
 procedure TEntity.NotificarMudancaDeHeigth;
+var
+  novoHeight: integer;
 begin
-  Height := (FListColunasChave.Count + FListColunasNaoChave.Count) * csLineHeight + 2;
+  novoHeight := (FListColunasChave.Count + FListColunasNaoChave.Count) * csLineHeight + 2;
+  if novoHeight < 1 then novoHeight := 1;
+  Height := novoHeight;
 end;
 
 {procedure TEntity.NotificarEsmaecerCorConstraint(ConstratintName: string);

@@ -29,7 +29,7 @@ uses
 
 begin
   Application.Initialize;
-  Application.Title := 'DigsER';
+  Application.Title := 'DB-Data';
   Application.CreateForm(TFormPrincipal, FormPrincipal);
   Application.CreateForm(TForm2, Form2);
   Application.Run;

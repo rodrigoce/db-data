@@ -1,6 +1,6 @@
 unit uDiagramaManager;
 
-{$MODE Delphi}
+{$mode objfpc}{$H+}
 
 {
 Criado por: Rodrigo Castro Eleotério
@@ -10,8 +10,8 @@ Data: 17/10/2013
 interface
 
 uses
-  LCLIntf, LCLType, LMessages, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, Menus, StdCtrls, Buttons, DB, BufDataset,
+  LCLIntf, LCLType, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls, Menus, DB, BufDataset, SysUtils,
   uDigsERFile, uERNotationsCore, uFrameConsultaDados;
 
 type
@@ -200,7 +200,7 @@ end;
 
 procedure TDiagramaManager.NovoModelo;
 begin
-  FAppFileFormat := { aqui Newdiagramas} nil;
+  FAppFileFormat := TAppFileFormat.Create;
 
   if Assigned(FOnMudancaEstadoModelo) then
       FOnMudancaEstadoModelo(Self);
@@ -300,7 +300,7 @@ begin
   begin
     menu := TMenuItem.Create(FMenuItemParaDiagramasAbertos);
     menu.Caption := captionMenuItem;
-    menu.OnClick := ClickMenuItemDiagAberto;
+    menu.OnClick := @ClickMenuItemDiagAberto;
     FListMenusDeDiagramasAbertos.AddObject(diagramaId, menu);
     FMenuItemParaDiagramasAbertos.Add(menu);
   end;
@@ -391,6 +391,9 @@ begin
 end;
 
 procedure TDiagramaManager.RemoverDiagrama(Id: string);
+var
+  idxOfDiagrama, idxOfMenu: Integer;
+  menuRapido: TObject;
 begin
   if FCdsDiagramas.Locate('id', Id, []) then
   begin
@@ -401,8 +404,15 @@ begin
     FEntityContainerCorrente.EntityArea.Visible := False;
     FEntityContainerCorrente := nil;
 
+    // remove o menu rápido
+    idxOfDiagrama := FListMenusDeDiagramasAbertos.IndexOf(Id);
+    idxOfMenu := FMenuItemParaDiagramasAbertos.IndexOf((FListMenusDeDiagramasAbertos.Objects[idxOfDiagrama] as TMenuItem));
+    FMenuItemParaDiagramasAbertos.Remove((FListMenusDeDiagramasAbertos.Objects[idxOfDiagrama] as TMenuItem));
+    (FListMenusDeDiagramasAbertos.Objects[idxOfMenu] as TMenuItem).Free;
+    FListMenusDeDiagramasAbertos.Delete(idxOfDiagrama);
+
     if Assigned(FOnMudancaEstadoModelo) then
-    FOnMudancaEstadoModelo(Self);
+      FOnMudancaEstadoModelo(Self);
   end;
 end;
 
@@ -491,20 +501,13 @@ begin
 end;
 
 procedure TDiagramaManager.WriteFile;
-(*var
-  diagrama: IXMLDiagramaType;
-  entidades: IXMLEntidadesType;
-  entidade: IXMLEntidadeType;
-  relacionamentos: IXMLRelacionamentosType;
-  relacionamento: IXMLRelacionamentoType;
-  i: Integer;
-  entity: TEntity;
-  relationship: TEntityRelationship;
 
-  procedure WriteEntidades(diagramaId: string);
+  procedure WriteEntidades(diagramaId: string; diagramaDest: TDiagrama);
   var
     i, onde: Integer;
     container: TEntityContainer;
+    entity: TEntity;
+  relationship: TEntityRelationship;
   begin
     // localiza o entity container do diagrama que se quer salvar
     onde := FListEntityContainerCarregados.IndexOf(diagramaId);
@@ -512,72 +515,76 @@ procedure TDiagramaManager.WriteFile;
     begin
       container := TEntityContainer(FListEntityContainerCarregados.Objects[onde]);
       // salva as entidades do container
-      entidades := diagrama.Entidades;
       for i := 0 to container.ListEntity.Count - 1 do
       begin
-        entidade := entidades.Add;
         entity := TEntity(container.ListEntity.Objects[i]);
-        entidade.Top := TPanel(entity).Top;
-        entidade.Left := TPanel(entity).Left;
-        entidade.Owner := entity.SchemaOwner;
-        entidade.Tabela := entity.NomeTabela;
-        entidade.TodosOsCampos := entity.ExibindoTodosOsCampos;
+
+        diagramaDest.Entidades.Add(TEntidade.Create(
+          TPanel(entity).Top, TPanel(entity).Left, entity.SchemaOwner, entity.NomeTabela, entity.ExibindoTodosOsCampos));
       end;
+
       // salva os relacionamentos do container
-      relacionamentos := diagrama.Relacionamentos;
       for i := 0 to container.ListRelationship.Count - 1 do
       begin
         relationship := TEntityRelationship(container.ListRelationship.Objects[i]);
-        relacionamento := relacionamentos.Add;
-        relacionamento.NomeCaminho := relationship.NomeCaminhoUsado;
-        relacionamento.DistanciaLateral := relationship.DistanciaLateral;
-        relacionamento.Onwer := relationship.SchemaOwner;
-        relacionamento.ConstraintName := relationship.ConstraintName;
+        diagramaDest.Relacionamentos.Add(TRelacionamento.Create(relationship.NomeCaminhoUsado, relationship.DistanciaLateral,
+          relationship.SchemaOwner, relationship.ConstraintName));
       end;
     end;
   end;
 
+var
+  i: Integer;
+  diagrama: TDiagrama;
 begin
-  FFileContent.Versao := '1.0';
-
   FCdsDiagramas.First;
   while not FCdsDiagramas.Eof do
   begin
     // se tem algo de novo no diagrama
     if FCdsDiagramas.FieldByName('status').AsString = 'N' then // novo
     begin
-      diagrama := FFileContent.Add;
-      diagrama.Titulo := FCdsDiagramas.FieldByName('titulo').AsString;
-      diagrama.Id := FCdsDiagramas.FieldByName('id').AsString;
-      WriteEntidades(diagrama.Id);
+      diagrama := TDiagrama.Create(FCdsDiagramas.FieldByName('titulo').AsString,
+        FCdsDiagramas.FieldByName('id').AsString);
+      FAppFileFormat.Diagramas.Add(diagrama);
+      WriteEntidades(diagrama.Id, diagrama);
       FCdsDiagramas.Edit;
       FCdsDiagramas.FieldByName('status').AsString := 'A';
       FCdsDiagramas.Post;
     end
     else if FCdsDiagramas.FieldByName('status').AsString = 'E' then // excluído
     begin
-      {aqui for i := FFileContent.Count - 1 downto 0 do
+      for i := FAppFileFormat.Diagramas.Count - 1 downto 0 do
       begin
-        if FFileContent.Diagrama[i].Id = FCdsDiagramas.FieldByName('id').AsString then
-          FFileContent.Delete(i);
-      end;  }
+        if FAppFileFormat.Diagramas[i].Id = FCdsDiagramas.FieldByName('id').AsString then
+        begin
+          FAppFileFormat.Diagramas[i].Free;
+          FAppFileFormat.Diagramas.Delete(i);
+        end;
+      end;
     end
     else if FCdsDiagramas.FieldByName('status').AsString = 'A' then // alterado
     begin
-      {aqui for i := 0 to FFileContent.Count - 1 do
+      for i := 0 to FAppFileFormat.Diagramas.Count - 1 do
       begin
-        if FFileContent.Diagrama[i].Id = FCdsDiagramas.FieldByName('id').AsString then
+        if FAppFileFormat.Diagramas[i].Id = FCdsDiagramas.FieldByName('id').AsString then
         begin
-          diagrama := FFileContent.Diagrama[i];
+          diagrama := FAppFileFormat.Diagramas[i];
           diagrama.Titulo := FCdsDiagramas.FieldByName('titulo').AsString;
-          while diagrama.Entidades.Count > 0 do
-            diagrama.Entidades.Delete(0);
-          while diagrama.Relacionamentos.Count > 0 do
-            diagrama.Relacionamentos.Delete(0);
 
-          WriteEntidades(diagrama.Id);
+          while diagrama.Entidades.Count > 0 do
+          begin
+            // o Free é automático diagrama.Entidades[0].Free;
+            diagrama.Entidades.Delete(0);
+          end;
+          while diagrama.Relacionamentos.Count > 0 do
+          begin
+            // o Free é automático diagrama.Relacionamentos[0].Free;
+            diagrama.Relacionamentos.Delete(0);
+          end;
+
+          WriteEntidades(diagrama.Id, diagrama);
         end;
-      end;  }
+      end;
     end;
     FCdsDiagramas.Next;
   end;
@@ -585,7 +592,7 @@ begin
   if LowerCase(ExtractFileExt(FNomeModeloAberto)) <> '.dger' then
     FNomeModeloAberto := FNomeModeloAberto + '.dger';
 
-  {aqui FFileContent.OwnerDocument.SaveToFile(FNomeModeloAberto);}
-end;  *) begin end;
+  FAppFileFormat.SaveFile(FNomeModeloAberto);
+end;
 
 end.

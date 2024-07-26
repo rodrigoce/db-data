@@ -147,7 +147,7 @@ procedure TFormPrincipal.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Action := caNone;
 
-  if Application.MessageBox('Deseja encerrar o DigsER?', 'Atenção', MB_YESNO + 
+  if Application.MessageBox('Deseja encerrar o DB-Data?', 'Atenção', MB_YESNO +
     MB_ICONQUESTION) = IDYES then
   begin
     if FDiagramaManager.TemModeloParaSalvar then
@@ -213,7 +213,7 @@ begin
   MemoLog := Memo1;
 
   // ganhar tempo em debug
-  FDiagramaManager.OpenModelo('C:\Users\rceleoterio\Documents\sistemas hc.dger');
+  //FDiagramaManager.OpenModelo('C:\Users\rceleoterio\Documents\sistemas hc.dger');
   //FDiagramaManager.OpenEntityContainer('{EF6BD092-6957-4324-A7F5-09C510A8519B}');
 end;
 
@@ -229,12 +229,9 @@ begin
   Renomear1.Enabled := FDiagramaManager.EntityContainerCorrente <> nil;
   ExportarparaImagem1.Enabled := FDiagramaManager.EntityContainerCorrente <> nil;
   MoverObjetos1.Enabled := FDiagramaManager.EntityContainerCorrente <> nil;
-  
-  //define se a janela de adicionar entidades desta estar habilidata
-  //pnEntidades.Visible := FDiagramaManager.EntityContainerCorrente <> nil;
 
   // define o caption da janela principal
-  Caption := 'DigsER - Visualizador de Modelo de Dados';
+  Caption := 'DB-Data - Analisador de Banco de Dados';
   if FDiagramaManager.TemModeloParaSalvar then
   begin
     if FDiagramaManager.NomeModeloAberto <> '' then

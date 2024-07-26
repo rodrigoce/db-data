@@ -1,11 +1,11 @@
 object FormPesquisarTabelas: TFormPesquisarTabelas
   Left = 662
-  Height = 399
+  Height = 406
   Top = 318
   Width = 623
   BorderStyle = bsDialog
   Caption = 'Pesquisar Objetos'
-  ClientHeight = 399
+  ClientHeight = 406
   ClientWidth = 623
   Color = clBtnFace
   Font.Color = clWindowText
@@ -23,7 +23,7 @@ object FormPesquisarTabelas: TFormPesquisarTabelas
   object Label2: TLabel
     Left = 8
     Height = 13
-    Top = 108
+    Top = 113
     Width = 78
     Caption = 'Nome do Objeto'
   end
@@ -36,13 +36,13 @@ object FormPesquisarTabelas: TFormPesquisarTabelas
   object Shape2: TShape
     Left = 6
     Height = 5
-    Top = 156
+    Top = 161
     Width = 609
   end
   object labQtde: TLabel
     Left = 8
     Height = 13
-    Top = 375
+    Top = 380
     Width = 104
     Caption = '0 objetos encontados'
   end
@@ -66,7 +66,7 @@ object FormPesquisarTabelas: TFormPesquisarTabelas
   end
   object rgTipoPesquisa: TRadioGroup
     Left = 8
-    Height = 35
+    Height = 42
     Top = 67
     Width = 465
     AutoFill = True
@@ -78,7 +78,7 @@ object FormPesquisarTabelas: TFormPesquisarTabelas
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 4
-    ClientHeight = 17
+    ClientHeight = 24
     ClientWidth = 461
     Columns = 4
     ItemIndex = 0
@@ -94,7 +94,7 @@ object FormPesquisarTabelas: TFormPesquisarTabelas
   object edTabela: TEdit
     Left = 8
     Height = 21
-    Top = 127
+    Top = 132
     Width = 465
     TabOrder = 3
     OnKeyPress = edTabelaKeyPress
@@ -102,7 +102,7 @@ object FormPesquisarTabelas: TFormPesquisarTabelas
   object btPesquisar: TButton
     Left = 479
     Height = 21
-    Top = 127
+    Top = 132
     Width = 136
     Caption = 'Pesquisar'
     TabOrder = 4
@@ -112,7 +112,7 @@ object FormPesquisarTabelas: TFormPesquisarTabelas
     Left = 8
     Height = 193
     Hint = 'CTRL + C copia owner.objeto para área de tranferência'
-    Top = 167
+    Top = 172
     Width = 607
     Color = clWindow
     Columns = <    
@@ -144,7 +144,7 @@ object FormPesquisarTabelas: TFormPesquisarTabelas
   object btAdicionarNoDiagrama: TButton
     Left = 405
     Height = 25
-    Top = 366
+    Top = 371
     Width = 129
     Caption = 'Adicionar no Diagrama'
     TabOrder = 6
@@ -153,7 +153,7 @@ object FormPesquisarTabelas: TFormPesquisarTabelas
   object btFechar: TButton
     Left = 540
     Height = 25
-    Top = 367
+    Top = 372
     Width = 75
     Caption = 'Fechar'
     TabOrder = 7
@@ -162,11 +162,11 @@ object FormPesquisarTabelas: TFormPesquisarTabelas
   object Ds: TDataSource
     DataSet = cdsTabelas
     Left = 328
-    Top = 239
+    Top = 244
   end
   object cdsTabelas: TBufDataset
     FieldDefs = <>
     Left = 219
-    Top = 225
+    Top = 230
   end
 end
