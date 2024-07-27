@@ -19,7 +19,7 @@ object FormSobre: TFormSobre
     Top = 8
     Width = 257
     Lines.Strings = (
-      'DigsER 1.4'
+      'DB-Data 2.0'
       ''
       'Desenvolvido por: Rodrigo Castro Eleotério'
       'E-mail: rodrigo.ce@gmail.com'

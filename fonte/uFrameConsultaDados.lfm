@@ -1,27 +1,27 @@
 object FrameConsultaDados: TFrameConsultaDados
   Left = 0
-  Height = 304
+  Height = 348
   Top = 0
-  Width = 451
+  Width = 550
   Align = alClient
-  ClientHeight = 304
-  ClientWidth = 451
+  ClientHeight = 348
+  ClientWidth = 550
   TabOrder = 0
-  DesignLeft = 385
-  DesignTop = 304
+  DesignLeft = 825
+  DesignTop = 292
   object memoSQL: TMemo
     Left = 0
     Height = 33
     Top = 0
-    Width = 451
+    Width = 550
     Align = alTop
     TabOrder = 0
   end
   object DBGrid1: TDBGrid
     Left = 0
-    Height = 230
+    Height = 277
     Top = 33
-    Width = 451
+    Width = 550
     Align = alClient
     Color = clWindow
     Columns = <>
@@ -30,21 +30,27 @@ object FrameConsultaDados: TFrameConsultaDados
     Font.Color = clWindowText
     Font.Height = -13
     Font.Name = 'Calibri'
+    Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgAutoSizeColumns]
     ParentFont = False
+    ReadOnly = True
     TabOrder = 1
   end
   object Panel1: TPanel
     Left = 0
-    Height = 41
-    Top = 263
-    Width = 451
+    Height = 38
+    Top = 310
+    Width = 550
     Align = alBottom
     BevelOuter = bvNone
-    ClientHeight = 41
-    ClientWidth = 451
+    ClientHeight = 38
+    ClientWidth = 550
+    Color = clInfoBk
+    ParentBackground = False
+    ParentColor = False
     TabOrder = 2
+    OnResize = Panel1Resize
     object btFechar: TButton
-      Left = 370
+      Left = 144
       Height = 25
       Top = 6
       Width = 75
@@ -54,10 +60,10 @@ object FrameConsultaDados: TFrameConsultaDados
       OnClick = btFecharClick
     end
     object btAtualizar: TButton
-      Left = 264
+      Left = 8
       Height = 25
       Top = 6
-      Width = 100
+      Width = 132
       Anchors = [akTop, akRight]
       Caption = 'Atualizar Consulta'
       TabOrder = 0

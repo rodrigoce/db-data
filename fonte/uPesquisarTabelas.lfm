@@ -29,13 +29,13 @@ object FormPesquisarTabelas: TFormPesquisarTabelas
   end
   object Shape1: TShape
     Left = 8
-    Height = 5
+    Height = 2
     Top = 56
     Width = 609
   end
   object Shape2: TShape
     Left = 6
-    Height = 5
+    Height = 2
     Top = 161
     Width = 609
   end

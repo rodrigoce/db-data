@@ -8,9 +8,8 @@ Data: 07/11/2014
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, Grids, DBGrids, StdCtrls, DB, BufDataset, uERNotationsCore,
-  Math;
+  Windows, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls, Grids, DBGrids, StdCtrls, DB, BufDataset, Math;
 
 type
 
@@ -24,9 +23,9 @@ type
     btFechar: TButton;
     Ds: TDataSource;
     btAtualizar: TButton;
-    procedure cdsAfterOpen(DataSet: TDataSet);
     procedure btFecharClick(Sender: TObject);
     procedure btAtualizarClick(Sender: TObject);
+    procedure Panel1Resize(Sender: TObject);
   private
     { Private declarations }
     FOwnerTabela: string;
@@ -84,48 +83,19 @@ begin
   AvaliarEExecutarQuery;
 end;
 
+procedure TFrameConsultaDados.Panel1Resize(Sender: TObject);
+var
+  pnW: Integer;
+begin
+  pnW := Trunc(Panel1.Width / 2);
+  btAtualizar.Left := Trunc(pnW - btAtualizar.Width + btAtualizar.Width / 2) - 2;
+  btFechar.Left := Trunc(pnW + btAtualizar.Width - btAtualizar.Width / 2) + 2;
+end;
+
 procedure TFrameConsultaDados.btFecharClick(Sender: TObject);
 begin
   FormPrincipal.DiagramaManager.RemoveContainerDaListaCarregados(FOwnerTabela);
   Self.Free;
-end;
-
-procedure TFrameConsultaDados.cdsAfterOpen(DataSet: TDataSet);
-var
-   ColWidth : array of cardinal;
-   Counter, avaliacoes, qtdeMax  : integer;
-begin
-  SetLength(ColWidth,cds.FieldCount);
-
-  for Counter := 0 to cds.FieldCount - 1 do
-  begin
-    ColWidth[Counter] := Max(ColWidth[Counter],DBGrid1.Canvas.TextWidth(DBGrid1.Columns[Counter].Title.Caption) + 8);
-    DBGrid1.Columns[Counter].Width := ColWidth[Counter];
-  end;
-
-  try
-    with cds do
-    begin
-      DisableControls;
-      avaliacoes := 0;
-      qtdeMax := Min(50, RecordCount);
-
-      while (avaliacoes <= qtdeMax) do
-      begin
-        for Counter := 0 to ( FieldCount - 1 ) do
-        begin
-          ColWidth[Counter] := Max(ColWidth[Counter],DBGrid1.Canvas.TextWidth(Fields[Counter].AsString) + 8);
-          DBGrid1.Columns[Counter].Width := ColWidth[Counter];
-        end;
-        Inc(avaliacoes);
-        Next;
-      end;
-      First;
-      EnableControls;
-    end;
-  finally
-    Finalize(ColWidth);
-  end;
 end;
 
 procedure TFrameConsultaDados.ObterAmostra(OwnerTabela: string);

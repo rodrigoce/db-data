@@ -10,9 +10,8 @@ Data: 12/02/2014
 interface
 
 uses
-  LCLIntf, LCLType, LMessages, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, Menus, StdCtrls, Types, DB,
-  Math;
+  LCLIntf, LCLType, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls, Menus, Types, Math;
 
 // usado na TEntity
 const
@@ -388,6 +387,7 @@ begin
   FEntityArea.BorderStyle := bsNone;
   FEntityArea.Color := clWhite;
   FEntityArea.ParentColor := False;
+  // aqui colocar o pulo do scroll
   // cria o objeto de lista de entidades adicionadas
   FListEntity := TStringList.Create;
   FListRelacionamento := TStringList.Create;
@@ -755,11 +755,11 @@ begin
   // libera as colunas da tabela
   for i := 0 to FListColunasChave.Count - 1 do
      TObject(FListColunasChave.Objects[i]).Free;
-  FListColunasChave.Free;
+  FreeAndNil(FListColunasChave);
 
   // libera as colunas da tabela
   RemoverColunasNaoChave(True);
-  FListColunasNaoChave.Free;
+  FreeAndNil(FListColunasNaoChave);
 
   //  libera as constraints da tabela
   for i := 0 to FListConstraints.Count - 1 do
@@ -880,11 +880,12 @@ end;
 
 procedure TEntity.NotificarMudancaDeHeigth;
 var
-  novoHeight: integer;
+  count: integer;
 begin
-  novoHeight := (FListColunasChave.Count + FListColunasNaoChave.Count) * csLineHeight + 2;
-  if novoHeight < 1 then novoHeight := 1;
-  Height := novoHeight;
+  count := 0;
+  if FListColunasChave <> nil then count := count + FListColunasChave.Count;
+  if FListColunasNaoChave <> nil then count := count + FListColunasNaoChave.Count;
+  Height := count * csLineHeight + 2;
 end;
 
 {procedure TEntity.NotificarEsmaecerCorConstraint(ConstratintName: string);
@@ -970,13 +971,17 @@ begin
   ShowHint := True;
   Canvas.Pen.Color := clBlack;
   Pen.Style := psClear;
-  DeterminarDimensoes;
   FCorDestacada := False;
+
+  if TipoLinha = TipoLinhaNomeTabela then
+    Canvas.Font.Style := [fsBold];
+
+  DeterminarDimensoes;
 end;
 
 procedure TCustomEntityColumn.DeterminarDimensoes;
 var
-  t: tagSize;
+  t: TSize;
   largura: Word;
 begin
   // auto redimensiona o shape apenas se for esses tipo de linha abaixo,
@@ -1020,7 +1025,6 @@ begin
       TipoLinhaNomeTabela:
       begin
         Brush.Color := $00FFC4E1; // roxinho
-        Canvas.Font.Style := [fsBold];
       end;
       TipoLinhaNomeColuna:
       begin

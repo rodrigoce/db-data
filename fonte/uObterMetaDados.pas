@@ -10,10 +10,8 @@ Data: 19/06/2013
 interface
 
 uses
-  LCLIntf, LCLType, LMessages, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, StrUtils,
-  Dialogs, ExtCtrls, Menus, StdCtrls, Types, DB, sqldb, uConnection,
-  {DBClient, Provider,} BufDataset,
-  uERNotationsCore;
+  LCLIntf, LCLType, SysUtils, Variants, Classes, Graphics, Controls, Forms, StrUtils,
+  Dialogs, ExtCtrls, Menus, DB, sqldb, uConnection, BufDataset, uERNotationsCore;
 
 type
   TTipoRelacionamento = (pai, filha);
@@ -39,7 +37,7 @@ type
 
 implementation
 
-uses uCloneDataSetStruct, uPrincipal, uVariaveisGlobais;
+uses uPrincipal, uVariaveisGlobais;
 
 { TObterMetaDados }
 

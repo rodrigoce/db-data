@@ -78,7 +78,7 @@ var
 implementation
 
 uses Unit2, uVariaveisGlobais, uPesquisarDiagramas, uSobre, uConfigConexao,
-  uPesquisarTabelas, uDigsERFile, uMoverObjetos;
+  uPesquisarTabelas, uDBDataFile, uMoverObjetos;
 
 {$R *.lfm}
 
@@ -193,14 +193,14 @@ end;
 procedure TFormPrincipal.FormShow(Sender: TObject);
 begin
   // cria o ini de configurações
-  IniFile := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'DigsERConf.ini');
+  IniFile := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'DB-DataConf.ini');
 
   FDiagramaManager := TDiagramaManager.Create(Self);
   // seta o menu onde os diagramas abertos ficarão em lista
   FDiagramaManager.MenuItemParaDiagramasAbertos := Janelas1;
 
   // se tiver um primeiro parâmetro, tenta abri-lo como um arquivo de diagrama
-  if (ParamStr(1) <> '') and IsDigsERFile(ParamStr(1)) then
+  if (ParamStr(1) <> '') and IsDBDataFile(ParamStr(1)) then
     FDiagramaManager.OpenModelo(ParamStr(1))
   else
     // carrega o aplicativo com um modelo em branco para ser usado
@@ -213,8 +213,8 @@ begin
   MemoLog := Memo1;
 
   // ganhar tempo em debug
-  //FDiagramaManager.OpenModelo('C:\Users\rceleoterio\Documents\sistemas hc.dger');
-  //FDiagramaManager.OpenEntityContainer('{EF6BD092-6957-4324-A7F5-09C510A8519B}');
+  FDiagramaManager.OpenModelo('C:\Users\rceleoterio\Documents\teste1.dbdata');
+  FDiagramaManager.OpenEntityContainer('{AF7E7E0A-6A41-4197-9C04-8528CC276D84} ');
 end;
 
 procedure TFormPrincipal.HabilitarMenusContexto(Sender: TObject);

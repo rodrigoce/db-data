@@ -3,7 +3,7 @@ program DBData;
 {$MODE Delphi}
 
 uses
-  Forms, Interfaces,
+  Forms, pascalscript, Interfaces,
   uPrincipal in 'uPrincipal.pas' {FormPrincipal},
   Unit2 in 'Unit2.pas' {Form2},
   uConnection in 'uConnection.pas',
@@ -12,7 +12,7 @@ uses
   uLog in 'uLog.pas',
   uVariaveisGlobais in 'uVariaveisGlobais.pas',
   uFuncoes in 'uFuncoes.pas',
-  uDigsERFile in 'uDigsERFile.pas',
+  uDBDataFile,
   uDiagramaManager in 'uDiagramaManager.pas',
   uPesquisarDiagramas in 'uPesquisarDiagramas.pas' {FormPesquisarDiagramas},
   uSobre in 'uSobre.pas' {FormSobre},
@@ -29,7 +29,6 @@ uses
 
 begin
   Application.Initialize;
-  Application.Title := 'DB-Data';
   Application.CreateForm(TFormPrincipal, FormPrincipal);
   Application.CreateForm(TForm2, Form2);
   Application.Run;

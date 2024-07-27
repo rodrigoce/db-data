@@ -1,4 +1,4 @@
-unit uDigsERFile;
+unit uDBDataFile;
 
 {$mode objfpc}{$H+}
 
@@ -91,17 +91,17 @@ type
 
   { Global Functions }
 
-function IsDigsERFile(fileName: string): boolean;
+function IsDBDataFile(fileName: string): boolean;
 
 const
   TargetNamespace = '';
 
 implementation
 
-function IsDigsERFile(fileName: string): boolean;
+function IsDBDataFile(fileName: string): boolean;
 begin
   Result := False;
-  if LowerCase(ExtractFileExt(fileName)) = '.dger' then
+  if LowerCase(ExtractFileExt(fileName)) = '.dbdata' then
     if FileExists(fileName) then
       Result := True;
 end;

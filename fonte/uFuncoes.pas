@@ -10,8 +10,8 @@ Data: 05/11/2013
 interface
 
 uses
-  LCLIntf, LCLType, LMessages, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, Menus, StdCtrls, Types;
+  LCLIntf, LCLType, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls, Menus;
 
 function EnDeCrypt(const Value : String) : String;
 function CountChar(const Texto: string; Caractere: Char): Integer;

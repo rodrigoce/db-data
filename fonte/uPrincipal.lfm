@@ -54,6 +54,8 @@ object FormPrincipal: TFormPrincipal
       item
         Width = 50
       end>
+    ParentColor = False
+    SimplePanel = False
   end
   object MainMenu1: TMainMenu
     Left = 304

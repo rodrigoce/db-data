@@ -12,7 +12,7 @@ interface
 uses
   LCLIntf, LCLType, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, Menus, DB, BufDataset, SysUtils,
-  uDigsERFile, uERNotationsCore, uFrameConsultaDados;
+  uDBDataFile, uERNotationsCore, uFrameConsultaDados;
 
 type
   TDiagramaManager = class
@@ -45,7 +45,7 @@ type
       destructor Destroy; override;
       procedure NovoModelo;
       procedure FecharModelo;
-      procedure OpenModelo(digsERFile: string);
+      procedure OpenModelo(DBDataFileName: string);
       function SaveModelo: Boolean;
       procedure PrepareOpenContainer;
       procedure OpenEntityContainer(Id: string);
@@ -128,10 +128,10 @@ begin
   inherited Create;
   FParentEntityContainer := ParentEntityContainer;
   FOpenDialog := TOpenDialog.Create(nil);
-  FOpenDialog.Filter := 'Arquivos do DigsER (*.dger)|*.DGER';
+  FOpenDialog.Filter := 'Arquivos do DB-Data (*.dbdata)|*.DBDATA';
 
   FSaveDialog := TSaveDialog.Create(nil);
-  FSaveDialog.Filter := 'Arquivos do DigsER (*.dger)|*.DGER';
+  FSaveDialog.Filter := 'Arquivos do DB-Data (*.dbdata)|*.DBDATA';
 
   FCdsDiagramas := TBufDataSet.Create(nil);
   FCdsDiagramas.FieldDefs.Add('titulo', ftString, 300, false);
@@ -206,19 +206,19 @@ begin
       FOnMudancaEstadoModelo(Self);
 end;
 
-procedure TDiagramaManager.OpenModelo(digsERFile: string);
+procedure TDiagramaManager.OpenModelo(DBDataFileName: string);
 var
   i: Integer;
   diagrama: TDiagrama;
 begin
   // se o nome do arquivo não vier como parâmetro, então carregar pela janela
-  if digsERFile = '' then
+  if DBDataFileName = '' then
   begin
     if FOpenDialog.Execute then
       FNomeModeloAberto := FOpenDialog.FileName;
   end
   else
-    FNomeModeloAberto := digsERFile;
+    FNomeModeloAberto := DBDataFileName;
 
   if FNomeModeloAberto <> '' then
   begin
@@ -589,8 +589,8 @@ begin
     FCdsDiagramas.Next;
   end;
 
-  if LowerCase(ExtractFileExt(FNomeModeloAberto)) <> '.dger' then
-    FNomeModeloAberto := FNomeModeloAberto + '.dger';
+  if LowerCase(ExtractFileExt(FNomeModeloAberto)) <> '.dbdata' then
+    FNomeModeloAberto := FNomeModeloAberto + '.dbdata';
 
   FAppFileFormat.SaveFile(FNomeModeloAberto);
 end;
