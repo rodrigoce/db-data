@@ -7,7 +7,7 @@ Data: 24/05/2013
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Windows, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, Menus, StdCtrls, Buttons,
   uDiagramaManager, ComCtrls, IniFiles;
 
@@ -214,7 +214,7 @@ begin
 
   // ganhar tempo em debug
   FDiagramaManager.OpenModelo('C:\Users\rceleoterio\Documents\teste1.dbdata');
-  FDiagramaManager.OpenEntityContainer('{AF7E7E0A-6A41-4197-9C04-8528CC276D84} ');
+  FDiagramaManager.OpenEntityContainer('{AF7E7E0A-6A41-4197-9C04-8528CC276D84}');
 end;
 
 procedure TFormPrincipal.HabilitarMenusContexto(Sender: TObject);

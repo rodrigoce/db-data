@@ -26,6 +26,9 @@
     </RunParams>
     <RequiredPackages>
       <Item>
+        <PackageName Value="TurboPowerIPro"/>
+      </Item>
+      <Item>
         <PackageName Value="pascalscript"/>
       </Item>
       <Item>

@@ -26,14 +26,23 @@ type
 
   TAppFileFormat = class
   private
+    FPassword: string;
+    FSID: string;
+    FTNSPath: string;
+    FUserName: string;
     FVersao: string;
     FDiagramas: specialize TObjectList<TDiagrama>;
+    function GetDefaultText(Node: TDOMNode): DOMString;
   public
     constructor Create;
     destructor Destroy; override;
     procedure OpenFile(FileName: string);
     procedure SaveFile(FileName: string);
     property Versao: string read FVersao write FVersao;
+    property TNSPath: string read FTNSPath write FTNSPath;
+    property SID: string read FSID write FSID;
+    property UserName: string read FUserName write FUserName;
+    property Password: string read FPassword write FPassword;
     property Diagramas: specialize TObjectList<TDiagrama> read FDiagramas write FDiagramas;
   end;
 
@@ -151,6 +160,14 @@ end;
 
 { TAppFileFormat }
 
+function TAppFileFormat.GetDefaultText(Node: TDOMNode): DOMString;
+begin
+  if Node = nil then
+    Result := ''
+  else
+    Result := Node.TextContent;
+end;
+
 constructor TAppFileFormat.Create;
 begin
   inherited;
@@ -176,7 +193,11 @@ begin
   ReadXMLFile(Doc, FileName);
 
   diagramasNode := Doc.DocumentElement;
-  Versao := diagramasNode.Attributes.GetNamedItem('versao').TextContent;
+  Versao := GetDefaultText(diagramasNode.Attributes.GetNamedItem('versao'));
+  TNSPath :=  GetDefaultText(diagramasNode.Attributes.GetNamedItem('tnsPath'));
+  SID := GetDefaultText(diagramasNode.Attributes.GetNamedItem('SID'));
+  UserName := GetDefaultText(diagramasNode.Attributes.GetNamedItem('userName'));
+  Password := GetDefaultText(diagramasNode.Attributes.GetNamedItem('password'));
 
   diagramaNode := diagramasNode.FirstChild;
 
@@ -244,6 +265,10 @@ begin
   // cria o Document Element
   diagramasNode := Doc.CreateElement('diagramas');
   TDOMElement(diagramasNode).SetAttribute('versao', '1.0');
+  TDOMElement(diagramasNode).SetAttribute('tnsPath', TNSPath);
+  TDOMElement(diagramasNode).SetAttribute('SID', SID);
+  TDOMElement(diagramasNode).SetAttribute('userName', UserName);
+  TDOMElement(diagramasNode).SetAttribute('password', Password);
   Doc.AppendChild(diagramasNode);
 
   for diagrama in Diagramas do

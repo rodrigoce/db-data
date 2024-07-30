@@ -8,8 +8,9 @@ Data: 07/11/2014
 interface
 
 uses
-  Windows, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, Grids, DBGrids, StdCtrls, DB, BufDataset, Math;
+  Windows, SysUtils, Variants, Classes, Graphics, Controls, Forms, Dialogs,
+  ExtCtrls, DBGrids, StdCtrls, SynEdit, SynHighlighterSQL, DB,
+  BufDataset;
 
 type
 
@@ -17,12 +18,13 @@ type
 
   TFrameConsultaDados = class(TFrame)
     cds: TBufDataset;
-    memoSQL: TMemo;
     DBGrid1: TDBGrid;
     Panel1: TPanel;
     btFechar: TButton;
     Ds: TDataSource;
     btAtualizar: TButton;
+    memoSQL: TSynEdit;
+    sqlHighLight: TSynSQLSyn;
     procedure btFecharClick(Sender: TObject);
     procedure btAtualizarClick(Sender: TObject);
     procedure Panel1Resize(Sender: TObject);
@@ -101,6 +103,7 @@ end;
 procedure TFrameConsultaDados.ObterAmostra(OwnerTabela: string);
 begin
   FOwnerTabela := OwnerTabela;
+  memoSQL.Lines.Clear;
   if IniFile.ReadInteger('conexao', 'banco', 0) = 0 then // oracle
     memoSQL.Lines.Add('select * from ' + OwnerTabela + ' where rownum <= 200')
   else

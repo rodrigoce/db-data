@@ -11,16 +11,16 @@ interface
 
 uses
   LCLIntf, LCLType, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, Menus, DB, BufDataset, SysUtils,
+  Dialogs, ExtCtrls, Menus, DB, BufDataset, SysUtils, fgl,
   uDBDataFile, uERNotationsCore, uFrameConsultaDados;
 
 type
   TDiagramaManager = class
     private
-      FNomeModeloAberto: string;
+      FOpenedFile: string;
       FAppFileFormat: TAppFileFormat;
       FListEntityContainerCarregados: TStringList;
-      FListMenusDeDiagramasAbertos: TStringList;
+      FListMenusDeDiagramasAbertos: specialize TFPGMapObject<string, TMenuItem>;
       FOpenDialog: TOpenDialog;
       FSaveDialog: TSaveDialog;
       FParentEntityContainer: TWinControl;
@@ -40,6 +40,8 @@ type
       procedure OpenGenericContainer(Id: string; container: TObject);
       // acesso a propriedades
       function GetTemModeloParaSalvar: Boolean;
+      procedure CreateMenuRapido(diagramaId, captionMenuItem: string);
+      procedure PrepareOpenContainer;
     public
       constructor Create(ParentEntityContainer: TWinControl);
       destructor Destroy; override;
@@ -47,9 +49,7 @@ type
       procedure FecharModelo;
       procedure OpenModelo(DBDataFileName: string);
       function SaveModelo: Boolean;
-      procedure PrepareOpenContainer;
       procedure OpenEntityContainer(Id: string);
-      procedure CreateMenuRapido(diagramaId, captionMenuItem: string);
       procedure OpenAmostraContainer(OwnerTabela: string);
       procedure RemoverDiagrama(Id: string);
       procedure RenomearDiagrama(Id: string);
@@ -61,7 +61,7 @@ type
       property AmostraDadosCorrente: TFrameConsultaDados read FAmostraDadosCorrente;
       property OnMudancaEstadoModelo: TNotifyEvent read FOnMudancaEstadoModelo write FOnMudancaEstadoModelo;
       property TemModeloParaSalvar: Boolean read GetTemModeloParaSalvar;
-      property NomeModeloAberto: string read FNomeModeloAberto;
+      property NomeModeloAberto: string read FOpenedFile;
       property MenuItemParaDiagramasAbertos: TMenuItem read FMenuItemParaDiagramasAbertos write FMenuItemParaDiagramasAbertos;
   end;
 
@@ -93,9 +93,9 @@ begin
   for i := FListMenusDeDiagramasAbertos.Count -1 downto 0 do
   begin
     if Assigned(FMenuItemParaDiagramasAbertos) then
-      FMenuItemParaDiagramasAbertos.Remove(TMenuItem(FListMenusDeDiagramasAbertos.Objects[i]));
+      FMenuItemParaDiagramasAbertos.Remove(FListMenusDeDiagramasAbertos.Data[i]);
 
-    TMenuItem(FListMenusDeDiagramasAbertos.Objects[i]).Free;
+    FListMenusDeDiagramasAbertos.Data[i].Free;
     FListMenusDeDiagramasAbertos.Delete(i);
   end;
 end;
@@ -107,19 +107,19 @@ end;
 
 procedure TDiagramaManager.ClickMenuItemDiagAberto(Sender: TObject);
 var
-  index: Integer;
+  indexOfMenu, indexOfContainer: Integer;
   id: string;
   container: TObject;
 begin
 
-  index := FListMenusDeDiagramasAbertos.IndexOfObject(Sender);
-  if index > -1 then
+  indexOfMenu := FListMenusDeDiagramasAbertos.IndexOfData(Sender as TMenuItem);
+  if indexOfMenu > -1 then
   begin
-    id :=  FListMenusDeDiagramasAbertos[index];
-    index := FListEntityContainerCarregados.IndexOf(id);
-    container := FListEntityContainerCarregados.Objects[index];
+    id :=  FListMenusDeDiagramasAbertos.Keys[indexOfMenu];
+    indexOfContainer := FListEntityContainerCarregados.IndexOf(id);
+    container := FListEntityContainerCarregados.Objects[indexOfContainer];
 
-    OpenGenericContainer(FListMenusDeDiagramasAbertos[index], container);
+    OpenGenericContainer(id, container);
   end;
 end;
 
@@ -143,7 +143,7 @@ begin
   FCdsDiagramas.IndexFieldNames := 'titulo';
 
   FListEntityContainerCarregados := TStringList.Create;
-  FListMenusDeDiagramasAbertos := TStringList.Create;
+  FListMenusDeDiagramasAbertos := specialize TFPGMapObject<string, TMenuItem>.Create(False);
 end;
 
 destructor TDiagramaManager.Destroy;
@@ -159,7 +159,7 @@ end;
 
 procedure TDiagramaManager.FecharModelo;
 begin
-  FNomeModeloAberto := '';
+  FOpenedFile := '';
   FreeAndNil(FAppFileFormat);
   FreeAllEntityContainer;
 
@@ -215,15 +215,15 @@ begin
   if DBDataFileName = '' then
   begin
     if FOpenDialog.Execute then
-      FNomeModeloAberto := FOpenDialog.FileName;
+      FOpenedFile := FOpenDialog.FileName;
   end
   else
-    FNomeModeloAberto := DBDataFileName;
+    FOpenedFile := DBDataFileName;
 
-  if FNomeModeloAberto <> '' then
+  if FOpenedFile <> '' then
   begin
     FAppFileFormat := TAppFileFormat.Create();
-    FAppFileFormat.OpenFile(FNomeModeloAberto);
+    FAppFileFormat.OpenFile(FOpenedFile);
     for i := 0 to FAppFileFormat.Diagramas.Count - 1 do
     begin
       diagrama := FAppFileFormat.Diagramas[i];
@@ -301,7 +301,7 @@ begin
     menu := TMenuItem.Create(FMenuItemParaDiagramasAbertos);
     menu.Caption := captionMenuItem;
     menu.OnClick := @ClickMenuItemDiagAberto;
-    FListMenusDeDiagramasAbertos.AddObject(diagramaId, menu);
+    FListMenusDeDiagramasAbertos.Add(diagramaId, menu);
     FMenuItemParaDiagramasAbertos.Add(menu);
   end;
 end;
@@ -373,7 +373,6 @@ begin
   if FContainerAnteior <> nil then
   begin
     OpenGenericContainer(FListEntityContainerCarregados[FListEntityContainerCarregados.IndexOfObject(FContainerAnteior)] ,FContainerAnteior);
-
   end;
 
   if Assigned(FMenuItemParaDiagramasAbertos) then
@@ -382,8 +381,8 @@ begin
     if index > -1 then
     begin
       // remove o menu
-      FMenuItemParaDiagramasAbertos.Remove(TMenuItem(FListMenusDeDiagramasAbertos.Objects[index]));
-      FListMenusDeDiagramasAbertos.Objects[index].Free;
+      FMenuItemParaDiagramasAbertos.Remove(FListMenusDeDiagramasAbertos.Data[index]);
+      FListMenusDeDiagramasAbertos.Data[index].Free;
       // remove o menu da lista de menus
       FListMenusDeDiagramasAbertos.Delete(index);
     end;
@@ -393,7 +392,6 @@ end;
 procedure TDiagramaManager.RemoverDiagrama(Id: string);
 var
   idxOfDiagrama, idxOfMenu: Integer;
-  menuRapido: TObject;
 begin
   if FCdsDiagramas.Locate('id', Id, []) then
   begin
@@ -406,9 +404,9 @@ begin
 
     // remove o menu rápido
     idxOfDiagrama := FListMenusDeDiagramasAbertos.IndexOf(Id);
-    idxOfMenu := FMenuItemParaDiagramasAbertos.IndexOf((FListMenusDeDiagramasAbertos.Objects[idxOfDiagrama] as TMenuItem));
-    FMenuItemParaDiagramasAbertos.Remove((FListMenusDeDiagramasAbertos.Objects[idxOfDiagrama] as TMenuItem));
-    (FListMenusDeDiagramasAbertos.Objects[idxOfMenu] as TMenuItem).Free;
+    idxOfMenu := FMenuItemParaDiagramasAbertos.IndexOf(FListMenusDeDiagramasAbertos.Data[idxOfDiagrama]);
+    FMenuItemParaDiagramasAbertos.Remove(FListMenusDeDiagramasAbertos.Data[idxOfDiagrama]);
+    FListMenusDeDiagramasAbertos.Data[idxOfMenu].Free;
     FListMenusDeDiagramasAbertos.Delete(idxOfDiagrama);
 
     if Assigned(FOnMudancaEstadoModelo) then
@@ -484,14 +482,14 @@ end;
 function TDiagramaManager.SaveModelo: Boolean;
 begin
   Result := False;
-  if FNomeModeloAberto <> '' then
+  if FOpenedFile <> '' then
   begin
     WriteFile;
     Result := True;
   end
   else if FSaveDialog.Execute then
   begin
-    FNomeModeloAberto := FSaveDialog.FileName;
+    FOpenedFile := FSaveDialog.FileName;
     WriteFile;
     Result := True;
   end;
@@ -557,7 +555,6 @@ begin
       begin
         if FAppFileFormat.Diagramas[i].Id = FCdsDiagramas.FieldByName('id').AsString then
         begin
-          FAppFileFormat.Diagramas[i].Free;
           FAppFileFormat.Diagramas.Delete(i);
         end;
       end;
@@ -573,12 +570,10 @@ begin
 
           while diagrama.Entidades.Count > 0 do
           begin
-            // o Free é automático diagrama.Entidades[0].Free;
             diagrama.Entidades.Delete(0);
           end;
           while diagrama.Relacionamentos.Count > 0 do
           begin
-            // o Free é automático diagrama.Relacionamentos[0].Free;
             diagrama.Relacionamentos.Delete(0);
           end;
 
@@ -589,10 +584,10 @@ begin
     FCdsDiagramas.Next;
   end;
 
-  if LowerCase(ExtractFileExt(FNomeModeloAberto)) <> '.dbdata' then
-    FNomeModeloAberto := FNomeModeloAberto + '.dbdata';
+  if LowerCase(ExtractFileExt(FOpenedFile)) <> '.dbdata' then
+    FOpenedFile := FOpenedFile + '.dbdata';
 
-  FAppFileFormat.SaveFile(FNomeModeloAberto);
+  FAppFileFormat.SaveFile(FOpenedFile);
 end;
 
 end.

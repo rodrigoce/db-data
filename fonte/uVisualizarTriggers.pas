@@ -3,9 +3,9 @@ unit uVisualizarTriggers;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls, Grids, DBGrids, SynHighlighterXML, uPSComponent,
-  DB, BufDataset, uERNotationsCore;
+  SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ExtCtrls, DBGrids, SynHighlighterXML, SynEdit,
+  SynHighlighterSQL, IpHtml, DB, BufDataset, uERNotationsCore;
 
 type
 
@@ -15,11 +15,12 @@ type
     btFechar: TButton;
     buffer: TBufDataset;
     DBGrid1: TDBGrid;
-    Memo1: TMemo;
+    memoSQL: TSynEdit;
     Panel1: TPanel;
     Label1: TLabel;
     Ds: TDataSource;
     Panel2: TPanel;
+    sqlHighLight: TSynSQLSyn;
     procedure btFecharClick(Sender: TObject);
     procedure bufferAfterScroll(DataSet: TDataSet);
     procedure FecharClick(Sender: TObject);
@@ -43,11 +44,18 @@ uses uObterMetaDados;
 { TFormVisualizarTriggers }
 
 procedure TFormVisualizarTriggers.bufferAfterScroll(DataSet: TDataSet);
+var
+  sl: TStringList;
 begin
-  Memo1.Lines.Clear;
-  memo1.Lines.Add(StringReplace(buffer.FieldByName('description').AsString, #10, #13#10, [rfReplaceAll]));
-  memo1.Lines.Add(StringReplace(buffer.FieldByName('trigger_body').AsString, #10, #13#10, [rfReplaceAll]));
-  memo1.SelStart := 1;
+  sl := TStringList.Create;
+  sl.Text := StringReplace(buffer.FieldByName('description').AsString, #10, sLineBreak, [rfReplaceAll]);
+  memoSQL.Lines.Clear;
+  memoSQL.Lines.AddStrings(sl);
+  sl.Clear;
+  sl.Text := StringReplace(buffer.FieldByName('trigger_body').AsString, #10, sLineBreak, [rfReplaceAll]);
+  memoSQL.Lines.AddStrings(sl);
+  memoSQL.SelStart := 1;
+  sl.Free;
 end;
 
 procedure TFormVisualizarTriggers.btFecharClick(Sender: TObject);
