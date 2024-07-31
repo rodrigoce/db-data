@@ -12,7 +12,7 @@ uses
   uLog in 'uLog.pas',
   uVariaveisGlobais in 'uVariaveisGlobais.pas',
   uFuncoes in 'uFuncoes.pas',
-  uDBDataFile,
+  uAppFile,
   uDiagramaManager in 'uDiagramaManager.pas',
   uPesquisarDiagramas in 'uPesquisarDiagramas.pas' {FormPesquisarDiagramas},
   uSobre in 'uSobre.pas' {FormSobre},

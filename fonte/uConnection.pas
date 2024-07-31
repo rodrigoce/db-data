@@ -11,7 +11,7 @@ interface
 
 uses
   LCLIntf, LCLType, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, DB, sqldb, oracleconnection;
+  Dialogs, ExtCtrls, DB, sqldb, oracleconnection, uAppFile;
 
 type
 
@@ -26,7 +26,7 @@ type
   public
     class function GetConexao: TOracleConnection;
     class procedure FecharConexao;
-    class function GetSIDDescription(SID: string): string;
+    class function GetSIDDescription(SID: string; AppFile: TAppFile): string;
   end;
 
 var
@@ -47,7 +47,8 @@ begin
   end;
 end;
 
-class function TConexao.GetSIDDescription(SID: string): string;
+class function TConexao.GetSIDDescription(SID: string; AppFile: TAppFile
+  ): string;
 var
   slOrigTNS, slCleanTNS: TStringList;
   i, aux, linhaIni, linhaFim, countAbre, countFecha: integer;
@@ -55,7 +56,7 @@ begin
   Result := '';
   slOrigTNS := TStringList.Create;
   slCleanTNS := TStringList.Create;
-  slOrigTNS.LoadFromFile(IniFile.ReadString('conexao', 'tnsnames', ''));
+  slOrigTNS.LoadFromFile(AppFile.TNSPath);
 
   for i := 0 to slOrigTNS.Count - 1 do
   begin
@@ -102,8 +103,6 @@ begin
 end;
 
 class function TConexao.GetConexao: TOracleConnection;
-var
-  SID, User, Senha: string;
 begin
   if __Conexao = nil then
   begin
@@ -119,24 +118,10 @@ begin
       FConexao.LoginPrompt := False;
       FConexao.KeepConnection := True;
 
-      SID := IniFile.ReadString('conexao', 'sid', '');
-      User := IniFile.ReadString('conexao', 'user', '');
-      Senha := EnDeCrypt(IniFile.ReadString('conexao', 'pwd', ''));
 
-      FConexao.LoginPrompt := False;
-
-      if IniFile.ReadInteger('conexao', 'banco', 0) = 0 then // oracle
-      begin
-        FConexao.DatabaseName := GetSIDDescription(SID);
-        FConexao.UserName := User;
-        FConexao.Password := Senha;
-      end
-      else
-      begin
-        {FConexao.ConnectionString :=
-          'Provider=MSDASQL.1;Persist Security Info=False;Data Source=digs;';
-        FConexao.Provider := 'MSDASQL.1';}
-      end;
+      FConexao.DatabaseName := GetSIDDescription(AppFile.SID, AppFile);
+      FConexao.UserName := AppFile.UserName;
+      FConexao.Password := AppFile.Password;
 
       FConexao.Transaction := FTransaction;
       FConexao.Open();

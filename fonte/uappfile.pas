@@ -1,4 +1,4 @@
-unit uDBDataFile;
+unit uAppFile;
 
 {$mode objfpc}{$H+}
 
@@ -9,22 +9,22 @@ Data: 14/10/2013
 
 interface
 
-uses SysUtils, Dialogs, Generics.Collections, DOM, XMLRead, XMLWrite;
+uses SysUtils, Dialogs, Generics.Collections, DOM, XMLRead, XMLWrite, uFuncoes;
 
 type
 
   { Forward Decls }
 
-  TAppFileFormat = class;
+  TAppFile = class;
   TDiagrama = class;
   TEntidade = class;
   TRelacionamento = class;
 
   { Types }
 
-  { TAppFileFormat }
+  { TAppFile }
 
-  TAppFileFormat = class
+  TAppFile = class
   private
     FPassword: string;
     FSID: string;
@@ -158,9 +158,9 @@ begin
   FConstraintName := AConstraintName;
 end;
 
-{ TAppFileFormat }
+{ TAppFile }
 
-function TAppFileFormat.GetDefaultText(Node: TDOMNode): DOMString;
+function TAppFile.GetDefaultText(Node: TDOMNode): DOMString;
 begin
   if Node = nil then
     Result := ''
@@ -168,19 +168,19 @@ begin
     Result := Node.TextContent;
 end;
 
-constructor TAppFileFormat.Create;
+constructor TAppFile.Create;
 begin
   inherited;
   FDiagramas := specialize TObjectList<TDiagrama>.Create;
 end;
 
-destructor TAppFileFormat.Destroy;
+destructor TAppFile.Destroy;
 begin
   FDiagramas.Free;
   inherited;
 end;
 
-procedure TAppFileFormat.OpenFile(FileName: string);
+procedure TAppFile.OpenFile(FileName: string);
 var
   Doc: TXMLDocument;
   diagrama: TDiagrama;
@@ -197,7 +197,7 @@ begin
   TNSPath :=  GetDefaultText(diagramasNode.Attributes.GetNamedItem('tnsPath'));
   SID := GetDefaultText(diagramasNode.Attributes.GetNamedItem('SID'));
   UserName := GetDefaultText(diagramasNode.Attributes.GetNamedItem('userName'));
-  Password := GetDefaultText(diagramasNode.Attributes.GetNamedItem('password'));
+  Password := DeCrypt(GetDefaultText(diagramasNode.Attributes.GetNamedItem('password')));
 
   diagramaNode := diagramasNode.FirstChild;
 
@@ -250,7 +250,7 @@ begin
   Doc.Free;
 end;
 
-procedure TAppFileFormat.SaveFile(FileName: string);
+procedure TAppFile.SaveFile(FileName: string);
 var
   Doc: TXMLDocument;
   diagrama: TDiagrama;
@@ -268,7 +268,7 @@ begin
   TDOMElement(diagramasNode).SetAttribute('tnsPath', TNSPath);
   TDOMElement(diagramasNode).SetAttribute('SID', SID);
   TDOMElement(diagramasNode).SetAttribute('userName', UserName);
-  TDOMElement(diagramasNode).SetAttribute('password', Password);
+  TDOMElement(diagramasNode).SetAttribute('password', EnCrypt(Password));
   Doc.AppendChild(diagramasNode);
 
   for diagrama in Diagramas do

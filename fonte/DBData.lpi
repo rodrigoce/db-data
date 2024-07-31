@@ -94,9 +94,9 @@
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
-        <Filename Value="udbdatafile.pas"/>
+        <Filename Value="uappfile.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="uDBDataFile"/>
+        <UnitName Value="uAppFile"/>
       </Unit>
       <Unit>
         <Filename Value="uDiagramaManager.pas"/>
@@ -204,6 +204,9 @@
       </Item>
       <Item>
         <Name Value="EFOpenError"/>
+      </Item>
+      <Item>
+        <Name Value="EOraDatabaseError"/>
       </Item>
     </Exceptions>
   </Debugging>

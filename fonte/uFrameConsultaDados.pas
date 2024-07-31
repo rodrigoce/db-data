@@ -58,10 +58,7 @@ begin
       'Atenção', MB_OK + MB_ICONSTOP);
   end;
 
-  if IniFile.ReadInteger('conexao', 'banco', 0) = 0 then // oracle
-    passou := Pos('rownum', memoSQL.Lines.Text) > 0
-  else
-    passou := True;
+  passou := Pos('rownum', memoSQL.Lines.Text) > 0;
 
   if not passou then
   begin
@@ -104,10 +101,7 @@ procedure TFrameConsultaDados.ObterAmostra(OwnerTabela: string);
 begin
   FOwnerTabela := OwnerTabela;
   memoSQL.Lines.Clear;
-  if IniFile.ReadInteger('conexao', 'banco', 0) = 0 then // oracle
-    memoSQL.Lines.Add('select * from ' + OwnerTabela + ' where rownum <= 200')
-  else
-    memoSQL.Lines.Add('select * from ' + OwnerTabela);
+  memoSQL.Lines.Add('select * from ' + OwnerTabela + ' where rownum <= 200');
   AvaliarEExecutarQuery;
 end;
 

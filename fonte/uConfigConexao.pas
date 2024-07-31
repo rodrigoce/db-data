@@ -10,7 +10,7 @@ interface
 
 uses
   LCLIntf, LCLType, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, IniFiles, ExtCtrls, EditBtn;
+  Dialogs, StdCtrls, ExtCtrls, EditBtn, uAppFile;
 
 type
 
@@ -27,7 +27,6 @@ type
     edSID: TEdit;
     btOK: TButton;
     Label5: TLabel;
-    rgBanco: TRadioGroup;
     lbl1: TLabel;
     procedure btOKClick(Sender: TObject);
   private
@@ -42,7 +41,7 @@ var
 
 implementation
 
-uses uVariaveisGlobais, uConnection, uFuncoes;
+uses uVariaveisGlobais, uConnection;
 
 {$R *.lfm}
 
@@ -53,11 +52,10 @@ var
   erro: Boolean;
   msg: string;
 begin
-  IniFile.WriteInteger('conexao', 'banco', rgBanco.ItemIndex);
-  IniFile.WriteString('conexao', 'sid', edSID.Text);
-  IniFile.WriteString('conexao', 'user', edUser.Text);
-  IniFile.WriteString('conexao', 'pwd', EnDeCrypt(edSenha.Text));
-  IniFile.WriteString('conexao', 'tnsnames', edTNS.Text);
+  AppFile.SID := edSID.Text;
+  AppFile.UserName := edUser.Text;
+  AppFile.Password := edSenha.Text;
+  AppFile.TNSPath := edTNS.Text;
 
   TConexao.FecharConexao;
   try
@@ -83,11 +81,10 @@ begin
   Application.CreateForm(TFormConfigConexao, FormConfigConexao);
   with FormConfigConexao do
   begin
-    rgBanco.ItemIndex := IniFile.ReadInteger('conexao', 'banco', 0);
-    edSID.Text := IniFile.ReadString('conexao', 'sid', '');
-    edUser.Text := IniFile.ReadString('conexao', 'user', '');
-    edSenha.Text := EnDeCrypt(IniFile.ReadString('conexao', 'pwd', ''));
-    edTNS.Text := IniFile.ReadString('conexao', 'tnsnames', '');
+    edSID.Text := AppFile.SID;
+    edUser.Text := AppFile.UserName;
+    edSenha.Text := AppFile.Password;
+    edTNS.Text := AppFile.TNSPath;
     ShowModal;
     Free;
   end;

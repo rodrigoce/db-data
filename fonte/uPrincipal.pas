@@ -78,7 +78,7 @@ var
 implementation
 
 uses Unit2, uVariaveisGlobais, uPesquisarDiagramas, uSobre, uConfigConexao,
-  uPesquisarTabelas, uDBDataFile, uMoverObjetos;
+  uPesquisarTabelas, uAppFile, uMoverObjetos;
 
 {$R *.lfm}
 
@@ -178,7 +178,7 @@ end;
 
 procedure TFormPrincipal.FormDestroy(Sender: TObject);
 begin
-  IniFile.Free;
+  //IniFile.Free;
   FDiagramaManager.Free;
 end;
 
@@ -193,7 +193,7 @@ end;
 procedure TFormPrincipal.FormShow(Sender: TObject);
 begin
   // cria o ini de configurações
-  IniFile := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'DB-DataConf.ini');
+  //IniFile := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'DB-DataConf.ini');
 
   FDiagramaManager := TDiagramaManager.Create(Self);
   // seta o menu onde os diagramas abertos ficarão em lista

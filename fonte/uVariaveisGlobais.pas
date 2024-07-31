@@ -9,11 +9,11 @@ Data: 05/11/2013
 
 interface
 uses
-  LCLIntf, LCLType, LMessages, Messages, SysUtils, Variants, Classes, Graphics, Controls,
-  Math, ExtCtrls, StdCtrls, IniFiles;
+  LCLIntf, LCLType, SysUtils, Variants, Classes, Graphics, Controls,
+  ExtCtrls, StdCtrls, uAppFile;
 
 var
-  IniFile: TIniFile; // usado para escrever arquivo de INI
+  AppFile: TAppFile;
   MemoLog: TMemo; // usado para debug
   CacheDeOwners: TStringList; // guarda o cache de ownes do banco de dados para nao precisar repetir a busca que é lenta
 

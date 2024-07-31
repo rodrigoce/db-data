@@ -99,11 +99,8 @@ class procedure TObterMetaDados.AdicionarCamposDeFormaOrdenada(
       end
       else // chave estrangeira
       begin
-        if IniFile.ReadInteger('conexao', 'banco', 0) = 0 then // oracle
-        begin
           r_owner := fonte.FieldByName('R_OWNER').AsString;
           r_constraint_name := fonte.FieldByName('R_CONSTRAINT_NAME').AsString;
-        end;
 
         constraint := EntityOndeInserir.AddColunaConstraint('F', // caption
                                                   TipoLinhaFK, // tipo linha
@@ -115,14 +112,7 @@ class procedure TObterMetaDados.AdicionarCamposDeFormaOrdenada(
                                                   r_owner, // rOwner
                                                   r_constraint_name); // rConstraintName
         // termina de obter as propriedades da constraint FK
-        if IniFile.ReadInteger('conexao', 'banco', 0) = 0 then // oracle
-          ObterTabelaEColunaRelacionada(constraint)
-        else
-        begin
-          constraint.TabelaRelacionada := fonte.FieldByName('R_TABLE').AsString;
-          constraint.ColunaRelacionada := fonte.FieldByName('R_COLUMN_NAME').AsString;
-          constraint.OwnerTabelaRelacionada := fonte.FieldByName('R_OWNER').AsString;
-        end;
+        ObterTabelaEColunaRelacionada(constraint);
       end;
       fonte.Delete;
     end;
@@ -197,19 +187,13 @@ begin
   q := TSQLQuery.Create(nil);
   q.DataBase := TConexao.GetConexao;
 
-  if IniFile.ReadInteger('conexao', 'banco', 0) = 0 then // oracle
-    q.SQL.Add('select column_name, data_type, data_length from all_tab_columns where owner = :owner and table_name = :tabela')
-  else
-    q.SQL.Add('select column_name, data_type, CHARACTER_MAXIMUM_LENGTH data_length from information_schema.COLUMNS where table_schema = :owner and table_name = :tabela');
+  q.SQL.Add('select column_name, data_type, data_length from all_tab_columns where owner = :owner and table_name = :tabela');
 
   q.SQL.Add('and column_name not in (');
   for i := 0 to EntityOndeInserir.ListColunasChave.Count - 1 do
     q.SQL.Add(QuotedStr(UpperCase(EntityOndeInserir.ListColunasChave[i])) + IfThen(i <> EntityOndeInserir.ListColunasChave.Count - 1, ', ', ''));
 
-  if IniFile.ReadInteger('conexao', 'banco', 0) = 0 then // oracle
-    q.SQL.Add(') order by column_id')
-  else
-    q.SQL.Add(') order by ORDINAL_POSITION');
+  q.SQL.Add(') order by column_id');
 
   q.Params.ParamByName('owner').Value := EntityOndeInserir.SchemaOwner;
   q.Params.ParamByName('tabela').Value := EntityOndeInserir.NomeTabela;
@@ -237,29 +221,12 @@ begin
   FormPrincipal.SetarAtividadeStatusPanelBar('Obtendo metada de ' + EntityOndeInserir.SchemaOwner + '.' + EntityOndeInserir.NomeTabela);
   q := TSQLQuery.Create(nil);
   q.DataBase := TConexao.GetConexao;
-  if IniFile.ReadInteger('conexao', 'banco', 0) = 0 then // oracle
-  begin
-    q.SQL.Add('select b.CONSTRAINT_TYPE, b.CONSTRAINT_NAME, b.OWNER, c.POSITION, a.COLUMN_NAME, a.DATA_TYPE, a.COLUMN_ID, b.R_OWNER, b.R_CONSTRAINT_NAME, a.DATA_LENGTH ');
-    q.SQL.Add('from all_tab_columns a ');
-    q.SQL.Add('join all_constraints b on a.OWNER = b.OWNER and a.TABLE_NAME = b.TABLE_NAME ');
-    q.SQL.Add('join all_cons_columns c on a.OWNER = c.OWNER and b.CONSTRAINT_NAME = c.CONSTRAINT_NAME and a.TABLE_NAME = c.TABLE_NAME and a.COLUMN_NAME = c.COLUMN_NAME ');
-    q.SQL.Add('where a.owner = :owner and b.CONSTRAINT_TYPE in (''P'', ''R'') and a.TABLE_NAME = :tabela ');
-    q.SQL.Add('order by b.CONSTRAINT_TYPE, a.COLUMN_ID, c.POSITION ');
-  end
-  else
-  begin
-    q.SQL.Add('select');
-    q.SQL.Add('  case a.CONSTRAINT_TYPE when ''PRIMARY KEY'' then ''P'' when ''FOREIGN KEY'' then ''R'' end CONSTRAINT_TYPE,');
-    q.SQL.Add('  a.CONSTRAINT_NAME,  a.TABLE_SCHEMA owner, c.ORDINAL_POSITION position, c.COLUMN_NAME, c.DATA_TYPE,');
-    q.SQL.Add('  c.ORDINAL_POSITION COLUMN_ID, b.REFERENCED_TABLE_SCHEMA R_OWNER, b.REFERENCED_TABLE_NAME R_TABLE,');
-    q.SQL.Add('  b.REFERENCED_COLUMN_NAME R_COLUMN_NAME, c.CHARACTER_MAXIMUM_LENGTH DATA_LENGTH');
-    q.SQL.Add('from information_schema.TABLE_CONSTRAINTS a');
-    q.SQL.Add('join information_schema.KEY_COLUMN_USAGE b on a.TABLE_SCHEMA = b.TABLE_SCHEMA and a.TABLE_NAME = b.TABLE_NAME and a.CONSTRAINT_NAME = b.CONSTRAINT_NAME');
-    q.SQL.Add('join information_schema.COLUMNS c on b.TABLE_SCHEMA = c.TABLE_SCHEMA and b.TABLE_NAME = c.TABLE_NAME and b.COLUMN_NAME = c.COLUMN_NAME');
-    q.SQL.Add('where a.table_SCHEMA = :owner and a.table_name = :tabela');
-    q.SQL.Add('  and a.CONSTRAINT_TYPE in (''PRIMARY KEY'', ''FOREIGN KEY'')');
-    q.SQL.Add('order by a.CONSTRAINT_TYPE desc, c.ORDINAL_POSITION');
-  end;
+  q.SQL.Add('select b.CONSTRAINT_TYPE, b.CONSTRAINT_NAME, b.OWNER, c.POSITION, a.COLUMN_NAME, a.DATA_TYPE, a.COLUMN_ID, b.R_OWNER, b.R_CONSTRAINT_NAME, a.DATA_LENGTH ');
+  q.SQL.Add('from all_tab_columns a ');
+  q.SQL.Add('join all_constraints b on a.OWNER = b.OWNER and a.TABLE_NAME = b.TABLE_NAME ');
+  q.SQL.Add('join all_cons_columns c on a.OWNER = c.OWNER and b.CONSTRAINT_NAME = c.CONSTRAINT_NAME and a.TABLE_NAME = c.TABLE_NAME and a.COLUMN_NAME = c.COLUMN_NAME ');
+  q.SQL.Add('where a.owner = :owner and b.CONSTRAINT_TYPE in (''P'', ''R'') and a.TABLE_NAME = :tabela ');
+  q.SQL.Add('order by b.CONSTRAINT_TYPE, a.COLUMN_ID, c.POSITION ');
   q.Params[0].Value := EntityOndeInserir.SchemaOwner;
   q.Params[1].Value := EntityOndeInserir.NomeTabela;
   q.Open;
@@ -320,17 +287,11 @@ begin
   q := TSQLQuery.Create(nil);
   q.DataBase := TConexao.GetConexao;
 
-  if IniFile.ReadInteger('conexao', 'banco', 0) = 0 then // oracle
-    q.SQL.Add('select distinct Lower(owner) Owner, Lower(table_name) Tabela from all_constraints where r_owner = :owner and r_constraint_name = :constraint and constraint_type = ''R''')
-  else
-    q.SQL.Add('select b.table_schema Owner, b.table_name Tabela from information_schema.KEY_COLUMN_USAGE b where b.referenced_TABLE_SCHEMA = :owner and b.referenced_table_name = :tabela');
+  q.SQL.Add('select distinct Lower(owner) Owner, Lower(table_name) Tabela from all_constraints where r_owner = :owner and r_constraint_name = :constraint and constraint_type = ''R''');
 
   q.Params[0].Value := OwnerDaPK;
 
-  if IniFile.ReadInteger('conexao', 'banco', 0) = 0 then // oracle
-    q.Params[1].Value := NomeDaConstraintPK
-  else
-    q.Params[1].Value := NomeTabelaPai;
+  q.Params[1].Value := NomeDaConstraintPK;
 
   q.Open;
   buffer.CopyFromDataset(q);
@@ -347,18 +308,9 @@ begin
   q := TSQLQuery.Create(nil);
   q.DataBase := TConexao.GetConexao;
 
-
-  if IniFile.ReadInteger('conexao', 'banco', 0) = 0 then // oracle
-  begin
-    q.SQL.Add('select distinct Lower(b.owner) Owner, Lower(b.table_name) Tabela from all_constraints a ');
-    q.SQL.Add('join all_constraints b on a.r_owner = b.owner and a.r_constraint_name = b.constraint_name and b.constraint_type = ''P''');
-    q.SQL.Add('where a.owner = :owner and a.TABLE_NAME = :tabela and a.constraint_type = ''R''');
-  end
-  else
-  begin
-    q.SQL.Add('select b.referenced_table_schema Owner, b.referenced_table_name Tabela from information_schema.KEY_COLUMN_USAGE b');
-    q.SQL.Add('where b.TABLE_SCHEMA = :owner and b.TABLE_NAME = :tabela and b.referenced_table_name is not null');
-  end;
+  q.SQL.Add('select distinct Lower(b.owner) Owner, Lower(b.table_name) Tabela from all_constraints a ');
+  q.SQL.Add('join all_constraints b on a.r_owner = b.owner and a.r_constraint_name = b.constraint_name and b.constraint_type = ''P''');
+  q.SQL.Add('where a.owner = :owner and a.TABLE_NAME = :tabela and a.constraint_type = ''R''');
 
   q.Params[0].Value := Owner;
   q.Params[1].Value := Tabela;
@@ -401,16 +353,10 @@ begin
   q := TSQLQuery.Create(nil);
   q.DataBase := TConexao.GetConexao;
 
-  if IniFile.ReadInteger('conexao', 'banco', 0) = 0 then // oracle
-    q.SQL.Add('select a.owner')
-  else
-    q.SQL.Add('select a.table_schema owner');
+  q.SQL.Add('select a.owner');
 
   if apenasTabelas then
-    if IniFile.ReadInteger('conexao', 'banco', 0) = 0 then // oracle
-      q.SQL.Add(', a.table_name object_name, ''TABLE'' object_type from all_tables a')
-    else
-      q.SQL.Add(', a.table_name object_name, ''TABLE'' object_type from information_schema.tables a')
+    q.SQL.Add(', a.table_name object_name, ''TABLE'' object_type from all_tables a')
   else
     q.SQL.Add(', a.object_name, object_type from all_objects a');
   // tipo de pesquisa:
@@ -484,10 +430,7 @@ begin
   q := TSQLQuery.Create(nil);
   q.DataBase := TConexao.GetConexao;
 
-  if IniFile.ReadInteger('conexao', 'banco', 0) = 0 then // oracle
-    q.SQL.Add('select 1 from all_tables where owner = :owner and table_name = :tabela')
-  else
-    q.SQL.Add('select 1 from information_schema.tables where table_schema = :owner and table_name = :tabela');
+  q.SQL.Add('select 1 from all_tables where owner = :owner and table_name = :tabela');
 
   q.Params[0].Value := Owner;
   q.Params[1].Value := Tabela;

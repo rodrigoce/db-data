@@ -12,57 +12,61 @@ interface
 uses
   LCLIntf, LCLType, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, Menus, DB, BufDataset, SysUtils, fgl,
-  uDBDataFile, uERNotationsCore, uFrameConsultaDados;
+  uAppFile, uERNotationsCore, uFrameConsultaDados, uVariaveisGlobais;
 
 type
+
+  { TDiagramaManager }
+
   TDiagramaManager = class
-    private
-      FOpenedFile: string;
-      FAppFileFormat: TAppFileFormat;
-      FListEntityContainerCarregados: TStringList;
-      FListMenusDeDiagramasAbertos: specialize TFPGMapObject<string, TMenuItem>;
-      FOpenDialog: TOpenDialog;
-      FSaveDialog: TSaveDialog;
-      FParentEntityContainer: TWinControl;
-      FEntityContainerCorrente: TEntityContainer;
-      FOnMudancaEstadoModelo: TNotifyEvent;
-      FMenuItemParaDiagramasAbertos: TMenuItem;
-      FAmostraDadosCorrente: TFrameConsultaDados;
-      FContainerAnteior: TObject;
-      // client data set com os nomes dos diagramas
-      FCdsDiagramas: TBufDataSet;
-      //
-      procedure WriteFile;
-      procedure RenderizarDiagrama(Id: string; entityContainer: TEntityContainer);
-      procedure FreeAllEntityContainer;
-      //
-      procedure ClickMenuItemDiagAberto(Sender: TObject);
-      procedure OpenGenericContainer(Id: string; container: TObject);
-      // acesso a propriedades
-      function GetTemModeloParaSalvar: Boolean;
-      procedure CreateMenuRapido(diagramaId, captionMenuItem: string);
-      procedure PrepareOpenContainer;
-    public
-      constructor Create(ParentEntityContainer: TWinControl);
-      destructor Destroy; override;
-      procedure NovoModelo;
-      procedure FecharModelo;
-      procedure OpenModelo(DBDataFileName: string);
-      function SaveModelo: Boolean;
-      procedure OpenEntityContainer(Id: string);
-      procedure OpenAmostraContainer(OwnerTabela: string);
-      procedure RemoverDiagrama(Id: string);
-      procedure RenomearDiagrama(Id: string);
-      procedure NovoDiagrama;
-      procedure RemoveContainerDaListaCarregados(Id: string);
-    published
-      property CdsDiagramas: TBufDataSet read FCdsDiagramas write FCdsDiagramas;
-      property EntityContainerCorrente: TEntityContainer read FEntityContainerCorrente;
-      property AmostraDadosCorrente: TFrameConsultaDados read FAmostraDadosCorrente;
-      property OnMudancaEstadoModelo: TNotifyEvent read FOnMudancaEstadoModelo write FOnMudancaEstadoModelo;
-      property TemModeloParaSalvar: Boolean read GetTemModeloParaSalvar;
-      property NomeModeloAberto: string read FOpenedFile;
-      property MenuItemParaDiagramasAbertos: TMenuItem read FMenuItemParaDiagramasAbertos write FMenuItemParaDiagramasAbertos;
+  private
+    FOpenedFile: string;
+    FListEntityContainerCarregados: TStringList;
+    FListMenusDeDiagramasAbertos: specialize TFPGMapObject<string, TMenuItem>;
+    FOpenDialog: TOpenDialog;
+    FSaveDialog: TSaveDialog;
+    FParentEntityContainer: TWinControl;
+    FEntityContainerCorrente: TEntityContainer;
+    FOnMudancaEstadoModelo: TNotifyEvent;
+    FMenuItemParaDiagramasAbertos: TMenuItem;
+    FAmostraDadosCorrente: TFrameConsultaDados;
+    FContainerAnteior: TObject;
+    // client data set com os nomes dos diagramas
+    FCdsDiagramas: TBufDataSet;
+
+    procedure WriteFile;
+    procedure RenderizarDiagrama(Id: string; entityContainer: TEntityContainer);
+    procedure FreeAllEntityContainer;
+
+    procedure ClickMenuItemDiagAberto(Sender: TObject);
+    procedure OpenGenericContainer(Id: string; container: TObject);
+    // acesso a propriedades
+    function GetTemModeloParaSalvar: boolean;
+    procedure CreateMenuRapido(diagramaId, captionMenuItem: string);
+    function TestDBCnn: boolean;
+    procedure PrepareOpenContainer;
+  public
+    constructor Create(ParentEntityContainer: TWinControl);
+    destructor Destroy; override;
+    procedure NovoModelo;
+    procedure FecharModelo;
+    procedure OpenModelo(DBDataFileName: string);
+    function SaveModelo: boolean;
+    procedure OpenEntityContainer(Id: string);
+    procedure OpenAmostraContainer(OwnerTabela: string);
+    procedure RemoverDiagrama(Id: string);
+    procedure RenomearDiagrama(Id: string);
+    procedure NovoDiagrama;
+    procedure RemoveContainerDaListaCarregados(Id: string);
+  published
+    property CdsDiagramas: TBufDataSet read FCdsDiagramas write FCdsDiagramas;
+    property EntityContainerCorrente: TEntityContainer read FEntityContainerCorrente;
+    property AmostraDadosCorrente: TFrameConsultaDados read FAmostraDadosCorrente;
+    property OnMudancaEstadoModelo: TNotifyEvent
+      read FOnMudancaEstadoModelo write FOnMudancaEstadoModelo;
+    property TemModeloParaSalvar: boolean read GetTemModeloParaSalvar;
+    property NomeModeloAberto: string read FOpenedFile;
+    property MenuItemParaDiagramasAbertos: TMenuItem read FMenuItemParaDiagramasAbertos write FMenuItemParaDiagramasAbertos;
   end;
 
 implementation
@@ -70,11 +74,11 @@ implementation
 uses uPrincipal, uConnection;
 
 
-{ TDiagramaManager }
+  { TDiagramaManager }
 
 procedure TDiagramaManager.FreeAllEntityContainer;
 var
-  i: Integer;
+  i: integer;
 begin
   // remove todos os entity containers da memória
   for i := FListEntityContainerCarregados.Count - 1 downto 0 do
@@ -83,14 +87,14 @@ begin
 
   // limpa o client dataset axiliar
   FCdsDiagramas.First;
-  while not FCdsDiagramas.Eof do
+  while not FCdsDiagramas.EOF do
     FCdsDiagramas.Delete;
 
   // remove o entity container corrente
   FEntityContainerCorrente := nil;
 
   // remove todos os menus de diagramas abertos
-  for i := FListMenusDeDiagramasAbertos.Count -1 downto 0 do
+  for i := FListMenusDeDiagramasAbertos.Count - 1 downto 0 do
   begin
     if Assigned(FMenuItemParaDiagramasAbertos) then
       FMenuItemParaDiagramasAbertos.Remove(FListMenusDeDiagramasAbertos.Data[i]);
@@ -100,14 +104,14 @@ begin
   end;
 end;
 
-function TDiagramaManager.GetTemModeloParaSalvar: Boolean;
+function TDiagramaManager.GetTemModeloParaSalvar: boolean;
 begin
-  Result := Assigned(FAppFileFormat);
+  Result := Assigned(AppFile);
 end;
 
 procedure TDiagramaManager.ClickMenuItemDiagAberto(Sender: TObject);
 var
-  indexOfMenu, indexOfContainer: Integer;
+  indexOfMenu, indexOfContainer: integer;
   id: string;
   container: TObject;
 begin
@@ -115,7 +119,7 @@ begin
   indexOfMenu := FListMenusDeDiagramasAbertos.IndexOfData(Sender as TMenuItem);
   if indexOfMenu > -1 then
   begin
-    id :=  FListMenusDeDiagramasAbertos.Keys[indexOfMenu];
+    id := FListMenusDeDiagramasAbertos.Keys[indexOfMenu];
     indexOfContainer := FListEntityContainerCarregados.IndexOf(id);
     container := FListEntityContainerCarregados.Objects[indexOfContainer];
 
@@ -134,16 +138,17 @@ begin
   FSaveDialog.Filter := 'Arquivos do DB-Data (*.dbdata)|*.DBDATA';
 
   FCdsDiagramas := TBufDataSet.Create(nil);
-  FCdsDiagramas.FieldDefs.Add('titulo', ftString, 300, false);
+  FCdsDiagramas.FieldDefs.Add('titulo', ftString, 300, False);
   FCdsDiagramas.FieldDefs.Add('id', ftString, 64, False);
-  FCdsDiagramas.IndexDefs.Add('idxTitulo','titulo', []);
+  FCdsDiagramas.IndexDefs.Add('idxTitulo', 'titulo', []);
   // status: N -> Novo, A -> Alterado, E -> Excluído, 0 - Carregado do XML
-  FCdsDiagramas.FieldDefs.Add('status', ftString, 1, false);
+  FCdsDiagramas.FieldDefs.Add('status', ftString, 1, False);
   FCdsDiagramas.CreateDataSet;
   FCdsDiagramas.IndexFieldNames := 'titulo';
 
   FListEntityContainerCarregados := TStringList.Create;
-  FListMenusDeDiagramasAbertos := specialize TFPGMapObject<string, TMenuItem>.Create(False);
+  FListMenusDeDiagramasAbertos :=
+    specialize TFPGMapObject<string, TMenuItem>.Create(False);
 end;
 
 destructor TDiagramaManager.Destroy;
@@ -160,17 +165,17 @@ end;
 procedure TDiagramaManager.FecharModelo;
 begin
   FOpenedFile := '';
-  FreeAndNil(FAppFileFormat);
+  FreeAndNil(AppFile);
   FreeAllEntityContainer;
 
   if Assigned(FOnMudancaEstadoModelo) then
-      FOnMudancaEstadoModelo(Self);
+    FOnMudancaEstadoModelo(Self);
 end;
 
 procedure TDiagramaManager.NovoDiagrama;
 var
   titulo: string;
-  //
+
   Uid: TGuid;
   Result: HResult;
 begin
@@ -193,22 +198,22 @@ begin
       FOnMudancaEstadoModelo(Self);
   end
   else
-    Application.MessageBox('Nome do diagrama não informado!', 'ATENÇÃO', MB_OK 
-      + MB_ICONSTOP);
-      
+    Application.MessageBox('Nome do diagrama não informado!', 'ATENÇÃO',
+      MB_OK + MB_ICONSTOP);
+
 end;
 
 procedure TDiagramaManager.NovoModelo;
 begin
-  FAppFileFormat := TAppFileFormat.Create;
+  AppFile := TAppFile.Create;
 
   if Assigned(FOnMudancaEstadoModelo) then
-      FOnMudancaEstadoModelo(Self);
+    FOnMudancaEstadoModelo(Self);
 end;
 
 procedure TDiagramaManager.OpenModelo(DBDataFileName: string);
 var
-  i: Integer;
+  i: integer;
   diagrama: TDiagrama;
 begin
   // se o nome do arquivo não vier como parâmetro, então carregar pela janela
@@ -222,11 +227,12 @@ begin
 
   if FOpenedFile <> '' then
   begin
-    FAppFileFormat := TAppFileFormat.Create();
-    FAppFileFormat.OpenFile(FOpenedFile);
-    for i := 0 to FAppFileFormat.Diagramas.Count - 1 do
+    AppFile := TAppFile.Create;
+    AppFile.OpenFile(FOpenedFile);
+
+    for i := 0 to AppFile.Diagramas.Count - 1 do
     begin
-      diagrama := FAppFileFormat.Diagramas[i];
+      diagrama := AppFile.Diagramas[i];
       FCdsDiagramas.Append;
       FCdsDiagramas.FieldByName('id').AsString := diagrama.Id;
       FCdsDiagramas.FieldByName('titulo').AsString := diagrama.Titulo;
@@ -264,7 +270,7 @@ end;
 procedure TDiagramaManager.OpenAmostraContainer(OwnerTabela: string);
 var
   frameAmostra: TFrameConsultaDados;
-  index: Integer;
+  index: integer;
 begin
   PrepareOpenContainer;
 
@@ -274,7 +280,8 @@ begin
   if index > -1 then
   begin
     TFrameConsultaDados(FListEntityContainerCarregados.Objects[index]).Visible := True;
-    FAmostraDadosCorrente := TFrameConsultaDados(FListEntityContainerCarregados.Objects[index]);
+    FAmostraDadosCorrente := TFrameConsultaDados(
+      FListEntityContainerCarregados.Objects[index]);
   end
   else
   begin
@@ -306,62 +313,83 @@ begin
   end;
 end;
 
+function TDiagramaManager.TestDBCnn: boolean;
+begin
+  try
+    TConexao.FecharConexao;
+    TConexao.GetConexao;
+    Result := True;
+  except
+    Result := False;
+  end;
+end;
+
 procedure TDiagramaManager.OpenEntityContainer(Id: string);
 var
   container: TEntityContainer;
-  index: Integer;
+  index: integer;
 begin
-  PrepareOpenContainer;
-
-  // verifica se ele já foi aberto, se sim, coloca em tela simplesmente
-  index := FListEntityContainerCarregados.IndexOf(Id);
-
-  if index > -1 then
+  if TestDBCnn then
   begin
-    TEntityContainer(FListEntityContainerCarregados.Objects[index]).EntityArea.Visible := True;
-    FEntityContainerCorrente := TEntityContainer(FListEntityContainerCarregados.Objects[index]);
-  end
-  else
-  // se ele ainda não foi aberto, entao abre
-  begin
-    // testa se a conexão está funcionando
-    TConexao.GetConexao;
-    if FCdsDiagramas.Locate('id', Id, []) then
+    PrepareOpenContainer;
+
+    // verifica se ele já foi aberto, se sim, coloca em tela simplesmente
+    index := FListEntityContainerCarregados.IndexOf(Id);
+
+    if index > -1 then
     begin
-      container := TEntityContainer.Create(FParentEntityContainer);
-      container.DiagramaId := FCdsDiagramas.FieldByName('id').AsString;
-      container.Titulo := FCdsDiagramas.FieldByName('titulo').AsString;
-      FListEntityContainerCarregados.AddObject(Id, TObject(container));
-      FEntityContainerCorrente := container;
-      // Cria o menu para diagramas já carregados
-      CreateMenuRapido(id, container.Titulo);
-      // só abre os diagramas já carregados do disco (0) e muda o status para alterado (A)
-      // pois todos os demais entrarão na lógica do blodo dos diagramas já em memória
-      if FCdsDiagramas.FieldByName('status').AsString = '0' then
+      TEntityContainer(FListEntityContainerCarregados.Objects[index]).EntityArea.Visible :=
+        True;
+      FEntityContainerCorrente :=
+        TEntityContainer(FListEntityContainerCarregados.Objects[index]);
+    end
+    else
+      // se ele ainda não foi aberto, entao abre
+    begin
+      // testa se a conexão está funcionando
+      if FCdsDiagramas.Locate('id', Id, []) then
       begin
-        RenderizarDiagrama(Id, container);
-        FCdsDiagramas.Edit;
-        FCdsDiagramas.FieldByName('status').AsString := 'A';
-        FCdsDiagramas.Post;
+        container := TEntityContainer.Create(FParentEntityContainer);
+        container.DiagramaId := FCdsDiagramas.FieldByName('id').AsString;
+        container.Titulo := FCdsDiagramas.FieldByName('titulo').AsString;
+        FListEntityContainerCarregados.AddObject(Id, TObject(container));
+        FEntityContainerCorrente := container;
+        // Cria o menu para diagramas já carregados
+        CreateMenuRapido(id, container.Titulo);
+        // só abre os diagramas já carregados do disco (0) e muda o status para alterado (A)
+        // pois todos os demais entrarão na lógica do blodo dos diagramas já em memória
+        if FCdsDiagramas.FieldByName('status').AsString = '0' then
+        begin
+          RenderizarDiagrama(Id, container);
+          FCdsDiagramas.Edit;
+          FCdsDiagramas.FieldByName('status').AsString := 'A';
+          FCdsDiagramas.Post;
+        end;
       end;
     end;
-  end;
 
-  if Assigned(FOnMudancaEstadoModelo) then
-    FOnMudancaEstadoModelo(Self);
+    if Assigned(FOnMudancaEstadoModelo) then
+      FOnMudancaEstadoModelo(Self);
+  end
+  else
+  begin
+    Application.MessageBox(
+      'Não foi possível estabelecer conexão como banco de dados. Verifique os dados de conexão.',
+      'Atenção', MB_ICONEXCLAMATION + MB_OK);
+  end;
 end;
 
 procedure TDiagramaManager.OpenGenericContainer(Id: string; container: TObject);
 begin
   if container is TEntityContainer then
-      OpenEntityContainer(Id)
-    else if container is TFrameConsultaDados then
-      OpenAmostraContainer(Id);
+    OpenEntityContainer(Id)
+  else if container is TFrameConsultaDados then
+    OpenAmostraContainer(Id);
 end;
 
 procedure TDiagramaManager.RemoveContainerDaListaCarregados(Id: string);
 var
-  index: Integer;
+  index: integer;
 begin
 
   index := FListEntityContainerCarregados.IndexOf(Id);
@@ -372,7 +400,8 @@ begin
   // volta a tela anteior como visivel
   if FContainerAnteior <> nil then
   begin
-    OpenGenericContainer(FListEntityContainerCarregados[FListEntityContainerCarregados.IndexOfObject(FContainerAnteior)] ,FContainerAnteior);
+    OpenGenericContainer(FListEntityContainerCarregados[
+      FListEntityContainerCarregados.IndexOfObject(FContainerAnteior)], FContainerAnteior);
   end;
 
   if Assigned(FMenuItemParaDiagramasAbertos) then
@@ -391,7 +420,7 @@ end;
 
 procedure TDiagramaManager.RemoverDiagrama(Id: string);
 var
-  idxOfDiagrama, idxOfMenu: Integer;
+  idxOfDiagrama, idxOfMenu: integer;
 begin
   if FCdsDiagramas.Locate('id', Id, []) then
   begin
@@ -404,8 +433,10 @@ begin
 
     // remove o menu rápido
     idxOfDiagrama := FListMenusDeDiagramasAbertos.IndexOf(Id);
-    idxOfMenu := FMenuItemParaDiagramasAbertos.IndexOf(FListMenusDeDiagramasAbertos.Data[idxOfDiagrama]);
-    FMenuItemParaDiagramasAbertos.Remove(FListMenusDeDiagramasAbertos.Data[idxOfDiagrama]);
+    idxOfMenu := FMenuItemParaDiagramasAbertos.IndexOf(
+      FListMenusDeDiagramasAbertos.Data[idxOfDiagrama]);
+    FMenuItemParaDiagramasAbertos.Remove(
+      FListMenusDeDiagramasAbertos.Data[idxOfDiagrama]);
     FListMenusDeDiagramasAbertos.Data[idxOfMenu].Free;
     FListMenusDeDiagramasAbertos.Delete(idxOfDiagrama);
 
@@ -423,33 +454,35 @@ var
   //relacionamentos: IXMLRelacionamentosType;
   relacionamento: TRelacionamento;
   relationship: TEntityRelationship;
-  i, k: Integer;
+  i, k: integer;
 begin
   // nao processar a posição das setas sem ter terminado de carregar o diagrama
   entityContainer.NaoRenderizarArrows := True;
-  
-    for i := 0 to FAppFileFormat.Diagramas.Count - 1 do
-    if FAppFileFormat.Diagramas[i].Id = Id then
+
+  for i := 0 to AppFile.Diagramas.Count - 1 do
+    if AppFile.Diagramas[i].Id = Id then
     begin
-      diagrama := FAppFileFormat.Diagramas[i];
+      diagrama := AppFile.Diagramas[i];
       // adiciona as entidades
       for k := 0 to diagrama.Entidades.Count - 1 do
       begin
         entidade := diagrama.Entidades[k];
-        entityContainer.AddEntity(entidade.Owner, entidade.Tabela, entidade.Top, entidade.Left, entidade.TodosOsCampos);
+        entityContainer.AddEntity(entidade.Owner, entidade.Tabela,
+          entidade.Top, entidade.Left, entidade.TodosOsCampos);
       end;
       // reposiciona o relacionamento conforme salvo em disco
       for k := 0 to diagrama.Relacionamentos.Count - 1 do
       begin
         relacionamento := diagrama.Relacionamentos[k];
-        relationship := entityContainer.FindRelacionamento(relacionamento.Owner, relacionamento.ConstraintName);
+        relationship := entityContainer.FindRelacionamento(relacionamento.Owner,
+          relacionamento.ConstraintName);
         if relationship <> nil then
         begin
           relationship.DistanciaLateral := relacionamento.DistanciaLateral;
           relationship.AplicarPosicaoCalculada;
         end;
       end;
-        
+
       Break;
     end;
   entityContainer.NaoRenderizarArrows := False;
@@ -458,7 +491,7 @@ end;
 procedure TDiagramaManager.RenomearDiagrama(Id: string);
 var
   titulo: string;
-  onde: Integer;
+  onde: integer;
 begin
   if FCdsDiagramas.Locate('id', Id, []) then
   begin
@@ -479,7 +512,7 @@ begin
   end;
 end;
 
-function TDiagramaManager.SaveModelo: Boolean;
+function TDiagramaManager.SaveModelo: boolean;
 begin
   Result := False;
   if FOpenedFile <> '' then
@@ -502,10 +535,10 @@ procedure TDiagramaManager.WriteFile;
 
   procedure WriteEntidades(diagramaId: string; diagramaDest: TDiagrama);
   var
-    i, onde: Integer;
+    i, onde: integer;
     container: TEntityContainer;
     entity: TEntity;
-  relationship: TEntityRelationship;
+    relationship: TEntityRelationship;
   begin
     // localiza o entity container do diagrama que se quer salvar
     onde := FListEntityContainerCarregados.IndexOf(diagramaId);
@@ -518,32 +551,34 @@ procedure TDiagramaManager.WriteFile;
         entity := TEntity(container.ListEntity.Objects[i]);
 
         diagramaDest.Entidades.Add(TEntidade.Create(
-          TPanel(entity).Top, TPanel(entity).Left, entity.SchemaOwner, entity.NomeTabela, entity.ExibindoTodosOsCampos));
+          TPanel(entity).Top, TPanel(entity).Left, entity.SchemaOwner,
+          entity.NomeTabela, entity.ExibindoTodosOsCampos));
       end;
 
       // salva os relacionamentos do container
       for i := 0 to container.ListRelationship.Count - 1 do
       begin
         relationship := TEntityRelationship(container.ListRelationship.Objects[i]);
-        diagramaDest.Relacionamentos.Add(TRelacionamento.Create(relationship.NomeCaminhoUsado, relationship.DistanciaLateral,
+        diagramaDest.Relacionamentos.Add(TRelacionamento.Create(
+          relationship.NomeCaminhoUsado, relationship.DistanciaLateral,
           relationship.SchemaOwner, relationship.ConstraintName));
       end;
     end;
   end;
 
 var
-  i: Integer;
+  i: integer;
   diagrama: TDiagrama;
 begin
   FCdsDiagramas.First;
-  while not FCdsDiagramas.Eof do
+  while not FCdsDiagramas.EOF do
   begin
     // se tem algo de novo no diagrama
     if FCdsDiagramas.FieldByName('status').AsString = 'N' then // novo
     begin
       diagrama := TDiagrama.Create(FCdsDiagramas.FieldByName('titulo').AsString,
         FCdsDiagramas.FieldByName('id').AsString);
-      FAppFileFormat.Diagramas.Add(diagrama);
+      AppFile.Diagramas.Add(diagrama);
       WriteEntidades(diagrama.Id, diagrama);
       FCdsDiagramas.Edit;
       FCdsDiagramas.FieldByName('status').AsString := 'A';
@@ -551,21 +586,21 @@ begin
     end
     else if FCdsDiagramas.FieldByName('status').AsString = 'E' then // excluído
     begin
-      for i := FAppFileFormat.Diagramas.Count - 1 downto 0 do
+      for i := AppFile.Diagramas.Count - 1 downto 0 do
       begin
-        if FAppFileFormat.Diagramas[i].Id = FCdsDiagramas.FieldByName('id').AsString then
+        if AppFile.Diagramas[i].Id = FCdsDiagramas.FieldByName('id').AsString then
         begin
-          FAppFileFormat.Diagramas.Delete(i);
+          AppFile.Diagramas.Delete(i);
         end;
       end;
     end
     else if FCdsDiagramas.FieldByName('status').AsString = 'A' then // alterado
     begin
-      for i := 0 to FAppFileFormat.Diagramas.Count - 1 do
+      for i := 0 to AppFile.Diagramas.Count - 1 do
       begin
-        if FAppFileFormat.Diagramas[i].Id = FCdsDiagramas.FieldByName('id').AsString then
+        if AppFile.Diagramas[i].Id = FCdsDiagramas.FieldByName('id').AsString then
         begin
-          diagrama := FAppFileFormat.Diagramas[i];
+          diagrama := AppFile.Diagramas[i];
           diagrama.Titulo := FCdsDiagramas.FieldByName('titulo').AsString;
 
           while diagrama.Entidades.Count > 0 do
@@ -587,7 +622,7 @@ begin
   if LowerCase(ExtractFileExt(FOpenedFile)) <> '.dbdata' then
     FOpenedFile := FOpenedFile + '.dbdata';
 
-  FAppFileFormat.SaveFile(FOpenedFile);
+  AppFile.SaveFile(FOpenedFile);
 end;
 
 end.
