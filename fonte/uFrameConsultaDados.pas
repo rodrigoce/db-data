@@ -93,8 +93,7 @@ end;
 
 procedure TFrameConsultaDados.btFecharClick(Sender: TObject);
 begin
-  FormPrincipal.DiagramaManager.RemoveContainerDaListaCarregados(FOwnerTabela);
-  Self.Free;
+  FormPrincipal.DiagramaManager.FreeOpenedFeature(FOwnerTabela); // this already free this frame
 end;
 
 procedure TFrameConsultaDados.ObterAmostra(OwnerTabela: string);

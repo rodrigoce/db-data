@@ -196,7 +196,7 @@ begin
   Versao := GetDefaultText(diagramasNode.Attributes.GetNamedItem('versao'));
   TNSPath :=  GetDefaultText(diagramasNode.Attributes.GetNamedItem('tnsPath'));
   SID := GetDefaultText(diagramasNode.Attributes.GetNamedItem('SID'));
-  UserName := GetDefaultText(diagramasNode.Attributes.GetNamedItem('userName'));
+  UserName := DeCrypt(GetDefaultText(diagramasNode.Attributes.GetNamedItem('userName')));
   Password := DeCrypt(GetDefaultText(diagramasNode.Attributes.GetNamedItem('password')));
 
   diagramaNode := diagramasNode.FirstChild;
@@ -267,7 +267,7 @@ begin
   TDOMElement(diagramasNode).SetAttribute('versao', '1.0');
   TDOMElement(diagramasNode).SetAttribute('tnsPath', TNSPath);
   TDOMElement(diagramasNode).SetAttribute('SID', SID);
-  TDOMElement(diagramasNode).SetAttribute('userName', UserName);
+  TDOMElement(diagramasNode).SetAttribute('userName', EnCrypt(UserName));
   TDOMElement(diagramasNode).SetAttribute('password', EnCrypt(Password));
   Doc.AppendChild(diagramasNode);
 

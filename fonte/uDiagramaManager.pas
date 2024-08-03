@@ -11,40 +11,55 @@ interface
 
 uses
   LCLIntf, LCLType, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, Menus, DB, BufDataset, SysUtils, fgl,
-  uAppFile, uERNotationsCore, uFrameConsultaDados, uVariaveisGlobais;
+  Dialogs, ExtCtrls, Menus, DB, BufDataset, SysUtils, Generics.Collections,
+  uAppFile, uERNotationsCore, uFrameConsultaDados, uVariaveisGlobais; {fgl TFPGMapObject dicionário  }
 
 type
+
+  { TOpenedFeature }
+  TTypeOpenedFeature = (tofDiagram, tofFrame);
+
+  TOpenedFeature = class
+  private
+    FId: string;
+    FTitle: string;
+    FDiagram: TEntityContainer;
+    FFrame: TFrame;
+    FMenuItem: TMenuItem;
+    FTypeOpenedFeature: TTypeOpenedFeature;
+  public
+    constructor Create(Id, Title: string;Diagram: TEntityContainer;Frame: TFrame;
+      TypeOpenedFeature: TTypeOpenedFeature);
+    property Id: string read FId;
+    property Title: string read FTitle;
+    property Diagram: TEntityContainer read FDiagram;
+    property Frame: TFrame read FFrame;
+    property MenuItem: TMenuItem read FMenuItem write FMenuItem;
+    property TypeOpenedFeature: TTypeOpenedFeature read FTypeOpenedFeature;
+  end;
 
   { TDiagramaManager }
 
   TDiagramaManager = class
   private
+    FOpenedFeatures: specialize TObjectList<TOpenedFeature>;
     FOpenedFile: string;
-    FListEntityContainerCarregados: TStringList;
-    FListMenusDeDiagramasAbertos: specialize TFPGMapObject<string, TMenuItem>;
     FOpenDialog: TOpenDialog;
     FSaveDialog: TSaveDialog;
     FParentEntityContainer: TWinControl;
-    FEntityContainerCorrente: TEntityContainer;
     FOnMudancaEstadoModelo: TNotifyEvent;
     FMenuItemParaDiagramasAbertos: TMenuItem;
-    FAmostraDadosCorrente: TFrameConsultaDados;
-    FContainerAnteior: TObject;
-    // client data set com os nomes dos diagramas
-    FCdsDiagramas: TBufDataSet;
+    FCdsDiagramas: TBufDataSet;     // client data set com os nomes dos diagramas
 
+    function GetCurrentDiagram: TEntityContainer;
     procedure WriteFile;
     procedure RenderizarDiagrama(Id: string; entityContainer: TEntityContainer);
-    procedure FreeAllEntityContainer;
-
+    procedure FreeAllOpenedFeatures;
     procedure ClickMenuItemDiagAberto(Sender: TObject);
-    procedure OpenGenericContainer(Id: string; container: TObject);
-    // acesso a propriedades
     function GetTemModeloParaSalvar: boolean;
-    procedure CreateMenuRapido(diagramaId, captionMenuItem: string);
+    function GetIndexOfOpenedFeature(Id: string): Integer;
+    procedure CreateMenuRapido(OpenedFeature: TOpenedFeature);
     function TestDBCnn: boolean;
-    procedure PrepareOpenContainer;
   public
     constructor Create(ParentEntityContainer: TWinControl);
     destructor Destroy; override;
@@ -53,54 +68,69 @@ type
     procedure OpenModelo(DBDataFileName: string);
     function SaveModelo: boolean;
     procedure OpenEntityContainer(Id: string);
-    procedure OpenAmostraContainer(OwnerTabela: string);
-    procedure RemoverDiagrama(Id: string);
-    procedure RenomearDiagrama(Id: string);
+    procedure OpenAmostraContainer(OwnerPlusTabelaAsID: string);
     procedure NovoDiagrama;
-    procedure RemoveContainerDaListaCarregados(Id: string);
+    procedure RenomearDiagrama(Id: string);
+    procedure RemoverDiagrama(Id: string);
+    procedure FreeOpenedFeature(Id: string);
+    procedure DoAllFeaturesInvisible;
+    procedure DoAnotherFeatureVisible(DestinationIndex: Integer);
   published
     property CdsDiagramas: TBufDataSet read FCdsDiagramas write FCdsDiagramas;
-    property EntityContainerCorrente: TEntityContainer read FEntityContainerCorrente;
-    property AmostraDadosCorrente: TFrameConsultaDados read FAmostraDadosCorrente;
-    property OnMudancaEstadoModelo: TNotifyEvent
-      read FOnMudancaEstadoModelo write FOnMudancaEstadoModelo;
+    property OnMudancaEstadoModelo: TNotifyEvent read FOnMudancaEstadoModelo write FOnMudancaEstadoModelo;
     property TemModeloParaSalvar: boolean read GetTemModeloParaSalvar;
     property NomeModeloAberto: string read FOpenedFile;
     property MenuItemParaDiagramasAbertos: TMenuItem read FMenuItemParaDiagramasAbertos write FMenuItemParaDiagramasAbertos;
+    property OpenedFeatures: specialize TObjectList<TOpenedFeature> read FOpenedFeatures write FOpenedFeatures;
+    property CurrentDiagram: TEntityContainer read GetCurrentDiagram;
   end;
 
 implementation
 
-uses uPrincipal, uConnection;
+uses uConnection;
+
+{ TOpenedFeature }
+
+constructor TOpenedFeature.Create(Id, Title: string; Diagram: TEntityContainer; Frame: TFrame; TypeOpenedFeature: TTypeOpenedFeature);
+begin
+  inherited Create;
+  FId := Id;
+  FTitle := Title;
+  FDiagram := Diagram;
+  FFrame := Frame;
+  FTypeOpenedFeature := TypeOpenedFeature;
+end;
 
 
   { TDiagramaManager }
 
-procedure TDiagramaManager.FreeAllEntityContainer;
+procedure TDiagramaManager.FreeAllOpenedFeatures;
 var
   i: integer;
+  menu: TMenuItem;
 begin
   // remove todos os entity containers da memória
-  for i := FListEntityContainerCarregados.Count - 1 downto 0 do
-    TObject(FListEntityContainerCarregados.Objects[i]).Free;
-  FListEntityContainerCarregados.Clear;
+  for i := FOpenedFeatures.Count - 1 downto 0 do
+  begin
+    if Assigned(FOpenedFeatures[i].Diagram) then FOpenedFeatures[i].Diagram.Free;
+    if Assigned(FOpenedFeatures[i].Frame) then FOpenedFeatures[i].Frame.Free;
+  end;
+  FOpenedFeatures.Clear; // automatic free at items
 
   // limpa o client dataset axiliar
   FCdsDiagramas.First;
   while not FCdsDiagramas.EOF do
     FCdsDiagramas.Delete;
 
-  // remove o entity container corrente
-  FEntityContainerCorrente := nil;
-
   // remove todos os menus de diagramas abertos
-  for i := FListMenusDeDiagramasAbertos.Count - 1 downto 0 do
+  if Assigned(FMenuItemParaDiagramasAbertos) then
   begin
-    if Assigned(FMenuItemParaDiagramasAbertos) then
-      FMenuItemParaDiagramasAbertos.Remove(FListMenusDeDiagramasAbertos.Data[i]);
-
-    FListMenusDeDiagramasAbertos.Data[i].Free;
-    FListMenusDeDiagramasAbertos.Delete(i);
+    for i := FMenuItemParaDiagramasAbertos.Count -1 downto 0 do
+    begin
+      menu := FMenuItemParaDiagramasAbertos.Items[i];
+      FMenuItemParaDiagramasAbertos.Remove(menu);
+      menu.Free;
+    end;
   end;
 end;
 
@@ -109,22 +139,39 @@ begin
   Result := Assigned(AppFile);
 end;
 
+function TDiagramaManager.GetIndexOfOpenedFeature(Id: string): Integer;
+var
+  i: Integer;
+begin
+  Result := -1;
+  for i := 0 to FOpenedFeatures.Count -1 do
+  begin
+    if FOpenedFeatures[i].Id = Id then
+    begin
+      Result := i;
+      Break;
+    end;
+  end;
+end;
+
 procedure TDiagramaManager.ClickMenuItemDiagAberto(Sender: TObject);
 var
-  indexOfMenu, indexOfContainer: integer;
-  id: string;
-  container: TObject;
+  i: Integer;
 begin
-
-  indexOfMenu := FListMenusDeDiagramasAbertos.IndexOfData(Sender as TMenuItem);
-  if indexOfMenu > -1 then
+  DoAllFeaturesInvisible;
+  for i := 0 to FOpenedFeatures.Count -1 do
   begin
-    id := FListMenusDeDiagramasAbertos.Keys[indexOfMenu];
-    indexOfContainer := FListEntityContainerCarregados.IndexOf(id);
-    container := FListEntityContainerCarregados.Objects[indexOfContainer];
-
-    OpenGenericContainer(id, container);
+    if FOpenedFeatures[i].MenuItem = (Sender as TMenuItem) then
+    begin
+      if FOpenedFeatures[i].FTypeOpenedFeature = tofDiagram then
+        FOpenedFeatures[i].Diagram.EntityArea.Visible := True
+      else if FOpenedFeatures[i].FTypeOpenedFeature = tofFrame then
+        FOpenedFeatures[i].Frame.Visible := True;
+    end;
   end;
+
+  if Assigned(FOnMudancaEstadoModelo) then
+      FOnMudancaEstadoModelo(Self);
 end;
 
 constructor TDiagramaManager.Create(ParentEntityContainer: TWinControl);
@@ -146,19 +193,16 @@ begin
   FCdsDiagramas.CreateDataSet;
   FCdsDiagramas.IndexFieldNames := 'titulo';
 
-  FListEntityContainerCarregados := TStringList.Create;
-  FListMenusDeDiagramasAbertos :=
-    specialize TFPGMapObject<string, TMenuItem>.Create(False);
+  FOpenedFeatures := specialize TObjectList<TOpenedFeature>.Create(True);
 end;
 
 destructor TDiagramaManager.Destroy;
 begin
   FOpenDialog.Free;
   FSaveDialog.Free;
-  FreeAllEntityContainer;
+  FreeAllOpenedFeatures;
   FCdsDiagramas.Free;
-  FListEntityContainerCarregados.Free;
-  FListMenusDeDiagramasAbertos.Free;
+  FOpenedFeatures.Free;
   inherited;
 end;
 
@@ -166,7 +210,7 @@ procedure TDiagramaManager.FecharModelo;
 begin
   FOpenedFile := '';
   FreeAndNil(AppFile);
-  FreeAllEntityContainer;
+  FreeAllOpenedFeatures;
 
   if Assigned(FOnMudancaEstadoModelo) then
     FOnMudancaEstadoModelo(Self);
@@ -247,69 +291,45 @@ begin
 
 end;
 
-procedure TDiagramaManager.PrepareOpenContainer;
-begin
-  // tira da tela o diagrama
-  if FEntityContainerCorrente <> nil then
-  begin
-    FEntityContainerCorrente.EntityArea.Visible := False;
-    FContainerAnteior := FEntityContainerCorrente;
-    FEntityContainerCorrente := nil;
-  end;
 
-  // tira da tela o frame de amostra de dados
-  if FAmostraDadosCorrente <> nil then
-  begin
-    FAmostraDadosCorrente.Visible := False;
-    FContainerAnteior := FEntityContainerCorrente;
-    FAmostraDadosCorrente := nil;
-  end;
 
-end;
-
-procedure TDiagramaManager.OpenAmostraContainer(OwnerTabela: string);
+procedure TDiagramaManager.OpenAmostraContainer(OwnerPlusTabelaAsID: string);
 var
   frameAmostra: TFrameConsultaDados;
-  index: integer;
+  indexOfOpenedFeature: integer;
 begin
-  PrepareOpenContainer;
-
   // verifica se ele já foi aberto, se sim, coloca em tela simplesmente
-  index := FListEntityContainerCarregados.IndexOf(OwnerTabela);
+  indexOfOpenedFeature := GetIndexOfOpenedFeature(OwnerPlusTabelaAsID);
 
-  if index > -1 then
-  begin
-    TFrameConsultaDados(FListEntityContainerCarregados.Objects[index]).Visible := True;
-    FAmostraDadosCorrente := TFrameConsultaDados(
-      FListEntityContainerCarregados.Objects[index]);
-  end
+  DoAllFeaturesInvisible;
+  if indexOfOpenedFeature > -1 then
+    FOpenedFeatures[indexOfOpenedFeature].Frame.Visible := True
   else
   begin
     frameAmostra := TFrameConsultaDados.Create(FParentEntityContainer);
     frameAmostra.Parent := FParentEntityContainer;
     frameAmostra.Name := ''; // da um nome qualquer;
-    FAmostraDadosCorrente := frameAmostra;
-    FListEntityContainerCarregados.AddObject(OwnerTabela, TObject(frameAmostra));
-    // Cria o menu para diagramas já carregados
-    CreateMenuRapido(OwnerTabela, 'Query de ' + OwnerTabela);
-    frameAmostra.ObterAmostra(OwnerTabela);
+
+    FOpenedFeatures.Add(TOpenedFeature.Create(OwnerPlusTabelaAsID, OwnerPlusTabelaAsID, nil, frameAmostra, tofFrame));
+    CreateMenuRapido(FOpenedFeatures.Last);
+    frameAmostra.ObterAmostra(OwnerPlusTabelaAsID);
   end;
 
   if Assigned(FOnMudancaEstadoModelo) then
     FOnMudancaEstadoModelo(Self);
 end;
 
-procedure TDiagramaManager.CreateMenuRapido(diagramaId, captionMenuItem: string);
+procedure TDiagramaManager.CreateMenuRapido(OpenedFeature: TOpenedFeature);
 var
   menu: TMenuItem;
 begin
   if Assigned(FMenuItemParaDiagramasAbertos) then
   begin
     menu := TMenuItem.Create(FMenuItemParaDiagramasAbertos);
-    menu.Caption := captionMenuItem;
+    menu.Caption := OpenedFeature.Title;
     menu.OnClick := @ClickMenuItemDiagAberto;
-    FListMenusDeDiagramasAbertos.Add(diagramaId, menu);
     FMenuItemParaDiagramasAbertos.Add(menu);
+    OpenedFeature.MenuItem := menu;
   end;
 end;
 
@@ -331,31 +351,23 @@ var
 begin
   if TestDBCnn then
   begin
-    PrepareOpenContainer;
-
     // verifica se ele já foi aberto, se sim, coloca em tela simplesmente
-    index := FListEntityContainerCarregados.IndexOf(Id);
+    index := GetIndexOfOpenedFeature(Id);
 
+    DoAllFeaturesInvisible;
     if index > -1 then
     begin
-      TEntityContainer(FListEntityContainerCarregados.Objects[index]).EntityArea.Visible :=
-        True;
-      FEntityContainerCorrente :=
-        TEntityContainer(FListEntityContainerCarregados.Objects[index]);
+      FOpenedFeatures[index].Diagram.EntityArea.Visible := True;
     end
-    else
-      // se ele ainda não foi aberto, entao abre
+    else // se ele ainda não foi aberto, entao abre
     begin
-      // testa se a conexão está funcionando
       if FCdsDiagramas.Locate('id', Id, []) then
       begin
         container := TEntityContainer.Create(FParentEntityContainer);
         container.DiagramaId := FCdsDiagramas.FieldByName('id').AsString;
         container.Titulo := FCdsDiagramas.FieldByName('titulo').AsString;
-        FListEntityContainerCarregados.AddObject(Id, TObject(container));
-        FEntityContainerCorrente := container;
-        // Cria o menu para diagramas já carregados
-        CreateMenuRapido(id, container.Titulo);
+        FOpenedFeatures.Add(TOpenedFeature.Create(container.DiagramaId, container.Titulo, container, nil, tofDiagram));
+        CreateMenuRapido(FOpenedFeatures.Last);
         // só abre os diagramas já carregados do disco (0) e muda o status para alterado (A)
         // pois todos os demais entrarão na lógica do blodo dos diagramas já em memória
         if FCdsDiagramas.FieldByName('status').AsString = '0' then
@@ -379,48 +391,59 @@ begin
   end;
 end;
 
-procedure TDiagramaManager.OpenGenericContainer(Id: string; container: TObject);
+procedure TDiagramaManager.FreeOpenedFeature(Id: string);
+var
+  indexOfOpenedFeature: integer;
+  openedFeature: TOpenedFeature;
 begin
-  if container is TEntityContainer then
-    OpenEntityContainer(Id)
-  else if container is TFrameConsultaDados then
-    OpenAmostraContainer(Id);
+  indexOfOpenedFeature := GetIndexOfOpenedFeature(Id);
+  if indexOfOpenedFeature > -1 then
+  begin
+    openedFeature := FOpenedFeatures.Extract(FOpenedFeatures.Items[indexOfOpenedFeature]);
+    if Assigned(openedFeature.Diagram) then openedFeature.Diagram.Free;
+    if Assigned(openedFeature.Frame) then openedFeature.Frame.Free;
+
+    if Assigned(FMenuItemParaDiagramasAbertos) then
+    begin
+      FMenuItemParaDiagramasAbertos.Remove(openedFeature.MenuItem);
+      openedFeature.MenuItem.Free;
+    end;
+
+    openedFeature.Free;
+    DoAnotherFeatureVisible(indexOfOpenedFeature -1);
+
+    if Assigned(FOnMudancaEstadoModelo) then
+      FOnMudancaEstadoModelo(Self);
+  end;
 end;
 
-procedure TDiagramaManager.RemoveContainerDaListaCarregados(Id: string);
+procedure TDiagramaManager.DoAllFeaturesInvisible;
 var
-  index: integer;
+  openedFeature: TOpenedFeature;
 begin
-
-  index := FListEntityContainerCarregados.IndexOf(Id);
-  if index > -1 then
-    // remove da lista de objetos carregados
-    FListEntityContainerCarregados.Delete(index);
-
-  // volta a tela anteior como visivel
-  if FContainerAnteior <> nil then
+  for openedFeature in FOpenedFeatures do
   begin
-    OpenGenericContainer(FListEntityContainerCarregados[
-      FListEntityContainerCarregados.IndexOfObject(FContainerAnteior)], FContainerAnteior);
+    if Assigned(openedFeature.Diagram) then openedFeature.Diagram.EntityArea.Visible := False;
+    if Assigned(openedFeature.Frame) then openedFeature.Frame.Visible := False;
   end;
+end;
 
-  if Assigned(FMenuItemParaDiagramasAbertos) then
+procedure TDiagramaManager.DoAnotherFeatureVisible(DestinationIndex: Integer);
+begin
+  if FOpenedFeatures.Count > 0 then
   begin
-    index := FListMenusDeDiagramasAbertos.IndexOf(Id);
-    if index > -1 then
-    begin
-      // remove o menu
-      FMenuItemParaDiagramasAbertos.Remove(FListMenusDeDiagramasAbertos.Data[index]);
-      FListMenusDeDiagramasAbertos.Data[index].Free;
-      // remove o menu da lista de menus
-      FListMenusDeDiagramasAbertos.Delete(index);
-    end;
+    if DestinationIndex < 0 then
+      DestinationIndex := 0;
+
+    if FOpenedFeatures.Items[DestinationIndex].TypeOpenedFeature = tofDiagram then
+      OpenEntityContainer(FOpenedFeatures.Items[DestinationIndex].Id)
+    else if FOpenedFeatures.Items[DestinationIndex].TypeOpenedFeature = tofFrame then
+      OpenAmostraContainer(FOpenedFeatures.Items[DestinationIndex].Id);
   end;
 end;
 
 procedure TDiagramaManager.RemoverDiagrama(Id: string);
-var
-  idxOfDiagrama, idxOfMenu: integer;
+
 begin
   if FCdsDiagramas.Locate('id', Id, []) then
   begin
@@ -428,20 +451,7 @@ begin
     FCdsDiagramas.FieldByName('status').AsString := 'E';
     FCdsDiagramas.Post;
 
-    FEntityContainerCorrente.EntityArea.Visible := False;
-    FEntityContainerCorrente := nil;
-
-    // remove o menu rápido
-    idxOfDiagrama := FListMenusDeDiagramasAbertos.IndexOf(Id);
-    idxOfMenu := FMenuItemParaDiagramasAbertos.IndexOf(
-      FListMenusDeDiagramasAbertos.Data[idxOfDiagrama]);
-    FMenuItemParaDiagramasAbertos.Remove(
-      FListMenusDeDiagramasAbertos.Data[idxOfDiagrama]);
-    FListMenusDeDiagramasAbertos.Data[idxOfMenu].Free;
-    FListMenusDeDiagramasAbertos.Delete(idxOfDiagrama);
-
-    if Assigned(FOnMudancaEstadoModelo) then
-      FOnMudancaEstadoModelo(Self);
+    FreeOpenedFeature(Id);
   end;
 end;
 
@@ -449,9 +459,7 @@ procedure TDiagramaManager.RenderizarDiagrama(Id: string;
   entityContainer: TEntityContainer);
 var
   diagrama: TDiagrama;
-  //entidades: IXMLEntidadesType;
   entidade: TEntidade;
-  //relacionamentos: IXMLRelacionamentosType;
   relacionamento: TRelacionamento;
   relationship: TEntityRelationship;
   i, k: integer;
@@ -502,9 +510,9 @@ begin
       FCdsDiagramas.FieldByName('titulo').AsString := titulo;
       FCdsDiagramas.Post;
 
-      onde := FListEntityContainerCarregados.IndexOf(Id);
+      {onde := FListEntityContainerCarregados.IndexOf(Id);
       if onde >= 0 then
-        TEntityContainer(FListEntityContainerCarregados.Objects[onde]).Titulo := titulo;
+        TEntityContainer(FListEntityContainerCarregados.Objects[onde]).Titulo := titulo;}
 
       if Assigned(FOnMudancaEstadoModelo) then
         FOnMudancaEstadoModelo(Self);
@@ -535,16 +543,16 @@ procedure TDiagramaManager.WriteFile;
 
   procedure WriteEntidades(diagramaId: string; diagramaDest: TDiagrama);
   var
-    i, onde: integer;
+    i, indexOpenedFeature: integer;
     container: TEntityContainer;
     entity: TEntity;
     relationship: TEntityRelationship;
   begin
     // localiza o entity container do diagrama que se quer salvar
-    onde := FListEntityContainerCarregados.IndexOf(diagramaId);
-    if onde >= 0 then
+    indexOpenedFeature := GetIndexOfOpenedFeature(diagramaId);
+    if indexOpenedFeature >= 0 then
     begin
-      container := TEntityContainer(FListEntityContainerCarregados.Objects[onde]);
+      container := FOpenedFeatures[indexOpenedFeature].Diagram;
       // salva as entidades do container
       for i := 0 to container.ListEntity.Count - 1 do
       begin
@@ -623,6 +631,21 @@ begin
     FOpenedFile := FOpenedFile + '.dbdata';
 
   AppFile.SaveFile(FOpenedFile);
+end;
+
+function TDiagramaManager.GetCurrentDiagram: TEntityContainer;
+var
+  openedFeature: TOpenedFeature;
+begin
+  Result := nil;
+  for openedFeature in FOpenedFeatures do
+  begin
+    if (openedFeature.TypeOpenedFeature = tofDiagram) and (openedFeature.Diagram.EntityArea.Visible) then
+    begin
+      Result := openedFeature.Diagram;
+      Break;
+    end;
+  end;
 end;
 
 end.

@@ -41,7 +41,7 @@ var
 begin
   pt.Y := 20;
   pt.X := 0;
-  FormPrincipal.DiagramaManager.EntityContainerCorrente.MoverTudo(pt);
+  FormPrincipal.DiagramaManager.CurrentDiagram.MoverTudo(pt);
 end;
 
 procedure TFormMoverObjetos.CimaClick(Sender: TObject);
@@ -50,7 +50,7 @@ var
 begin
   pt.Y := -20;
   pt.X := 0;
-  FormPrincipal.DiagramaManager.EntityContainerCorrente.MoverTudo(pt);
+  FormPrincipal.DiagramaManager.CurrentDiagram.MoverTudo(pt);
 end;
 
 procedure TFormMoverObjetos.DireitaClick(Sender: TObject);
@@ -59,7 +59,7 @@ var
 begin
   pt.X := 20;
   pt.Y := 0;
-  FormPrincipal.DiagramaManager.EntityContainerCorrente.MoverTudo(pt);
+  FormPrincipal.DiagramaManager.CurrentDiagram.MoverTudo(pt);
 end;
 
 procedure TFormMoverObjetos.EsquerdaClick(Sender: TObject);
@@ -68,7 +68,7 @@ var
 begin
   pt.X := -20;
   pt.Y := 0;
-  FormPrincipal.DiagramaManager.EntityContainerCorrente.MoverTudo(pt);
+  FormPrincipal.DiagramaManager.CurrentDiagram.MoverTudo(pt);
 end;
 
 class procedure TFormMoverObjetos.MoverObjetos;

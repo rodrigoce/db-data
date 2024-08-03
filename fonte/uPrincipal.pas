@@ -62,6 +62,7 @@ type
     procedure MoverObjetos1Click(Sender: TObject);
   private
     { Private declarations }
+    FCaptionInicial: string;
     FDiagramaManager: TDiagramaManager;
     //
     procedure HabilitarMenusContexto(Sender: TObject);
@@ -127,7 +128,7 @@ end;
 
 procedure TFormPrincipal.ExportarparaImagem1Click(Sender: TObject);
 begin
-  FDiagramaManager.EntityContainerCorrente.ScreenShot;
+  FDiagramaManager.CurrentDiagram.ScreenShot;
 end;
 
 procedure TFormPrincipal.Fechar1Click(Sender: TObject);
@@ -195,6 +196,8 @@ begin
   // cria o ini de configurações
   //IniFile := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'DB-DataConf.ini');
 
+  FCaptionInicial := Caption;
+
   FDiagramaManager := TDiagramaManager.Create(Self);
   // seta o menu onde os diagramas abertos ficarão em lista
   FDiagramaManager.MenuItemParaDiagramasAbertos := Janelas1;
@@ -214,7 +217,7 @@ begin
 
   // ganhar tempo em debug
   FDiagramaManager.OpenModelo('C:\Users\rceleoterio\Documents\teste1.dbdata');
-  FDiagramaManager.OpenEntityContainer('{AF7E7E0A-6A41-4197-9C04-8528CC276D84}');
+  FDiagramaManager.OpenEntityContainer('{8537D84F-020C-4145-A266-C965F9F5E2F5}');
 end;
 
 procedure TFormPrincipal.HabilitarMenusContexto(Sender: TObject);
@@ -222,27 +225,26 @@ begin
   // define os menus que devem estar habilitados
   Fechar1.Enabled := FDiagramaManager.TemModeloParaSalvar;
   SalvarModelo1.Enabled := FDiagramaManager.TemModeloParaSalvar;
-  AdicionarEntidade1.Enabled := FDiagramaManager.EntityContainerCorrente <> nil;
+  ConfigurarConexo1.Enabled := FDiagramaManager.TemModeloParaSalvar;;
+  AdicionarEntidade1.Enabled := FDiagramaManager.CurrentDiagram <> nil;
   Abrirdiagrama1.Enabled := FDiagramaManager.TemModeloParaSalvar;
-  Remover1.Enabled := FDiagramaManager.EntityContainerCorrente <> nil;
+  Remover1.Enabled := FDiagramaManager.CurrentDiagram <> nil;
   NovoDiagrama1.Enabled := FDiagramaManager.TemModeloParaSalvar;
-  Renomear1.Enabled := FDiagramaManager.EntityContainerCorrente <> nil;
-  ExportarparaImagem1.Enabled := FDiagramaManager.EntityContainerCorrente <> nil;
-  MoverObjetos1.Enabled := FDiagramaManager.EntityContainerCorrente <> nil;
+  Renomear1.Enabled := FDiagramaManager.CurrentDiagram <> nil;
+  ExportarparaImagem1.Enabled := FDiagramaManager.CurrentDiagram <> nil;
+  MoverObjetos1.Enabled := FDiagramaManager.CurrentDiagram <> nil;
 
-  // define o caption da janela principal
-  Caption := 'DB-Data - Analisador de Banco de Dados';
   if FDiagramaManager.TemModeloParaSalvar then
   begin
     if FDiagramaManager.NomeModeloAberto <> '' then
-      Caption := Caption + ' [' + FDiagramaManager.NomeModeloAberto + ']'
+      Caption := FCaptionInicial + ' [' + FDiagramaManager.NomeModeloAberto + ']'
     else
-      Caption := Caption + ' [Modelo sem nome]';
+      Caption := FCaptionInicial + ' [Modelo sem nome]';
   end;
 
   // define o nome do diagrama aberto
-  if FDiagramaManager.EntityContainerCorrente <> nil then
-    StatusBar1.Panels[0].Text := 'Diagrama: ' + FDiagramaManager.EntityContainerCorrente.Titulo
+  if FDiagramaManager.CurrentDiagram <> nil then
+    StatusBar1.Panels[0].Text := 'Diagrama: ' + FDiagramaManager.CurrentDiagram.Titulo
   else
     StatusBar1.Panels[0].Text := 'Nenhum diagrama aberto';
 end;
@@ -287,15 +289,14 @@ end;
 
 procedure TFormPrincipal.Remover1Click(Sender: TObject);
 begin
-  if Application.MessageBox('Deseja mesmo excluir o Diagrama selecionado?',
-                            'ATENÇÃO', MB_YESNO + MB_ICONQUESTION) = IDYES then
-    FDiagramaManager.RemoverDiagrama(FDiagramaManager.EntityContainerCorrente.DiagramaId);
+  if Application.MessageBox('Deseja mesmo excluir o Diagrama selecionado?', 'ATENÇÃO', MB_YESNO + MB_ICONQUESTION) = IDYES then
+    FDiagramaManager.RemoverDiagrama(FDiagramaManager.CurrentDiagram.DiagramaId);
 
 end;
 
 procedure TFormPrincipal.Renomear1Click(Sender: TObject);
 begin
-  FDiagramaManager.RenomearDiagrama(FDiagramaManager.EntityContainerCorrente.DiagramaId);
+  FDiagramaManager.RenomearDiagrama(FDiagramaManager.CurrentDiagram.DiagramaId);
 end;
 
 procedure TFormPrincipal.Sair1Click(Sender: TObject);

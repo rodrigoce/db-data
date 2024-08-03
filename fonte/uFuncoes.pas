@@ -33,7 +33,7 @@ begin
 
   Randomize;
   countCarac := Length(Result);
-  for i := 1 to countCarac do
+  for i := 1 to countCarac * 3 do
   begin
     Result := Result + Result[Random(countCarac) + 1];
   end;
@@ -47,13 +47,12 @@ var
 begin
   Result := '';
   Value2 := Utf8ToAnsi(Value);
-  countCarac := Trunc(Length(Value2) / 2);
+  countCarac := Trunc(Length(Value2) / 4);
   Value2 := Copy(Value2, 1, countCarac);
 
   for CharIndex := 1 to Length(Value2) do
     Result := Result + chr(ord(Value2[CharIndex]) - 3);
 end;
-
 
 function CountChar(const Texto: string; Caractere: Char): Integer;
 var
