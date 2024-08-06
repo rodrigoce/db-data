@@ -2053,7 +2053,7 @@ var
   OwnerTabela: string;
 begin
   OwnerTabela := TEntity(FEntity).SchemaOwner + '.' + TEntity(FEntity).NomeTabela;
-  FormPrincipal.DiagramaManager.OpenAmostraContainer(OwnerTabela);
+  FormPrincipal.FeaturesHandler.OpenQueryContainer(OwnerTabela);
 end;
 
 constructor TPopMenuEntity.Create(AOwner: TComponent);

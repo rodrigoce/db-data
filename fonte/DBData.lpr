@@ -13,7 +13,7 @@ uses
   uVariaveisGlobais in 'uVariaveisGlobais.pas',
   uFuncoes in 'uFuncoes.pas',
   uAppFile,
-  uDiagramaManager in 'uDiagramaManager.pas',
+  uFeaturesHandler,
   uPesquisarDiagramas in 'uPesquisarDiagramas.pas' {FormPesquisarDiagramas},
   uSobre in 'uSobre.pas' {FormSobre},
   uConfigConexao in 'uConfigConexao.pas' {FormConfigConexao},

@@ -11,10 +11,11 @@ object FrameConsultaDados: TFrameConsultaDados
   DesignTop = 292
   object DBGrid1: TDBGrid
     Left = 0
-    Height = 160
+    Height = 147
     Top = 150
     Width = 550
     Align = alClient
+    AlternateColor = clInfoBk
     Color = clWindow
     Columns = <>
     DataSource = Ds
@@ -29,12 +30,12 @@ object FrameConsultaDados: TFrameConsultaDados
   end
   object Panel1: TPanel
     Left = 0
-    Height = 38
-    Top = 310
+    Height = 51
+    Top = 297
     Width = 550
     Align = alBottom
     BevelOuter = bvNone
-    ClientHeight = 38
+    ClientHeight = 51
     ClientWidth = 550
     Color = clInfoBk
     ParentBackground = False
@@ -44,22 +45,22 @@ object FrameConsultaDados: TFrameConsultaDados
     object btFechar: TButton
       Left = 144
       Height = 25
-      Top = 6
-      Width = 75
+      Top = 13
+      Width = 132
       Anchors = [akTop, akRight]
       Caption = 'Fechar'
       TabOrder = 1
       OnClick = btFecharClick
     end
-    object btAtualizar: TButton
+    object btExecuteQuery: TButton
       Left = 8
       Height = 25
-      Top = 6
+      Top = 13
       Width = 132
       Anchors = [akTop, akRight]
-      Caption = 'Atualizar Consulta'
+      Caption = 'Executar Consulta'
       TabOrder = 0
-      OnClick = btAtualizarClick
+      OnClick = btExecuteQueryClick
     end
   end
   inline memoSQL: TSynEdit
@@ -564,11 +565,11 @@ object FrameConsultaDados: TFrameConsultaDados
     end
   end
   object Ds: TDataSource
-    DataSet = cds
+    DataSet = buff
     Left = 224
     Top = 144
   end
-  object cds: TBufDataset
+  object buff: TBufDataset
     FieldDefs = <>
     Left = 112
     Top = 143

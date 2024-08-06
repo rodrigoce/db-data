@@ -99,8 +99,9 @@
         <UnitName Value="uAppFile"/>
       </Unit>
       <Unit>
-        <Filename Value="uDiagramaManager.pas"/>
+        <Filename Value="ufeatureshandler.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="uFeaturesHandler"/>
       </Unit>
       <Unit>
         <Filename Value="uPesquisarDiagramas.pas"/>

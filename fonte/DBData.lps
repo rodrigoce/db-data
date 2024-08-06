@@ -19,8 +19,8 @@
         <ComponentName Value="FormPrincipal"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <TopLine Value="155"/>
-        <CursorPos X="78" Y="220"/>
+        <TopLine Value="212"/>
+        <CursorPos X="79" Y="220"/>
         <UsageCount Value="212"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -47,11 +47,10 @@
       <Unit>
         <Filename Value="uObterMetaDados.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="7"/>
-        <TopLine Value="295"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="294"/>
         <CursorPos X="30" Y="187"/>
         <UsageCount Value="212"/>
-        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="uPesquisarRelacionamentos.pas"/>
@@ -59,7 +58,7 @@
         <ComponentName Value="FormPesquisarRelacionamentos"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="5"/>
         <TopLine Value="30"/>
         <CursorPos X="78" Y="55"/>
         <UsageCount Value="212"/>
@@ -76,43 +75,40 @@
         <Filename Value="uVariaveisGlobais.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="9"/>
-        <CursorPos X="22" Y="16"/>
+        <CursorPos X="22"/>
         <UsageCount Value="212"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="uFuncoes.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="1"/>
-        <TopLine Value="22"/>
-        <CursorPos X="41" Y="50"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="7"/>
+        <CursorPos X="39" Y="14"/>
         <UsageCount Value="212"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="uappfile.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uAppFile"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="245"/>
         <CursorPos X="73" Y="270"/>
         <UsageCount Value="212"/>
-        <Loaded Value="True"/>
       </Unit>
       <Unit>
-        <Filename Value="uDiagramaManager.pas"/>
+        <Filename Value="ufeatureshandler.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="3"/>
-        <TopLine Value="61"/>
-        <CursorPos X="76"/>
+        <UnitName Value="uFeaturesHandler"/>
+        <EditorIndex Value="1"/>
+        <CursorPos X="45"/>
         <UsageCount Value="212"/>
         <Bookmarks Count="4">
-          <Item0 X="5" Y="115" ID="3"/>
-          <Item1 X="5" Y="426" ID="4"/>
-          <Item2 Y="161" ID="1"/>
-          <Item3 X="30" Y="332" ID="2"/>
+          <Item0 X="5" Y="113" ID="3"/>
+          <Item1 X="5" Y="424" ID="4"/>
+          <Item2 Y="159" ID="1"/>
+          <Item3 X="30" Y="330" ID="2"/>
         </Bookmarks>
         <Loaded Value="True"/>
       </Unit>
@@ -122,10 +118,10 @@
         <ComponentName Value="FormPesquisarDiagramas"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="3" Y="53"/>
+        <EditorIndex Value="8"/>
+        <CursorPos X="66"/>
         <UsageCount Value="212"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
+        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="uSobre.pas"/>
@@ -154,8 +150,7 @@
         <ComponentName Value="FormPesquisarTabelas"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="5"/>
-        <TopLine Value="42"/>
+        <EditorIndex Value="6"/>
         <CursorPos X="79" Y="63"/>
         <UsageCount Value="212"/>
         <Loaded Value="True"/>
@@ -176,10 +171,11 @@
         <ComponentName Value="FormVisualizarTriggers"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="32"/>
-        <CursorPos X="3" Y="54"/>
+        <EditorIndex Value="3"/>
+        <CursorPos X="34"/>
         <UsageCount Value="212"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="uEntityRelationshipArrowShape.pas"/>
@@ -193,10 +189,11 @@
       <Unit>
         <Filename Value="uERNotationsCore.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="1296"/>
-        <CursorPos X="37" Y="1237"/>
+        <EditorIndex Value="7"/>
+        <TopLine Value="2133"/>
+        <CursorPos X="55" Y="2170"/>
         <UsageCount Value="212"/>
+        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="uMoverObjetos.pas"/>
@@ -204,9 +201,9 @@
         <ComponentName Value="FormMoverObjetos"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="6"/>
-        <TopLine Value="47"/>
-        <CursorPos X="57" Y="71"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="15"/>
+        <CursorPos X="22" Y="34"/>
         <UsageCount Value="212"/>
         <Loaded Value="True"/>
       </Unit>
@@ -216,22 +213,25 @@
         <ComponentName Value="FrameConsultaDados"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="43"/>
-        <CursorPos X="39" Y="77"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="46"/>
+        <CursorPos X="63" Y="69"/>
         <UsageCount Value="212"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="uCloneDataSetStruct.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="77" Y="16"/>
-        <UsageCount Value="79"/>
+        <UsageCount Value="78"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="uPrincipal.lfm"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit>
       <Unit>
@@ -239,14 +239,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="85"/>
         <CursorPos X="6" Y="121"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit>
       <Unit>
         <Filename Value="uPesquisarTabelas.lfm"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="77"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit>
       <Unit>
@@ -254,7 +254,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="77"/>
         <CursorPos Y="114"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit>
       <Unit>
@@ -262,7 +262,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="122"/>
         <CursorPos X="21" Y="155"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit>
       <Unit>
@@ -271,13 +271,13 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="1156"/>
         <CursorPos X="3" Y="1180"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit>
       <Unit>
         <Filename Value="sistemashc.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="49" Y="17"/>
-        <UsageCount Value="15"/>
+        <UsageCount Value="14"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
@@ -286,43 +286,42 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="247"/>
         <CursorPos X="14" Y="263"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\fcl-xml\src\xmlutils.pp"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="3" Y="28"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\inc\objpash.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="187"/>
         <CursorPos X="23" Y="206"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="10"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\rtl-generics\src\generics.collections.pas"/>
         <UnitName Value="Generics.Collections"/>
-        <EditorIndex Value="4"/>
-        <TopLine Value="1419"/>
-        <CursorPos Y="1443"/>
-        <UsageCount Value="24"/>
-        <Loaded Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="4128"/>
+        <CursorPos X="5" Y="4140"/>
+        <UsageCount Value="23"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\objpas\sysutils\sysstrh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="10"/>
         <CursorPos X="40" Y="28"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="10"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\objpas\sysutils\sysstr.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2367"/>
         <CursorPos X="3" Y="2381"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="10"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\fcl-xml\src\xmlread.pp"/>
@@ -330,7 +329,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="410"/>
         <CursorPos X="13" Y="417"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\fcl-xml\src\xmlwrite.pp"/>
@@ -338,14 +337,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="974"/>
         <CursorPos X="3" Y="976"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\objpas\classes\classesh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="755"/>
         <CursorPos X="3" Y="615"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\objpas\types.pp"/>
@@ -353,7 +352,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="65"/>
         <CursorPos X="3" Y="87"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="10"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\rtl-generics\src\generics.defaults.pas"/>
@@ -361,7 +360,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="1031"/>
         <CursorPos Y="1052"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="10"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\lcl\stdctrls.pp"/>
@@ -369,14 +368,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="842"/>
         <CursorPos X="30" Y="860"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="10"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\inc\typshrdh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="52"/>
         <CursorPos X="3" Y="62"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="10"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\components\synedit\synedit.pp"/>
@@ -384,7 +383,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="543"/>
         <CursorPos X="3" Y="445"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="10"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\components\synedit\syneditmiscclasses.pp"/>
@@ -392,7 +391,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="119"/>
         <CursorPos X="3" Y="138"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="10"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\lcl\controls.pp"/>
@@ -400,21 +399,21 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="2459"/>
         <CursorPos X="3" Y="2478"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="10"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\objpas\classes\stringl.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="924"/>
         <CursorPos X="17" Y="936"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\win\syswinh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="30"/>
         <CursorPos X="3" Y="49"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\components\turbopower_ipro\iphtml.pas"/>
@@ -422,28 +421,28 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="1163"/>
         <CursorPos X="30" Y="1184"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="10"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\objpas\fgl.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="337"/>
         <CursorPos X="29" Y="370"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\lcl\include\menuitem.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="981"/>
         <CursorPos X="3" Y="990"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="5"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\inc\objpas.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="315"/>
         <CursorPos X="9" Y="325"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="10"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\components\lazutils\lazutf8.pas"/>
@@ -451,14 +450,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="89"/>
         <CursorPos X="14" Y="115"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\components\lazutils\winlazutf8.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="377"/>
         <CursorPos X="3" Y="383"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="10"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\lcl\lclintf.pas"/>
@@ -466,14 +465,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="187"/>
         <CursorPos X="43" Y="205"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\win32\classes.pp"/>
         <UnitName Value="Classes"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="167"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\win\sysutils.pp"/>
@@ -481,14 +480,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="59"/>
         <CursorPos X="49" Y="39"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\objpas\sysutils\sysinth.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="151"/>
         <CursorPos X="62" Y="188"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\lcl\menus.pp"/>
@@ -496,129 +495,125 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="147"/>
         <CursorPos X="3" Y="147"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="5"/>
       </Unit>
     </Units>
-    <JumpHistory HistoryIndex="29">
+    <JumpHistory HistoryIndex="28">
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="421" Column="6" TopLine="402"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Line="71" Column="27" TopLine="53"/>
       </Position>
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="78" Column="20" TopLine="61"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Line="72" Column="30" TopLine="53"/>
       </Position>
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="516" Column="3" TopLine="510"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Line="73" Column="30" TopLine="53"/>
       </Position>
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="78" Column="18" TopLine="60"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Line="49" Column="26" TopLine="30"/>
       </Position>
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="465" Column="28" TopLine="452"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Line="50" Column="28" TopLine="30"/>
       </Position>
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="408" Column="6" TopLine="403"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Line="51" Column="18" TopLine="30"/>
       </Position>
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="405" Column="23" TopLine="386"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Line="55" Column="28" TopLine="30"/>
       </Position>
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="423" Column="34" TopLine="388"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Line="57" Column="29" TopLine="30"/>
       </Position>
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="411" Column="12" TopLine="388"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Line="160" Column="3" TopLine="156"/>
       </Position>
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="78" Column="19" TopLine="61"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Line="57" Column="41" TopLine="38"/>
       </Position>
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="465" Column="3" TopLine="453"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Line="58" Column="30" TopLine="38"/>
       </Position>
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="81" Column="20" TopLine="60"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Line="59" Column="14" TopLine="38"/>
       </Position>
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="306" Column="58" TopLine="290"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Line="60" Column="38" TopLine="38"/>
       </Position>
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="78" Column="20" TopLine="57"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Line="78" Column="26" TopLine="57"/>
       </Position>
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="464" TopLine="453"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Line="79" Column="34" TopLine="57"/>
       </Position>
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="463" Column="29" TopLine="453"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Line="80" Column="27" TopLine="57"/>
       </Position>
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="417" Column="3" TopLine="403"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Line="81" Column="24" TopLine="57"/>
       </Position>
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="60" Column="27" TopLine="53"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Line="82" Column="36" TopLine="57"/>
       </Position>
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="165" Column="3" TopLine="159"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Line="70" Column="31" TopLine="52"/>
       </Position>
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="74" Column="18" TopLine="41"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Line="64" Column="24" TopLine="56"/>
       </Position>
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="384" Column="34" TopLine="348"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Line="203" Column="3" TopLine="197"/>
       </Position>
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="60" Column="20" TopLine="57"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Line="63" Column="16" TopLine="46"/>
       </Position>
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="614" Column="47" TopLine="597"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Line="182" Column="3" TopLine="175"/>
       </Position>
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="74" Column="21" TopLine="38"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Line="186" Column="33" TopLine="180"/>
       </Position>
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="452" Column="3" TopLine="445"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Line="82" Column="7" TopLine="56"/>
       </Position>
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="402" Column="21" TopLine="394"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Line="81" Column="7" TopLine="56"/>
       </Position>
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="413" Column="14" TopLine="394"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Line="80" Column="7" TopLine="56"/>
       </Position>
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="431" Column="59" TopLine="431"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Line="64" Column="28" TopLine="57"/>
       </Position>
       <Position>
-        <Filename Value="uDiagramaManager.pas"/>
-        <Caret Line="77" Column="55" TopLine="59"/>
-      </Position>
-      <Position>
-        <Filename Value="uFuncoes.pas"/>
-        <Caret Line="16" Column="45"/>
+        <Filename Value="ufeatureshandler.pas"/>
+        <Caret Column="45"/>
       </Position>
     </JumpHistory>
     <RunParams>

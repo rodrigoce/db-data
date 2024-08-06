@@ -1,4 +1,4 @@
-unit uDiagramaManager;
+unit uFeaturesHandler;
 
 {$mode objfpc}{$H+}
 
@@ -12,7 +12,7 @@ interface
 uses
   LCLIntf, LCLType, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, Menus, DB, BufDataset, SysUtils, Generics.Collections,
-  uAppFile, uERNotationsCore, uFrameConsultaDados, uVariaveisGlobais; {fgl TFPGMapObject dicionário  }
+  uAppFile, uERNotationsCore, uFrameConsultaDados, uVariaveisGlobais; {fgl TFPGMapObject dicionário}
 
 type
 
@@ -28,8 +28,7 @@ type
     FMenuItem: TMenuItem;
     FTypeOpenedFeature: TTypeOpenedFeature;
   public
-    constructor Create(Id, Title: string;Diagram: TEntityContainer;Frame: TFrame;
-      TypeOpenedFeature: TTypeOpenedFeature);
+    constructor Create(Id, Title: string; Diagram: TEntityContainer; Frame: TFrame; TypeOpenedFeature: TTypeOpenedFeature);
     property Id: string read FId;
     property Title: string read FTitle;
     property Diagram: TEntityContainer read FDiagram;
@@ -38,50 +37,49 @@ type
     property TypeOpenedFeature: TTypeOpenedFeature read FTypeOpenedFeature;
   end;
 
-  { TDiagramaManager }
+  { TFeaturesHandler }
 
-  TDiagramaManager = class
+  TFeaturesHandler = class
   private
     FOpenedFeatures: specialize TObjectList<TOpenedFeature>;
     FOpenedFile: string;
     FOpenDialog: TOpenDialog;
     FSaveDialog: TSaveDialog;
-    FParentEntityContainer: TWinControl;
-    FOnMudancaEstadoModelo: TNotifyEvent;
-    FMenuItemParaDiagramasAbertos: TMenuItem;
-    FCdsDiagramas: TBufDataSet;     // client data set com os nomes dos diagramas
+    FParentWinControl: TWinControl;
+    FOnChangeFeatureState: TNotifyEvent;
+    FMenuItemOpenedFeatures: TMenuItem;
+    FBuffDiagrams: TBufDataSet;     // buff data set com os nomes dos diagramas
 
     function GetCurrentDiagram: TEntityContainer;
     procedure WriteFile;
-    procedure RenderizarDiagrama(Id: string; entityContainer: TEntityContainer);
+    procedure RenderDiagram(Id: string; entityContainer: TEntityContainer);
     procedure FreeAllOpenedFeatures;
-    procedure ClickMenuItemDiagAberto(Sender: TObject);
-    function GetTemModeloParaSalvar: boolean;
+    procedure OpenedFeatureMenuItemClick(Sender: TObject);
+    function GetHasFileToSave: boolean;
     function GetIndexOfOpenedFeature(Id: string): Integer;
-    procedure CreateMenuRapido(OpenedFeature: TOpenedFeature);
+    procedure CreateOpenedFeatureMenu(OpenedFeature: TOpenedFeature);
     function TestDBCnn: boolean;
-  public
-    constructor Create(ParentEntityContainer: TWinControl);
-    destructor Destroy; override;
-    procedure NovoModelo;
-    procedure FecharModelo;
-    procedure OpenModelo(DBDataFileName: string);
-    function SaveModelo: boolean;
-    procedure OpenEntityContainer(Id: string);
-    procedure OpenAmostraContainer(OwnerPlusTabelaAsID: string);
-    procedure NovoDiagrama;
-    procedure RenomearDiagrama(Id: string);
-    procedure RemoverDiagrama(Id: string);
-    procedure FreeOpenedFeature(Id: string);
     procedure DoAllFeaturesInvisible;
     procedure DoAnotherFeatureVisible(DestinationIndex: Integer);
+  public
+    constructor Create(ParentWinControl: TWinControl);
+    destructor Destroy; override;
+    procedure NewFile;
+    procedure CloseFile;
+    procedure OpenFile(DBDataFileName: string);
+    function SaveFile: boolean;
+    procedure OpenEntityContainer(Id: string);
+    procedure OpenQueryContainer(OwnerPlusTabelaAsID: string);
+    procedure NewDiagramER;
+    procedure RenameDiagramER(Id: string);
+    procedure RemoveDiagramER(Id: string);
+    procedure FreeOpenedFeature(Id: string);
   published
-    property CdsDiagramas: TBufDataSet read FCdsDiagramas write FCdsDiagramas;
-    property OnMudancaEstadoModelo: TNotifyEvent read FOnMudancaEstadoModelo write FOnMudancaEstadoModelo;
-    property TemModeloParaSalvar: boolean read GetTemModeloParaSalvar;
-    property NomeModeloAberto: string read FOpenedFile;
-    property MenuItemParaDiagramasAbertos: TMenuItem read FMenuItemParaDiagramasAbertos write FMenuItemParaDiagramasAbertos;
-    property OpenedFeatures: specialize TObjectList<TOpenedFeature> read FOpenedFeatures write FOpenedFeatures;
+    property BuffDiagrams: TBufDataSet read FBuffDiagrams write FBuffDiagrams;
+    property OnChangeFeatureState: TNotifyEvent read FOnChangeFeatureState write FOnChangeFeatureState;
+    property HasFileToSave: boolean read GetHasFileToSave;
+    property OpenedFile: string read FOpenedFile;
+    property MenuItemOpenedFeatures: TMenuItem read FMenuItemOpenedFeatures write FMenuItemOpenedFeatures;
     property CurrentDiagram: TEntityContainer read GetCurrentDiagram;
   end;
 
@@ -102,9 +100,9 @@ begin
 end;
 
 
-  { TDiagramaManager }
+  { TFeaturesHandler }
 
-procedure TDiagramaManager.FreeAllOpenedFeatures;
+procedure TFeaturesHandler.FreeAllOpenedFeatures;
 var
   i: integer;
   menu: TMenuItem;
@@ -118,28 +116,28 @@ begin
   FOpenedFeatures.Clear; // automatic free at items
 
   // limpa o client dataset axiliar
-  FCdsDiagramas.First;
-  while not FCdsDiagramas.EOF do
-    FCdsDiagramas.Delete;
+  FBuffDiagrams.First;
+  while not FBuffDiagrams.EOF do
+    FBuffDiagrams.Delete;
 
   // remove todos os menus de diagramas abertos
-  if Assigned(FMenuItemParaDiagramasAbertos) then
+  if Assigned(FMenuItemOpenedFeatures) then
   begin
-    for i := FMenuItemParaDiagramasAbertos.Count -1 downto 0 do
+    for i := FMenuItemOpenedFeatures.Count -1 downto 0 do
     begin
-      menu := FMenuItemParaDiagramasAbertos.Items[i];
-      FMenuItemParaDiagramasAbertos.Remove(menu);
+      menu := FMenuItemOpenedFeatures.Items[i];
+      FMenuItemOpenedFeatures.Remove(menu);
       menu.Free;
     end;
   end;
 end;
 
-function TDiagramaManager.GetTemModeloParaSalvar: boolean;
+function TFeaturesHandler.GetHasFileToSave: boolean;
 begin
   Result := Assigned(AppFile);
 end;
 
-function TDiagramaManager.GetIndexOfOpenedFeature(Id: string): Integer;
+function TFeaturesHandler.GetIndexOfOpenedFeature(Id: string): Integer;
 var
   i: Integer;
 begin
@@ -154,7 +152,7 @@ begin
   end;
 end;
 
-procedure TDiagramaManager.ClickMenuItemDiagAberto(Sender: TObject);
+procedure TFeaturesHandler.OpenedFeatureMenuItemClick(Sender: TObject);
 var
   i: Integer;
 begin
@@ -170,53 +168,53 @@ begin
     end;
   end;
 
-  if Assigned(FOnMudancaEstadoModelo) then
-      FOnMudancaEstadoModelo(Self);
+  if Assigned(FOnChangeFeatureState) then
+      FOnChangeFeatureState(Self);
 end;
 
-constructor TDiagramaManager.Create(ParentEntityContainer: TWinControl);
+constructor TFeaturesHandler.Create(ParentWinControl: TWinControl);
 begin
   inherited Create;
-  FParentEntityContainer := ParentEntityContainer;
+  FParentWinControl := ParentWinControl;
   FOpenDialog := TOpenDialog.Create(nil);
   FOpenDialog.Filter := 'Arquivos do DB-Data (*.dbdata)|*.DBDATA';
 
   FSaveDialog := TSaveDialog.Create(nil);
   FSaveDialog.Filter := 'Arquivos do DB-Data (*.dbdata)|*.DBDATA';
 
-  FCdsDiagramas := TBufDataSet.Create(nil);
-  FCdsDiagramas.FieldDefs.Add('titulo', ftString, 300, False);
-  FCdsDiagramas.FieldDefs.Add('id', ftString, 64, False);
-  FCdsDiagramas.IndexDefs.Add('idxTitulo', 'titulo', []);
+  FBuffDiagrams := TBufDataSet.Create(nil);
+  FBuffDiagrams.FieldDefs.Add('titulo', ftString, 300, False);
+  FBuffDiagrams.FieldDefs.Add('id', ftString, 64, False);
+  FBuffDiagrams.IndexDefs.Add('idxTitulo', 'titulo', []);
   // status: N -> Novo, A -> Alterado, E -> Excluído, 0 - Carregado do XML
-  FCdsDiagramas.FieldDefs.Add('status', ftString, 1, False);
-  FCdsDiagramas.CreateDataSet;
-  FCdsDiagramas.IndexFieldNames := 'titulo';
+  FBuffDiagrams.FieldDefs.Add('status', ftString, 1, False);
+  FBuffDiagrams.CreateDataSet;
+  FBuffDiagrams.IndexFieldNames := 'titulo';
 
   FOpenedFeatures := specialize TObjectList<TOpenedFeature>.Create(True);
 end;
 
-destructor TDiagramaManager.Destroy;
+destructor TFeaturesHandler.Destroy;
 begin
   FOpenDialog.Free;
   FSaveDialog.Free;
   FreeAllOpenedFeatures;
-  FCdsDiagramas.Free;
+  FBuffDiagrams.Free;
   FOpenedFeatures.Free;
   inherited;
 end;
 
-procedure TDiagramaManager.FecharModelo;
+procedure TFeaturesHandler.CloseFile;
 begin
   FOpenedFile := '';
   FreeAndNil(AppFile);
   FreeAllOpenedFeatures;
 
-  if Assigned(FOnMudancaEstadoModelo) then
-    FOnMudancaEstadoModelo(Self);
+  if Assigned(FOnChangeFeatureState) then
+    FOnChangeFeatureState(Self);
 end;
 
-procedure TDiagramaManager.NovoDiagrama;
+procedure TFeaturesHandler.NewDiagramER;
 var
   titulo: string;
 
@@ -230,16 +228,16 @@ begin
     if Result <> S_OK then
       raise Exception.Create('Erro ao gerar guid.');
 
-    FCdsDiagramas.Append;
-    FCdsDiagramas.FieldByName('id').AsString := GuidToString(Uid);
-    FCdsDiagramas.FieldByName('titulo').AsString := titulo;
-    FCdsDiagramas.FieldByName('status').AsString := 'N'; // novo
-    FCdsDiagramas.Post;
+    FBuffDiagrams.Append;
+    FBuffDiagrams.FieldByName('id').AsString := GuidToString(Uid);
+    FBuffDiagrams.FieldByName('titulo').AsString := titulo;
+    FBuffDiagrams.FieldByName('status').AsString := 'N'; // novo
+    FBuffDiagrams.Post;
 
-    OpenEntityContainer(FCdsDiagramas.FieldByName('id').AsString);
+    OpenEntityContainer(FBuffDiagrams.FieldByName('id').AsString);
 
-    if Assigned(FOnMudancaEstadoModelo) then
-      FOnMudancaEstadoModelo(Self);
+    if Assigned(FOnChangeFeatureState) then
+      FOnChangeFeatureState(Self);
   end
   else
     Application.MessageBox('Nome do diagrama não informado!', 'ATENÇÃO',
@@ -247,15 +245,15 @@ begin
 
 end;
 
-procedure TDiagramaManager.NovoModelo;
+procedure TFeaturesHandler.NewFile;
 begin
   AppFile := TAppFile.Create;
 
-  if Assigned(FOnMudancaEstadoModelo) then
-    FOnMudancaEstadoModelo(Self);
+  if Assigned(FOnChangeFeatureState) then
+    FOnChangeFeatureState(Self);
 end;
 
-procedure TDiagramaManager.OpenModelo(DBDataFileName: string);
+procedure TFeaturesHandler.OpenFile(DBDataFileName: string);
 var
   i: integer;
   diagrama: TDiagrama;
@@ -277,23 +275,23 @@ begin
     for i := 0 to AppFile.Diagramas.Count - 1 do
     begin
       diagrama := AppFile.Diagramas[i];
-      FCdsDiagramas.Append;
-      FCdsDiagramas.FieldByName('id').AsString := diagrama.Id;
-      FCdsDiagramas.FieldByName('titulo').AsString := diagrama.Titulo;
-      FCdsDiagramas.FieldByName('status').AsString := '0';
-      FCdsDiagramas.Post;
+      FBuffDiagrams.Append;
+      FBuffDiagrams.FieldByName('id').AsString := diagrama.Id;
+      FBuffDiagrams.FieldByName('titulo').AsString := diagrama.Titulo;
+      FBuffDiagrams.FieldByName('status').AsString := '0';
+      FBuffDiagrams.Post;
     end;
-    FCdsDiagramas.First;
+    FBuffDiagrams.First;
 
-    if Assigned(FOnMudancaEstadoModelo) then
-      FOnMudancaEstadoModelo(Self);
+    if Assigned(FOnChangeFeatureState) then
+      FOnChangeFeatureState(Self);
   end;
 
 end;
 
 
 
-procedure TDiagramaManager.OpenAmostraContainer(OwnerPlusTabelaAsID: string);
+procedure TFeaturesHandler.OpenQueryContainer(OwnerPlusTabelaAsID: string);
 var
   frameAmostra: TFrameConsultaDados;
   indexOfOpenedFeature: integer;
@@ -306,34 +304,34 @@ begin
     FOpenedFeatures[indexOfOpenedFeature].Frame.Visible := True
   else
   begin
-    frameAmostra := TFrameConsultaDados.Create(FParentEntityContainer);
-    frameAmostra.Parent := FParentEntityContainer;
+    frameAmostra := TFrameConsultaDados.Create(FParentWinControl);
+    frameAmostra.Parent := FParentWinControl;
     frameAmostra.Name := ''; // da um nome qualquer;
 
     FOpenedFeatures.Add(TOpenedFeature.Create(OwnerPlusTabelaAsID, OwnerPlusTabelaAsID, nil, frameAmostra, tofFrame));
-    CreateMenuRapido(FOpenedFeatures.Last);
+    CreateOpenedFeatureMenu(FOpenedFeatures.Last);
     frameAmostra.ObterAmostra(OwnerPlusTabelaAsID);
   end;
 
-  if Assigned(FOnMudancaEstadoModelo) then
-    FOnMudancaEstadoModelo(Self);
+  if Assigned(FOnChangeFeatureState) then
+    FOnChangeFeatureState(Self);
 end;
 
-procedure TDiagramaManager.CreateMenuRapido(OpenedFeature: TOpenedFeature);
+procedure TFeaturesHandler.CreateOpenedFeatureMenu(OpenedFeature: TOpenedFeature);
 var
   menu: TMenuItem;
 begin
-  if Assigned(FMenuItemParaDiagramasAbertos) then
+  if Assigned(FMenuItemOpenedFeatures) then
   begin
-    menu := TMenuItem.Create(FMenuItemParaDiagramasAbertos);
+    menu := TMenuItem.Create(FMenuItemOpenedFeatures);
     menu.Caption := OpenedFeature.Title;
-    menu.OnClick := @ClickMenuItemDiagAberto;
-    FMenuItemParaDiagramasAbertos.Add(menu);
+    menu.OnClick := @OpenedFeatureMenuItemClick;
+    FMenuItemOpenedFeatures.Add(menu);
     OpenedFeature.MenuItem := menu;
   end;
 end;
 
-function TDiagramaManager.TestDBCnn: boolean;
+function TFeaturesHandler.TestDBCnn: boolean;
 begin
   try
     TConexao.FecharConexao;
@@ -344,7 +342,7 @@ begin
   end;
 end;
 
-procedure TDiagramaManager.OpenEntityContainer(Id: string);
+procedure TFeaturesHandler.OpenEntityContainer(Id: string);
 var
   container: TEntityContainer;
   index: integer;
@@ -361,27 +359,27 @@ begin
     end
     else // se ele ainda não foi aberto, entao abre
     begin
-      if FCdsDiagramas.Locate('id', Id, []) then
+      if FBuffDiagrams.Locate('id', Id, []) then
       begin
-        container := TEntityContainer.Create(FParentEntityContainer);
-        container.DiagramaId := FCdsDiagramas.FieldByName('id').AsString;
-        container.Titulo := FCdsDiagramas.FieldByName('titulo').AsString;
+        container := TEntityContainer.Create(FParentWinControl);
+        container.DiagramaId := FBuffDiagrams.FieldByName('id').AsString;
+        container.Titulo := FBuffDiagrams.FieldByName('titulo').AsString;
         FOpenedFeatures.Add(TOpenedFeature.Create(container.DiagramaId, container.Titulo, container, nil, tofDiagram));
-        CreateMenuRapido(FOpenedFeatures.Last);
+        CreateOpenedFeatureMenu(FOpenedFeatures.Last);
         // só abre os diagramas já carregados do disco (0) e muda o status para alterado (A)
         // pois todos os demais entrarão na lógica do blodo dos diagramas já em memória
-        if FCdsDiagramas.FieldByName('status').AsString = '0' then
+        if FBuffDiagrams.FieldByName('status').AsString = '0' then
         begin
-          RenderizarDiagrama(Id, container);
-          FCdsDiagramas.Edit;
-          FCdsDiagramas.FieldByName('status').AsString := 'A';
-          FCdsDiagramas.Post;
+          RenderDiagram(Id, container);
+          FBuffDiagrams.Edit;
+          FBuffDiagrams.FieldByName('status').AsString := 'A';
+          FBuffDiagrams.Post;
         end;
       end;
     end;
 
-    if Assigned(FOnMudancaEstadoModelo) then
-      FOnMudancaEstadoModelo(Self);
+    if Assigned(FOnChangeFeatureState) then
+      FOnChangeFeatureState(Self);
   end
   else
   begin
@@ -391,7 +389,7 @@ begin
   end;
 end;
 
-procedure TDiagramaManager.FreeOpenedFeature(Id: string);
+procedure TFeaturesHandler.FreeOpenedFeature(Id: string);
 var
   indexOfOpenedFeature: integer;
   openedFeature: TOpenedFeature;
@@ -403,21 +401,21 @@ begin
     if Assigned(openedFeature.Diagram) then openedFeature.Diagram.Free;
     if Assigned(openedFeature.Frame) then openedFeature.Frame.Free;
 
-    if Assigned(FMenuItemParaDiagramasAbertos) then
+    if Assigned(FMenuItemOpenedFeatures) then
     begin
-      FMenuItemParaDiagramasAbertos.Remove(openedFeature.MenuItem);
+      FMenuItemOpenedFeatures.Remove(openedFeature.MenuItem);
       openedFeature.MenuItem.Free;
     end;
 
     openedFeature.Free;
     DoAnotherFeatureVisible(indexOfOpenedFeature -1);
 
-    if Assigned(FOnMudancaEstadoModelo) then
-      FOnMudancaEstadoModelo(Self);
+    if Assigned(FOnChangeFeatureState) then
+      FOnChangeFeatureState(Self);
   end;
 end;
 
-procedure TDiagramaManager.DoAllFeaturesInvisible;
+procedure TFeaturesHandler.DoAllFeaturesInvisible;
 var
   openedFeature: TOpenedFeature;
 begin
@@ -428,7 +426,7 @@ begin
   end;
 end;
 
-procedure TDiagramaManager.DoAnotherFeatureVisible(DestinationIndex: Integer);
+procedure TFeaturesHandler.DoAnotherFeatureVisible(DestinationIndex: Integer);
 begin
   if FOpenedFeatures.Count > 0 then
   begin
@@ -438,24 +436,24 @@ begin
     if FOpenedFeatures.Items[DestinationIndex].TypeOpenedFeature = tofDiagram then
       OpenEntityContainer(FOpenedFeatures.Items[DestinationIndex].Id)
     else if FOpenedFeatures.Items[DestinationIndex].TypeOpenedFeature = tofFrame then
-      OpenAmostraContainer(FOpenedFeatures.Items[DestinationIndex].Id);
+      OpenQueryContainer(FOpenedFeatures.Items[DestinationIndex].Id);
   end;
 end;
 
-procedure TDiagramaManager.RemoverDiagrama(Id: string);
+procedure TFeaturesHandler.RemoveDiagramER(Id: string);
 
 begin
-  if FCdsDiagramas.Locate('id', Id, []) then
+  if FBuffDiagrams.Locate('id', Id, []) then
   begin
-    FCdsDiagramas.Edit;
-    FCdsDiagramas.FieldByName('status').AsString := 'E';
-    FCdsDiagramas.Post;
+    FBuffDiagrams.Edit;
+    FBuffDiagrams.FieldByName('status').AsString := 'E';
+    FBuffDiagrams.Post;
 
     FreeOpenedFeature(Id);
   end;
 end;
 
-procedure TDiagramaManager.RenderizarDiagrama(Id: string;
+procedure TFeaturesHandler.RenderDiagram(Id: string;
   entityContainer: TEntityContainer);
 var
   diagrama: TDiagrama;
@@ -496,31 +494,31 @@ begin
   entityContainer.NaoRenderizarArrows := False;
 end;
 
-procedure TDiagramaManager.RenomearDiagrama(Id: string);
+procedure TFeaturesHandler.RenameDiagramER(Id: string);
 var
   titulo: string;
   onde: integer;
 begin
-  if FCdsDiagramas.Locate('id', Id, []) then
+  if FBuffDiagrams.Locate('id', Id, []) then
   begin
     titulo := InputBox('Novo Diagrama', 'Digite o novo título do Diagrama', '');
     if titulo <> '' then
     begin
-      FCdsDiagramas.Edit;
-      FCdsDiagramas.FieldByName('titulo').AsString := titulo;
-      FCdsDiagramas.Post;
+      FBuffDiagrams.Edit;
+      FBuffDiagrams.FieldByName('titulo').AsString := titulo;
+      FBuffDiagrams.Post;
 
       {onde := FListEntityContainerCarregados.IndexOf(Id);
       if onde >= 0 then
         TEntityContainer(FListEntityContainerCarregados.Objects[onde]).Titulo := titulo;}
 
-      if Assigned(FOnMudancaEstadoModelo) then
-        FOnMudancaEstadoModelo(Self);
+      if Assigned(FOnChangeFeatureState) then
+        FOnChangeFeatureState(Self);
     end;
   end;
 end;
 
-function TDiagramaManager.SaveModelo: boolean;
+function TFeaturesHandler.SaveFile: boolean;
 begin
   Result := False;
   if FOpenedFile <> '' then
@@ -535,11 +533,11 @@ begin
     Result := True;
   end;
 
-  if Assigned(FOnMudancaEstadoModelo) then
-    FOnMudancaEstadoModelo(Self);
+  if Assigned(FOnChangeFeatureState) then
+    FOnChangeFeatureState(Self);
 end;
 
-procedure TDiagramaManager.WriteFile;
+procedure TFeaturesHandler.WriteFile;
 
   procedure WriteEntidades(diagramaId: string; diagramaDest: TDiagrama);
   var
@@ -578,38 +576,38 @@ var
   i: integer;
   diagrama: TDiagrama;
 begin
-  FCdsDiagramas.First;
-  while not FCdsDiagramas.EOF do
+  FBuffDiagrams.First;
+  while not FBuffDiagrams.EOF do
   begin
     // se tem algo de novo no diagrama
-    if FCdsDiagramas.FieldByName('status').AsString = 'N' then // novo
+    if FBuffDiagrams.FieldByName('status').AsString = 'N' then // novo
     begin
-      diagrama := TDiagrama.Create(FCdsDiagramas.FieldByName('titulo').AsString,
-        FCdsDiagramas.FieldByName('id').AsString);
+      diagrama := TDiagrama.Create(FBuffDiagrams.FieldByName('titulo').AsString,
+        FBuffDiagrams.FieldByName('id').AsString);
       AppFile.Diagramas.Add(diagrama);
       WriteEntidades(diagrama.Id, diagrama);
-      FCdsDiagramas.Edit;
-      FCdsDiagramas.FieldByName('status').AsString := 'A';
-      FCdsDiagramas.Post;
+      FBuffDiagrams.Edit;
+      FBuffDiagrams.FieldByName('status').AsString := 'A';
+      FBuffDiagrams.Post;
     end
-    else if FCdsDiagramas.FieldByName('status').AsString = 'E' then // excluído
+    else if FBuffDiagrams.FieldByName('status').AsString = 'E' then // excluído
     begin
       for i := AppFile.Diagramas.Count - 1 downto 0 do
       begin
-        if AppFile.Diagramas[i].Id = FCdsDiagramas.FieldByName('id').AsString then
+        if AppFile.Diagramas[i].Id = FBuffDiagrams.FieldByName('id').AsString then
         begin
           AppFile.Diagramas.Delete(i);
         end;
       end;
     end
-    else if FCdsDiagramas.FieldByName('status').AsString = 'A' then // alterado
+    else if FBuffDiagrams.FieldByName('status').AsString = 'A' then // alterado
     begin
       for i := 0 to AppFile.Diagramas.Count - 1 do
       begin
-        if AppFile.Diagramas[i].Id = FCdsDiagramas.FieldByName('id').AsString then
+        if AppFile.Diagramas[i].Id = FBuffDiagrams.FieldByName('id').AsString then
         begin
           diagrama := AppFile.Diagramas[i];
-          diagrama.Titulo := FCdsDiagramas.FieldByName('titulo').AsString;
+          diagrama.Titulo := FBuffDiagrams.FieldByName('titulo').AsString;
 
           while diagrama.Entidades.Count > 0 do
           begin
@@ -624,7 +622,7 @@ begin
         end;
       end;
     end;
-    FCdsDiagramas.Next;
+    FBuffDiagrams.Next;
   end;
 
   if LowerCase(ExtractFileExt(FOpenedFile)) <> '.dbdata' then
@@ -633,7 +631,7 @@ begin
   AppFile.SaveFile(FOpenedFile);
 end;
 
-function TDiagramaManager.GetCurrentDiagram: TEntityContainer;
+function TFeaturesHandler.GetCurrentDiagram: TEntityContainer;
 var
   openedFeature: TOpenedFeature;
 begin

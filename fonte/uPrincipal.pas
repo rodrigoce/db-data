@@ -9,7 +9,7 @@ interface
 uses
   Windows, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, Menus, StdCtrls, Buttons,
-  uDiagramaManager, ComCtrls, IniFiles;
+  uFeaturesHandler, ComCtrls, IniFiles;
 
 type
   TFormPrincipal = class(TForm)
@@ -63,14 +63,14 @@ type
   private
     { Private declarations }
     FCaptionInicial: string;
-    FDiagramaManager: TDiagramaManager;
+    FFeaturesHanlder: TFeaturesHandler;
     //
     procedure HabilitarMenusContexto(Sender: TObject);
   public
     { Public declarations }
     procedure SetarAtividadeStatusPanelBar(texto: string);
     //
-    property DiagramaManager: TDiagramaManager read FDiagramaManager;
+    property FeaturesHandler: TFeaturesHandler read FFeaturesHanlder;
   end;
 
 var
@@ -85,7 +85,7 @@ uses Unit2, uVariaveisGlobais, uPesquisarDiagramas, uSobre, uConfigConexao,
 
 procedure TFormPrincipal.Abrirdiagrama1Click(Sender: TObject);
 begin
-  TFormPesquisarDiagramas.PesquiarDiagramas(FDiagramaManager.CdsDiagramas, FDiagramaManager);
+  TFormPesquisarDiagramas.PesquiarDiagramas(FFeaturesHanlder.BuffDiagrams, FFeaturesHanlder);
 end;
 
 procedure TFormPrincipal.AdicionarEntidade1Click(Sender: TObject);
@@ -100,25 +100,25 @@ end;
 
 procedure TFormPrincipal.AbrirModelo1Click(Sender: TObject);
 begin
-  if FDiagramaManager.TemModeloParaSalvar then
+  if FFeaturesHanlder.HasFileToSave then
   begin
     {if  Application.MessageBox('Deseja salvar as alterações do Modelo atual?', 'ATENÇÃO',
       MB_YESNO + MB_ICONQUESTION) = IDYES then
     begin
-      if FDiagramaManager.SaveModelo then
+      if FFeaturesHanlder.SaveFile then
       begin
-        FDiagramaManager.FecharModelo;
-        FDiagramaManager.OpenModelo;
+        FFeaturesHanlder.CloseFile;
+        FFeaturesHanlder.OpenFile;
       end;
     end
     else
     begin  }
-      FDiagramaManager.FecharModelo;
-      FDiagramaManager.OpenModelo('');
+      FFeaturesHanlder.CloseFile;
+      FFeaturesHanlder.OpenFile('');
     //end;
   end
   else
-    FDiagramaManager.OpenModelo('');
+    FFeaturesHanlder.OpenFile('');
 end;
 
 procedure TFormPrincipal.eladeTestes1Click(Sender: TObject);
@@ -128,7 +128,7 @@ end;
 
 procedure TFormPrincipal.ExportarparaImagem1Click(Sender: TObject);
 begin
-  FDiagramaManager.CurrentDiagram.ScreenShot;
+  FFeaturesHanlder.CurrentDiagram.ScreenShot;
 end;
 
 procedure TFormPrincipal.Fechar1Click(Sender: TObject);
@@ -137,11 +137,11 @@ begin
   {if  Application.MessageBox('Deseja salvar as alterações do Modelo atual?', 'ATENÇÃO',
     MB_YESNO + MB_ICONQUESTION) = IDYES then
   begin
-    if FDiagramaManager.SaveModelo then
-      FDiagramaManager.FecharModelo;
+    if FFeaturesHanlder.SaveFile then
+      FFeaturesHanlder.CloseFile;
   end
   else  }
-    FDiagramaManager.FecharModelo;
+    FFeaturesHanlder.CloseFile;
 end;
 
 procedure TFormPrincipal.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -151,25 +151,25 @@ begin
   if Application.MessageBox('Deseja encerrar o DB-Data?', 'Atenção', MB_YESNO +
     MB_ICONQUESTION) = IDYES then
   begin
-    if FDiagramaManager.TemModeloParaSalvar then
-      FDiagramaManager.FecharModelo;
+    if FFeaturesHanlder.HasFileToSave then
+      FFeaturesHanlder.CloseFile;
     Action := caFree;
   end;
 
-  //if FDiagramaManager.TemModeloParaSalvar then
+  //if FFeaturesHanlder.HasFileToSave then
   //begin
     {if  Application.MessageBox('Deseja salvar as alterações do Modelo atual?', 'ATENÇÃO',
       MB_YESNO + MB_ICONQUESTION) = IDYES then
     begin
-      if FDiagramaManager.SaveModelo then
+      if FFeaturesHanlder.SaveFile then
       begin
-        FDiagramaManager.FecharModelo;
+        FFeaturesHanlder.CloseFile;
         Action := caFree;
       end;
     end
     else
     begin   }
-      //FDiagramaManager.FecharModelo;
+      //FFeaturesHanlder.CloseFile;
       {Action := caFree;  }
     //end;
   {end
@@ -180,7 +180,7 @@ end;
 procedure TFormPrincipal.FormDestroy(Sender: TObject);
 begin
   //IniFile.Free;
-  FDiagramaManager.Free;
+  FFeaturesHanlder.Free;
 end;
 
 procedure TFormPrincipal.FormKeyDown(Sender: TObject; var Key: Word;
@@ -198,53 +198,53 @@ begin
 
   FCaptionInicial := Caption;
 
-  FDiagramaManager := TDiagramaManager.Create(Self);
+  FFeaturesHanlder := TFeaturesHandler.Create(Self);
   // seta o menu onde os diagramas abertos ficarão em lista
-  FDiagramaManager.MenuItemParaDiagramasAbertos := Janelas1;
+  FFeaturesHanlder.MenuItemOpenedFeatures := Janelas1;
 
   // se tiver um primeiro parâmetro, tenta abri-lo como um arquivo de diagrama
   if (ParamStr(1) <> '') and IsDBDataFile(ParamStr(1)) then
-    FDiagramaManager.OpenModelo(ParamStr(1))
+    FFeaturesHanlder.OpenFile(ParamStr(1))
   else
     // carrega o aplicativo com um modelo em branco para ser usado
-    FDiagramaManager.NovoModelo;
+    FFeaturesHanlder.NewFile;
     
-  FDiagramaManager.OnMudancaEstadoModelo := HabilitarMenusContexto;
+  FFeaturesHanlder.OnChangeFeatureState := HabilitarMenusContexto;
   // chama a primeira vez manualmente
   HabilitarMenusContexto(Sender);
 
   MemoLog := Memo1;
 
   // ganhar tempo em debug
-  FDiagramaManager.OpenModelo('C:\Users\rceleoterio\Documents\teste1.dbdata');
-  FDiagramaManager.OpenEntityContainer('{8537D84F-020C-4145-A266-C965F9F5E2F5}');
+  FFeaturesHanlder.OpenFile('C:\Users\rceleoterio\Documents\sistemas hc.dbdata');
+  FFeaturesHanlder.OpenEntityContainer('{6BB6AC5E-6013-433E-926E-BBF4962CDA66}');
 end;
 
 procedure TFormPrincipal.HabilitarMenusContexto(Sender: TObject);
 begin
   // define os menus que devem estar habilitados
-  Fechar1.Enabled := FDiagramaManager.TemModeloParaSalvar;
-  SalvarModelo1.Enabled := FDiagramaManager.TemModeloParaSalvar;
-  ConfigurarConexo1.Enabled := FDiagramaManager.TemModeloParaSalvar;;
-  AdicionarEntidade1.Enabled := FDiagramaManager.CurrentDiagram <> nil;
-  Abrirdiagrama1.Enabled := FDiagramaManager.TemModeloParaSalvar;
-  Remover1.Enabled := FDiagramaManager.CurrentDiagram <> nil;
-  NovoDiagrama1.Enabled := FDiagramaManager.TemModeloParaSalvar;
-  Renomear1.Enabled := FDiagramaManager.CurrentDiagram <> nil;
-  ExportarparaImagem1.Enabled := FDiagramaManager.CurrentDiagram <> nil;
-  MoverObjetos1.Enabled := FDiagramaManager.CurrentDiagram <> nil;
+  Fechar1.Enabled := FFeaturesHanlder.HasFileToSave;
+  SalvarModelo1.Enabled := FFeaturesHanlder.HasFileToSave;
+  ConfigurarConexo1.Enabled := FFeaturesHanlder.HasFileToSave;;
+  AdicionarEntidade1.Enabled := FFeaturesHanlder.CurrentDiagram <> nil;
+  Abrirdiagrama1.Enabled := FFeaturesHanlder.HasFileToSave;
+  Remover1.Enabled := FFeaturesHanlder.CurrentDiagram <> nil;
+  NovoDiagrama1.Enabled := FFeaturesHanlder.HasFileToSave;
+  Renomear1.Enabled := FFeaturesHanlder.CurrentDiagram <> nil;
+  ExportarparaImagem1.Enabled := FFeaturesHanlder.CurrentDiagram <> nil;
+  MoverObjetos1.Enabled := FFeaturesHanlder.CurrentDiagram <> nil;
 
-  if FDiagramaManager.TemModeloParaSalvar then
+  if FFeaturesHanlder.HasFileToSave then
   begin
-    if FDiagramaManager.NomeModeloAberto <> '' then
-      Caption := FCaptionInicial + ' [' + FDiagramaManager.NomeModeloAberto + ']'
+    if FFeaturesHanlder.OpenedFile <> '' then
+      Caption := FCaptionInicial + ' [' + FFeaturesHanlder.OpenedFile + ']'
     else
       Caption := FCaptionInicial + ' [Modelo sem nome]';
   end;
 
   // define o nome do diagrama aberto
-  if FDiagramaManager.CurrentDiagram <> nil then
-    StatusBar1.Panels[0].Text := 'Diagrama: ' + FDiagramaManager.CurrentDiagram.Titulo
+  if FFeaturesHanlder.CurrentDiagram <> nil then
+    StatusBar1.Panels[0].Text := 'Diagrama: ' + FFeaturesHanlder.CurrentDiagram.Titulo
   else
     StatusBar1.Panels[0].Text := 'Nenhum diagrama aberto';
 end;
@@ -256,30 +256,30 @@ end;
 
 procedure TFormPrincipal.Novo1Click(Sender: TObject);
 begin
-  if FDiagramaManager.TemModeloParaSalvar then
+  if FFeaturesHanlder.HasFileToSave then
   begin
     {if  Application.MessageBox('Deseja salvar as alterações do Modelo atual?', 'ATENÇÃO',
       MB_YESNO + MB_ICONQUESTION) = IDYES then
     begin
-      if FDiagramaManager.SaveModelo then
+      if FFeaturesHanlder.SaveFile then
       begin
-        FDiagramaManager.FecharModelo;
-        FDiagramaManager.NovoModelo;
+        FFeaturesHanlder.CloseFile;
+        FFeaturesHanlder.NewFile;
       end;
     end
     else
     begin     }
-      FDiagramaManager.FecharModelo;
-      FDiagramaManager.NovoModelo;
+      FFeaturesHanlder.CloseFile;
+      FFeaturesHanlder.NewFile;
     //end;
   end
   else
-    FDiagramaManager.NovoModelo;
+    FFeaturesHanlder.NewFile;
 end;
 
 procedure TFormPrincipal.NovoDiagrama1Click(Sender: TObject);
 begin
-  FDiagramaManager.NovoDiagrama;
+  FFeaturesHanlder.NewDiagramER;
 end;
 
 procedure TFormPrincipal.PesquisarObjetos1Click(Sender: TObject);
@@ -290,13 +290,13 @@ end;
 procedure TFormPrincipal.Remover1Click(Sender: TObject);
 begin
   if Application.MessageBox('Deseja mesmo excluir o Diagrama selecionado?', 'ATENÇÃO', MB_YESNO + MB_ICONQUESTION) = IDYES then
-    FDiagramaManager.RemoverDiagrama(FDiagramaManager.CurrentDiagram.DiagramaId);
+    FFeaturesHanlder.RemoveDiagramER(FFeaturesHanlder.CurrentDiagram.DiagramaId);
 
 end;
 
 procedure TFormPrincipal.Renomear1Click(Sender: TObject);
 begin
-  FDiagramaManager.RenomearDiagrama(FDiagramaManager.CurrentDiagram.DiagramaId);
+  FFeaturesHanlder.RenameDiagramER(FFeaturesHanlder.CurrentDiagram.DiagramaId);
 end;
 
 procedure TFormPrincipal.Sair1Click(Sender: TObject);
@@ -307,7 +307,7 @@ end;
 procedure TFormPrincipal.SalvarModelo1Click(Sender: TObject);
 begin
   // o menu salvar só fica ativo se tiver modelo aberto para ser salvo
-  FDiagramaManager.SaveModelo;
+  FFeaturesHanlder.SaveFile;
 end;
 
 procedure TFormPrincipal.SetarAtividadeStatusPanelBar(texto: string);

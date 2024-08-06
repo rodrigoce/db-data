@@ -52,7 +52,7 @@ uses uObterMetaDados, uPrincipal;
 
 procedure TFormPesquisarRelacionamentos.btAddClick(Sender: TObject);
 begin
-  FormPrincipal.DiagramaManager.CurrentDiagram.AddEntity(Ds.DataSet.Fields[0].AsString, Ds.DataSet.Fields[1].AsString, 3, 3, False);
+  FormPrincipal.FeaturesHandler.CurrentDiagram.AddEntity(Ds.DataSet.Fields[0].AsString, Ds.DataSet.Fields[1].AsString, 3, 3, False);
 end;
 
 procedure TFormPesquisarRelacionamentos.edNomeChange(Sender: TObject);

@@ -11,7 +11,7 @@ interface
 
 uses
   LCLIntf, LCLType, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, Menus, LazUTF8;
+  Dialogs, ExtCtrls, Menus, {LazUTF8,} base64;
 
 function EnCrypt(const Value : String) : String;
 function DeCrypt(const Value : String) : String;
@@ -26,9 +26,9 @@ var
   countCarac, i: Integer;
 begin
   Result := '';
-  Value2 := Utf8ToAnsi(Value);
+  Value2 := EncodeStringBase64(Value);
 
-  for CharIndex := 1 to UTF8Length(Value) do
+  for CharIndex := 1 to Length(Value2) do
     Result := Result + chr(ord(Value2[CharIndex]) + 3);
 
   Randomize;
@@ -46,12 +46,13 @@ var
   countCarac: Integer;
 begin
   Result := '';
-  Value2 := Utf8ToAnsi(Value);
-  countCarac := Trunc(Length(Value2) / 4);
-  Value2 := Copy(Value2, 1, countCarac);
+  countCarac := Trunc(Length(Value) / 4);
+  Value2 := Copy(Value, 1, countCarac);
 
   for CharIndex := 1 to Length(Value2) do
     Result := Result + chr(ord(Value2[CharIndex]) - 3);
+
+  Result := DecodeStringBase64(Result);
 end;
 
 function CountChar(const Texto: string; Caractere: Char): Integer;

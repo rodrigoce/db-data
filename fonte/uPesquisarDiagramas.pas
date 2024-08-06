@@ -11,7 +11,7 @@ interface
 
 uses
   LCLIntf, LCLType, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, BufDataset, DB, DBGrids, StdCtrls, uDiagramaManager;
+  Dialogs, BufDataset, DB, DBGrids, StdCtrls, uFeaturesHandler;
 
 type
 
@@ -32,11 +32,11 @@ type
   private
     { Private declarations }
 
-    FDiagramaManager: TDiagramaManager;
+    FFeaturesHandler: TFeaturesHandler;
     const FDefaultFilter = 'status <> "E"';
   public
     { Public declarations }
-    class procedure PesquiarDiagramas(cdsDiagramas: TBufDataSet; diagramaManager: TDiagramaManager);
+    class procedure PesquiarDiagramas(cdsDiagramas: TBufDataSet; FeaturesHandler: TFeaturesHandler);
   end;
 
 var
@@ -50,7 +50,7 @@ implementation
 
 procedure TFormPesquisarDiagramas.btCarregarClick(Sender: TObject);
 begin
-  FDiagramaManager.OpenEntityContainer(ds.DataSet.FieldByName('id').AsString);
+  FFeaturesHandler.OpenEntityContainer(ds.DataSet.FieldByName('id').AsString);
 end;
 
 procedure TFormPesquisarDiagramas.btFecharClick(Sender: TObject);
@@ -84,12 +84,12 @@ begin
 end;
 
 class procedure TFormPesquisarDiagramas.PesquiarDiagramas(
-  cdsDiagramas: TBufDataSet; diagramaManager: TDiagramaManager);
+  cdsDiagramas: TBufDataSet; FeaturesHandler: TFeaturesHandler);
 begin
   Application.CreateForm(TFormPesquisarDiagramas, FormPesquisarDiagramas);
   with FormPesquisarDiagramas do
   begin
-    FDiagramaManager := diagramaManager;
+    FFeaturesHandler := FeaturesHandler;
     ds.DataSet := cdsDiagramas;
     // não mostrar os excluídos
     ds.DataSet.Filter := FDefaultFilter;

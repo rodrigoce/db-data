@@ -17,16 +17,16 @@ type
   { TFrameConsultaDados }
 
   TFrameConsultaDados = class(TFrame)
-    cds: TBufDataset;
+    buff: TBufDataset;
     DBGrid1: TDBGrid;
     Panel1: TPanel;
     btFechar: TButton;
     Ds: TDataSource;
-    btAtualizar: TButton;
+    btExecuteQuery: TButton;
     memoSQL: TSynEdit;
     sqlHighLight: TSynSQLSyn;
     procedure btFecharClick(Sender: TObject);
-    procedure btAtualizarClick(Sender: TObject);
+    procedure btExecuteQueryClick(Sender: TObject);
     procedure Panel1Resize(Sender: TObject);
   private
     { Private declarations }
@@ -39,7 +39,7 @@ type
 
 implementation
 
-uses uObterMetaDados, uPrincipal, uVariaveisGlobais;
+uses uObterMetaDados, uPrincipal;
 
 {$R *.lfm}
 
@@ -67,17 +67,17 @@ begin
   end
   else
   begin
-    cds.Close;
+    buff.Close;
     try
       Screen.Cursor := crHourGlass;
-      TObterMetaDados.PopularBufferComSelect(memoSQL.Lines.Text, cds);
+      TObterMetaDados.PopularBufferComSelect(memoSQL.Lines.Text, buff);
     finally
       Screen.Cursor := crDefault;
     end;
   end;
 end;
 
-procedure TFrameConsultaDados.btAtualizarClick(Sender: TObject);
+procedure TFrameConsultaDados.btExecuteQueryClick(Sender: TObject);
 begin
   AvaliarEExecutarQuery;
 end;
@@ -87,13 +87,13 @@ var
   pnW: Integer;
 begin
   pnW := Trunc(Panel1.Width / 2);
-  btAtualizar.Left := Trunc(pnW - btAtualizar.Width + btAtualizar.Width / 2) - 2;
-  btFechar.Left := Trunc(pnW + btAtualizar.Width - btAtualizar.Width / 2) + 2;
+  btExecuteQuery.Left := Trunc(pnW - btExecuteQuery.Width + btExecuteQuery.Width / 2) - 2;
+  btFechar.Left := Trunc(pnW + btExecuteQuery.Width - btExecuteQuery.Width / 2) + 2;
 end;
 
 procedure TFrameConsultaDados.btFecharClick(Sender: TObject);
 begin
-  FormPrincipal.DiagramaManager.FreeOpenedFeature(FOwnerTabela); // this already free this frame
+  FormPrincipal.FeaturesHandler.FreeOpenedFeature(FOwnerTabela); // this already free this frame
 end;
 
 procedure TFrameConsultaDados.ObterAmostra(OwnerTabela: string);

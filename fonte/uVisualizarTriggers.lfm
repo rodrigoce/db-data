@@ -600,8 +600,8 @@ object FormVisualizarTriggers: TFormVisualizarTriggers
   object Ds: TDataSource
     AutoEdit = False
     DataSet = buffer
-    Left = 184
-    Top = 48
+    Left = 272
+    Top = 56
   end
   object buffer: TBufDataset
     FieldDefs = <>
@@ -612,6 +612,8 @@ object FormVisualizarTriggers: TFormVisualizarTriggers
   object sqlHighLight: TSynSQLSyn
     DefaultFilter = 'Arquivos SQL (*.sql)|*.sql'
     Enabled = False
+    CommentAttri.Foreground = clGreen
+    CommentAttri.Style = []
     SQLDialect = sqlSybase
     Left = 256
     Top = 240

@@ -58,7 +58,7 @@ uses uVariaveisGlobais, uObterMetaDados, uPrincipal;
 procedure TFormPesquisarTabelas.btAdicionarNoDiagramaClick(Sender: TObject);
 begin
   if (cdsTabelas.Active) and  (cdsTabelas.RecordCount > 0) then
-      FormPrincipal.DiagramaManager.CurrentDiagram.AddEntity(cdsTabelas.FieldByName('owner').AsString, cdsTabelas.FieldByName('object_name').AsString, 3, 3, False)
+      FormPrincipal.FeaturesHandler.CurrentDiagram.AddEntity(cdsTabelas.FieldByName('owner').AsString, cdsTabelas.FieldByName('object_name').AsString, 3, 3, False)
   else
     Application.MessageBox('Nenhuma Tabela foi selecionada!', 'ATENÇÃO', MB_OK + MB_ICONWARNING);
 end;
