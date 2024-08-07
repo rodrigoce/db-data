@@ -8,7 +8,7 @@ uses
   Unit2 in 'Unit2.pas' {Form2},
   uConnection in 'uConnection.pas',
   uObterMetaDados in 'uObterMetaDados.pas',
-  uPesquisarRelacionamentos in 'uPesquisarRelacionamentos.pas' {FormPesquisarRelacionamentos},
+  uSearchRelatedTable {FormPesquisarRelacionamentos},
   uLog in 'uLog.pas',
   uVariaveisGlobais in 'uVariaveisGlobais.pas',
   uFuncoes in 'uFuncoes.pas',
@@ -23,7 +23,7 @@ uses
   uEntityRelationshipArrowShape in 'uEntityRelationshipArrowShape.pas',
   uERNotationsCore in 'uERNotationsCore.pas',
   uMoverObjetos in 'uMoverObjetos.pas' {FormMoverObjetos},
-  uFrameConsultaDados in 'uFrameConsultaDados.pas' {FrameConsultaDados: TFrame};
+  uFrameQueryEditor {FrameConsultaDados: TFrame};
 
 {$R *.res}
 

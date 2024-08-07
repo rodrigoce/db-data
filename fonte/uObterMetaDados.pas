@@ -413,6 +413,7 @@ var
 begin
   q := TSQLQuery.Create(nil);
   q.DataBase := TConexao.GetConexao;
+  q.PacketRecords := 15;
 
   q.SQL.Add(sql);
 

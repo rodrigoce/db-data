@@ -75,11 +75,12 @@
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
-        <Filename Value="uPesquisarRelacionamentos.pas"/>
+        <Filename Value="usearchrelatedtable.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="FormPesquisarRelacionamentos"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uSearchRelatedTable"/>
       </Unit>
       <Unit>
         <Filename Value="uLog.pas"/>
@@ -161,11 +162,12 @@
         <ResourceBaseClass Value="Form"/>
       </Unit>
       <Unit>
-        <Filename Value="uFrameConsultaDados.pas"/>
+        <Filename Value="uframequeryeditor.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="FrameConsultaDados"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="uFrameQueryEditor"/>
       </Unit>
     </Units>
   </ProjectOptions>

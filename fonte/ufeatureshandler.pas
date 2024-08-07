@@ -12,7 +12,7 @@ interface
 uses
   LCLIntf, LCLType, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, Menus, DB, BufDataset, SysUtils, Generics.Collections,
-  uAppFile, uERNotationsCore, uFrameConsultaDados, uVariaveisGlobais; {fgl TFPGMapObject dicionário}
+  uAppFile, uERNotationsCore, uFrameQueryEditor, uVariaveisGlobais; {fgl TFPGMapObject dicionário}
 
 type
 

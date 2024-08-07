@@ -344,7 +344,7 @@ type
 implementation
 
 uses uObterMetaDados, uEntityRelationshipArrowShape, uVisualizarTriggers,
-  uPesquisarRelacionamentos, uVariaveisGlobais, uPrincipal;
+  uSearchRelatedTable, uVariaveisGlobais, uPrincipal;
 
 { TEntityContainer }
 
@@ -2142,12 +2142,12 @@ end;
 
 procedure TPopMenuEntity.PesquisarTabelasFilhas(Sender: TObject);
 begin
-  TFormPesquisarRelacionamentos.ObterTabelasFilhas(TEntity(FEntity));
+  TFormSearchRelatedTable.ObterTabelasFilhas(TEntity(FEntity));
 end;
 
 procedure TPopMenuEntity.PesquisarTabelasPai(Sender: TObject);
 begin
-  TFormPesquisarRelacionamentos.ObterTabelasPai(TEntity(FEntity));
+  TFormSearchRelatedTable.ObterTabelasPai(TEntity(FEntity));
 end;
 
 procedure TPopMenuEntity.PopUp(Entity: TObject);

@@ -1,4 +1,4 @@
-unit uPesquisarRelacionamentos;
+unit uSearchRelatedTable;
 {
 Criado por: Rodrigo Castro Eleotério
 Data: 27/05/2013
@@ -7,15 +7,14 @@ Data: 27/05/2013
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, DB, BufDataset, Grids, DBGrids, StdCtrls,
-  uERNotationsCore;
+  SysUtils, Variants, Classes, Graphics, Controls, Forms, Dialogs, DB,
+  BufDataset, DBGrids, StdCtrls, uERNotationsCore;
 
 type
 
-  { TFormPesquisarRelacionamentos }
+  { TFormSearchRelatedTable }
 
-  TFormPesquisarRelacionamentos = class(TForm)
+  TFormSearchRelatedTable = class(TForm)
     cds: TBufDataset;
     DBGrid1: TDBGrid;
     Ds: TDataSource;
@@ -40,7 +39,7 @@ type
   end;
 
 var
-  FormPesquisarRelacionamentos: TFormPesquisarRelacionamentos;
+  FormPesquisarRelacionamentos: TFormSearchRelatedTable;
 
 implementation
 
@@ -50,44 +49,48 @@ uses uObterMetaDados, uPrincipal;
 
 { TFormDevendarRelacionamentos }
 
-procedure TFormPesquisarRelacionamentos.btAddClick(Sender: TObject);
+procedure TFormSearchRelatedTable.btAddClick(Sender: TObject);
 begin
   FormPrincipal.FeaturesHandler.CurrentDiagram.AddEntity(Ds.DataSet.Fields[0].AsString, Ds.DataSet.Fields[1].AsString, 3, 3, False);
 end;
 
-procedure TFormPesquisarRelacionamentos.edNomeChange(Sender: TObject);
+procedure TFormSearchRelatedTable.edNomeChange(Sender: TObject);
 begin
   cds.Locate('tabela', edNome.Text, [loPartialKey])
 end;
 
-class procedure TFormPesquisarRelacionamentos.ObterTabelasFilhas(EntityPai: TEntity);
+class procedure TFormSearchRelatedTable.ObterTabelasFilhas(EntityPai: TEntity);
 begin
 
-  Application.CreateForm(TFormPesquisarRelacionamentos, FormPesquisarRelacionamentos);
+  Application.CreateForm(TFormSearchRelatedTable, FormPesquisarRelacionamentos);
   with FormPesquisarRelacionamentos do
   begin
     Caption := 'Buscando tabelas filhas de ' + EntityPai.SchemaOwner + '.' + EntityPai.NomeTabela;
+    Screen.Cursor := crHourGlass;
     TObterMetaDados.ObterTabelasRelacionadasFilhas(EntityPai.SchemaOwner, EntityPai.PrimaryKeyConstraintName, EntityPai.NomeTabela, cds);
+    Screen.Cursor := crDefault;
     OrdenarTabelas;
     Show;
   end;
 
 end;
 
-class procedure TFormPesquisarRelacionamentos.ObterTabelasPai(
+class procedure TFormSearchRelatedTable.ObterTabelasPai(
   EntityFilha: TEntity);
 begin
-  Application.CreateForm(TFormPesquisarRelacionamentos, FormPesquisarRelacionamentos);
+  Application.CreateForm(TFormSearchRelatedTable, FormPesquisarRelacionamentos);
   with FormPesquisarRelacionamentos do
   begin
     Caption := 'Buscando tabelas pais de ' + EntityFilha.SchemaOwner + '.' + EntityFilha.NomeTabela;
+    Screen.Cursor := crHourGlass;
     TObterMetaDados.ObterTabelasRelacionadasPai(EntityFilha.SchemaOwner, EntityFilha.NomeTabela, cds);
+    Screen.Cursor := crDefault;
     OrdenarTabelas;
     Show;
   end;
 end;
 
-procedure TFormPesquisarRelacionamentos.OrdenarTabelas;
+procedure TFormSearchRelatedTable.OrdenarTabelas;
 begin
   if rbOwner.Checked then
   begin
@@ -99,7 +102,7 @@ begin
   labQtde.Caption := IntToStr(cds.RecordCount) + ' tabelas encontadas';
 end;
 
-procedure TFormPesquisarRelacionamentos.rbTabelaClick(Sender: TObject);
+procedure TFormSearchRelatedTable.rbTabelaClick(Sender: TObject);
 begin
   OrdenarTabelas;
 end;
