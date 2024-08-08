@@ -293,7 +293,7 @@ end;
 
 procedure TFeaturesHandler.OpenQueryContainer(OwnerPlusTabelaAsID: string);
 var
-  frameAmostra: TFrameConsultaDados;
+  frameAmostra: TFrameQueryEditor;
   indexOfOpenedFeature: integer;
 begin
   // verifica se ele já foi aberto, se sim, coloca em tela simplesmente
@@ -304,7 +304,7 @@ begin
     FOpenedFeatures[indexOfOpenedFeature].Frame.Visible := True
   else
   begin
-    frameAmostra := TFrameConsultaDados.Create(FParentWinControl);
+    frameAmostra := TFrameQueryEditor.Create(FParentWinControl);
     frameAmostra.Parent := FParentWinControl;
     frameAmostra.Name := ''; // da um nome qualquer;
 

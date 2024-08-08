@@ -5,14 +5,22 @@
     <PathDelim Value="\"/>
     <General>
       <SessionStorage Value="InProjectDir"/>
-      <Title Value="DBData"/>
-      <UseAppBundle Value="False"/>
+      <Title Value="DB-Data"/>
+      <Scaled Value="True"/>
       <ResourceType Value="res"/>
+      <UseXPManifest Value="True"/>
+      <XPManifest>
+        <DpiAware Value="True"/>
+        <TextName Value="RODRIGOCE.DBDATA"/>
+        <TextDesc Value="DB Explorer"/>
+      </XPManifest>
       <Icon Value="0"/>
     </General>
     <VersionInfo>
       <UseVersionInfo Value="True"/>
+      <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="2"/>
+      <BuildNr Value="1"/>
     </VersionInfo>
     <BuildModes>
       <Item Name="Default" Default="True"/>
@@ -26,22 +34,10 @@
     </RunParams>
     <RequiredPackages>
       <Item>
-        <PackageName Value="TurboPowerIPro"/>
-      </Item>
-      <Item>
-        <PackageName Value="pascalscript"/>
-      </Item>
-      <Item>
         <PackageName Value="SynEditDsgn"/>
       </Item>
       <Item>
         <PackageName Value="SynEdit"/>
-      </Item>
-      <Item>
-        <PackageName Value="FCL"/>
-      </Item>
-      <Item>
-        <PackageName Value="SQLDBLaz"/>
       </Item>
       <Item>
         <PackageName Value="LCL"/>
@@ -53,42 +49,12 @@
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
-        <Filename Value="uPrincipal.pas"/>
+        <Filename Value="unit1.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="FormPrincipal"/>
+        <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-      </Unit>
-      <Unit>
-        <Filename Value="Unit2.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="Form2"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-      </Unit>
-      <Unit>
-        <Filename Value="uConnection.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit>
-      <Unit>
-        <Filename Value="uObterMetaDados.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit>
-      <Unit>
-        <Filename Value="usearchrelatedtable.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="FormPesquisarRelacionamentos"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="uSearchRelatedTable"/>
-      </Unit>
-      <Unit>
-        <Filename Value="uLog.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit>
-      <Unit>
-        <Filename Value="uVariaveisGlobais.pas"/>
-        <IsPartOfProject Value="True"/>
+        <UnitName Value="Unit1"/>
       </Unit>
       <Unit>
         <Filename Value="uFuncoes.pas"/>
@@ -100,51 +66,14 @@
         <UnitName Value="uAppFile"/>
       </Unit>
       <Unit>
-        <Filename Value="ufeatureshandler.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="uFeaturesHandler"/>
-      </Unit>
-      <Unit>
-        <Filename Value="uPesquisarDiagramas.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="FormPesquisarDiagramas"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-      </Unit>
-      <Unit>
-        <Filename Value="uSobre.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="FormSobre"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-      </Unit>
-      <Unit>
         <Filename Value="uConfigConexao.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="FormConfigConexao"/>
-        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit>
       <Unit>
-        <Filename Value="uPesquisarTabelas.pas"/>
+        <Filename Value="uConnection.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="FormPesquisarTabelas"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-      </Unit>
-      <Unit>
-        <Filename Value="uExibeTexto.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="FormExibeTexto"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-      </Unit>
-      <Unit>
-        <Filename Value="uVisualizarTriggers.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="FormVisualizarTriggers"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
       </Unit>
       <Unit>
         <Filename Value="uEntityRelationshipArrowShape.pas"/>
@@ -155,34 +84,107 @@
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
-        <Filename Value="uMoverObjetos.pas"/>
+        <Filename Value="uExibeTexto.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="FormMoverObjetos"/>
-        <HasResources Value="True"/>
+        <ComponentName Value="FormExibeTexto"/>
         <ResourceBaseClass Value="Form"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ufeatureshandler.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uFeaturesHandler"/>
       </Unit>
       <Unit>
         <Filename Value="uframequeryeditor.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="FrameConsultaDados"/>
+        <ComponentName Value="FrameQueryEditor"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="uFrameQueryEditor"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uLog.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uMoverObjetos.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormMoverObjetos"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit>
+      <Unit>
+        <Filename Value="Unit2.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form2"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uObterMetaDados.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uPesquisarDiagramas.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormPesquisarDiagramas"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uPesquisarTabelas.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormPesquisarTabelas"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uPrincipal.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormPrincipal"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit>
+      <Unit>
+        <Filename Value="usearchrelatedtable.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormSearchRelatedTable"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uSearchRelatedTable"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uSobre.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormSobre"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uVariaveisGlobais.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uVisualizarTriggers.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormVisualizarTriggers"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit>
+      <Unit>
+        <Filename Value="unit3.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Frame1"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="Unit3"/>
       </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="11"/>
     <PathDelim Value="\"/>
+    <Target>
+      <Filename Value="DBData"/>
+    </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
-    <Parsing>
-      <SyntaxOptions>
-        <SyntaxMode Value="Delphi"/>
-      </SyntaxOptions>
-    </Parsing>
     <Linking>
       <Debugging>
         <DebugInfoType Value="dsDwarf3"/>
@@ -193,9 +195,6 @@
         </Win32>
       </Options>
     </Linking>
-    <Other>
-      <CustomOptions Value="-dBorland -dVer150 -dDelphi7 -dCompiler6_Up -dPUREPASCAL"/>
-    </Other>
   </CompilerOptions>
   <Debugging>
     <Exceptions>
@@ -207,9 +206,6 @@
       </Item>
       <Item>
         <Name Value="EFOpenError"/>
-      </Item>
-      <Item>
-        <Name Value="EOraDatabaseError"/>
       </Item>
     </Exceptions>
   </Debugging>

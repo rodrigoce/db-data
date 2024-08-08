@@ -1,35 +1,30 @@
 program DBData;
 
-{$MODE Delphi}
+{$mode objfpc}{$H+}
 
 uses
-  Forms, pascalscript, Interfaces,
-  uPrincipal in 'uPrincipal.pas' {FormPrincipal},
-  Unit2 in 'Unit2.pas' {Form2},
-  uConnection in 'uConnection.pas',
-  uObterMetaDados in 'uObterMetaDados.pas',
-  uSearchRelatedTable {FormPesquisarRelacionamentos},
-  uLog in 'uLog.pas',
-  uVariaveisGlobais in 'uVariaveisGlobais.pas',
-  uFuncoes in 'uFuncoes.pas',
-  uAppFile,
-  uFeaturesHandler,
-  uPesquisarDiagramas in 'uPesquisarDiagramas.pas' {FormPesquisarDiagramas},
-  uSobre in 'uSobre.pas' {FormSobre},
-  uConfigConexao in 'uConfigConexao.pas' {FormConfigConexao},
-  uPesquisarTabelas in 'uPesquisarTabelas.pas' {FormPesquisarTabelas},
-  uExibeTexto in 'uExibeTexto.pas' {FormExibeTexto},
-  uVisualizarTriggers in 'uVisualizarTriggers.pas' {FormVisualizarTriggers},
-  uEntityRelationshipArrowShape in 'uEntityRelationshipArrowShape.pas',
-  uERNotationsCore in 'uERNotationsCore.pas',
-  uMoverObjetos in 'uMoverObjetos.pas' {FormMoverObjetos},
-  uFrameQueryEditor {FrameConsultaDados: TFrame};
+  {$IFDEF UNIX}
+  cthreads,
+  {$ENDIF}
+  {$IFDEF HASAMIGA}
+  athreads,
+  {$ENDIF}
+  Interfaces, // this includes the LCL widgetset
+  Forms, unit1, uFuncoes, uVisualizarTriggers, uVariaveisGlobais, uSobre,
+  uSearchRelatedTable, uPrincipal, uPesquisarTabelas, uPesquisarDiagramas,
+  uObterMetaDados, Unit2, uMoverObjetos, uLog, uFeaturesHandler, uExibeTexto,
+  uERNotationsCore, uEntityRelationshipArrowShape, uConnection, uConfigConexao,
+  uAppFile, unit3, uFrameQueryEditor
+  { you can add units after this };
 
 {$R *.res}
 
 begin
+  RequireDerivedFormResource := True;
+  Application.Title := 'DB-Data';
+  Application.Scaled := True;
   Application.Initialize;
   Application.CreateForm(TFormPrincipal, FormPrincipal);
-  Application.CreateForm(TForm2, Form2);
   Application.Run;
 end.
+

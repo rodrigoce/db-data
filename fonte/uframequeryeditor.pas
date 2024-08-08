@@ -12,13 +12,13 @@ interface
 uses
   Windows, SysUtils, Variants, Classes, Graphics, Controls, Forms, Dialogs,
   ExtCtrls, DBGrids, StdCtrls, SynEdit, SynHighlighterSQL, DB,
-  BufDataset, SQLDB;
+  BufDataset, SQLDB, LazUTF8;
 
 type
 
-  { TFrameConsultaDados }
+  { TFrameQueryEditor }
 
-  TFrameConsultaDados = class(TFrame)
+  TFrameQueryEditor = class(TFrame)
     btExecuteQuery: TButton;
     btFechar: TButton;
     buff: TBufDataset;
@@ -47,18 +47,18 @@ uses uObterMetaDados, uPrincipal;
 
 {$R *.lfm}
 
-{ TFrameConsultaDados }
+{ TFrameQueryEditor }
 
-procedure TFrameConsultaDados.AvaliarEExecutarQuery;
+procedure TFrameQueryEditor.AvaliarEExecutarQuery;
+const securityMsg = 'Por motivos de segurança a primeira palavra da instrução deve iniciar com o key word "select".' +
+  LineEnding + 'Isso porque não foi implementado controle de transações para desfazer updates e deletes.';
 var
   passou: Boolean;
 begin
-  passou := Copy(memoSQL.Lines.Text, 1, 6) = 'select ';
+  passou := CompareText(Copy(memoSQL.Lines.Text, 1, 7), 'select ') = 0;
   if not passou then
   begin
-    Application.MessageBox(PChar('Por motivos de segurança a primeira palavra da instrução deve iniciar com o key word "select".' +
-      LineEnding + 'Isso porque não foi implementado controle de transações para desfazer updates e deletes.'),
-      'Atenção', MB_OK + MB_ICONSTOP);
+    Application.MessageBox(securityMsg, 'Atenção', MB_OK + MB_ICONSTOP);
     Exit;
   end;
 
@@ -81,12 +81,12 @@ begin
 
 end;
 
-procedure TFrameConsultaDados.btExecuteQueryClick(Sender: TObject);
+procedure TFrameQueryEditor.btExecuteQueryClick(Sender: TObject);
 begin
   AvaliarEExecutarQuery;
 end;
 
-procedure TFrameConsultaDados.Panel1Resize(Sender: TObject);
+procedure TFrameQueryEditor.Panel1Resize(Sender: TObject);
 {var
   pnW: Integer;}
 begin
@@ -95,12 +95,12 @@ begin
   btFechar.Left := Trunc(pnW + btExecuteQuery.Width - btExecuteQuery.Width / 2) + 2;}
 end;
 
-procedure TFrameConsultaDados.btFecharClick(Sender: TObject);
+procedure TFrameQueryEditor.btFecharClick(Sender: TObject);
 begin
   FormPrincipal.FeaturesHandler.FreeOpenedFeature(FOwnerTabela); // this already free this frame
 end;
 
-procedure TFrameConsultaDados.ObterAmostra(OwnerTabela: string);
+procedure TFrameQueryEditor.ObterAmostra(OwnerTabela: string);
 begin
   FOwnerTabela := OwnerTabela;
   memoSQL.Lines.Clear;

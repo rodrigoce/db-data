@@ -1,4 +1,5 @@
 unit uSearchRelatedTable;
+
 {
 Criado por: Rodrigo Castro Eleotério
 Data: 27/05/2013
@@ -39,7 +40,7 @@ type
   end;
 
 var
-  FormPesquisarRelacionamentos: TFormSearchRelatedTable;
+  FormSearchRelatedTable: TFormSearchRelatedTable;
 
 implementation
 
@@ -47,7 +48,7 @@ uses uObterMetaDados, uPrincipal;
 
 {$R *.lfm}
 
-{ TFormDevendarRelacionamentos }
+{ TFormSearchRelatedTable }
 
 procedure TFormSearchRelatedTable.btAddClick(Sender: TObject);
 begin
@@ -62,8 +63,8 @@ end;
 class procedure TFormSearchRelatedTable.ObterTabelasFilhas(EntityPai: TEntity);
 begin
 
-  Application.CreateForm(TFormSearchRelatedTable, FormPesquisarRelacionamentos);
-  with FormPesquisarRelacionamentos do
+  Application.CreateForm(TFormSearchRelatedTable, FormSearchRelatedTable);
+  with FormSearchRelatedTable do
   begin
     Caption := 'Buscando tabelas filhas de ' + EntityPai.SchemaOwner + '.' + EntityPai.NomeTabela;
     Screen.Cursor := crHourGlass;
@@ -78,8 +79,8 @@ end;
 class procedure TFormSearchRelatedTable.ObterTabelasPai(
   EntityFilha: TEntity);
 begin
-  Application.CreateForm(TFormSearchRelatedTable, FormPesquisarRelacionamentos);
-  with FormPesquisarRelacionamentos do
+  Application.CreateForm(TFormSearchRelatedTable, FormSearchRelatedTable);
+  with FormSearchRelatedTable do
   begin
     Caption := 'Buscando tabelas pais de ' + EntityFilha.SchemaOwner + '.' + EntityFilha.NomeTabela;
     Screen.Cursor := crHourGlass;

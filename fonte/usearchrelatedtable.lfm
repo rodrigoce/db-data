@@ -1,4 +1,4 @@
-object FormPesquisarRelacionamentos: TFormPesquisarRelacionamentos
+object FormSearchRelatedTable: TFormSearchRelatedTable
   Left = 793
   Height = 302
   Top = 409

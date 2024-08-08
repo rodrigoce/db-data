@@ -1,4 +1,7 @@
 unit uPrincipal;
+
+{$mode objfpc}{$H+}
+
 {
 Criado por: Rodrigo Castro Eleotério
 Data: 24/05/2013
@@ -12,6 +15,9 @@ uses
   uFeaturesHandler, ComCtrls, IniFiles;
 
 type
+
+  { TFormPrincipal }
+
   TFormPrincipal = class(TForm)
     MainMenu1: TMainMenu;
     Arquivo11: TMenuItem;
@@ -42,10 +48,10 @@ type
     MoverObjetos1: TMenuItem;
     procedure eladeTestes1Click(Sender: TObject);
     procedure AdicionarEntidade1Click(Sender: TObject);
+    procedure FormClose(Sender: TObject;var CloseAction: TCloseAction);
     procedure SalvarModelo1Click(Sender: TObject);
     procedure AbrirModelo1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure Abrirdiagrama1Click(Sender: TObject);
     procedure Novo1Click(Sender: TObject);
     procedure Fechar1Click(Sender: TObject);
@@ -91,6 +97,40 @@ end;
 procedure TFormPrincipal.AdicionarEntidade1Click(Sender: TObject);
 begin
   TFormPesquisarTabelas.PesquisarObjetos(True);
+end;
+
+procedure TFormPrincipal.FormClose(Sender: TObject;var CloseAction: TCloseAction
+  );
+begin
+  CloseAction := caNone;
+
+  if Application.MessageBox('Deseja encerrar o DB-Data?', 'Atenção', MB_YESNO +
+    MB_ICONQUESTION) = IDYES then
+  begin
+    if FFeaturesHanlder.HasFileToSave then
+      FFeaturesHanlder.CloseFile;
+    CloseAction := caFree;
+  end;
+
+  //if FFeaturesHanlder.HasFileToSave then
+  //begin
+    {if  Application.MessageBox('Deseja salvar as alterações do Modelo atual?', 'ATENÇÃO',
+      MB_YESNO + MB_ICONQUESTION) = IDYES then
+    begin
+      if FFeaturesHanlder.SaveFile then
+      begin
+        FFeaturesHanlder.CloseFile;
+        CloseAction := caFree;
+      end;
+    end
+    else
+    begin   }
+      //FFeaturesHanlder.CloseFile;
+      {CloseAction := caFree;  }
+    //end;
+  {end
+  else
+    CloseAction := caFree;}
 end;
 
 procedure TFormPrincipal.ConfigurarConexo1Click(Sender: TObject);
@@ -144,39 +184,6 @@ begin
     FFeaturesHanlder.CloseFile;
 end;
 
-procedure TFormPrincipal.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-  Action := caNone;
-
-  if Application.MessageBox('Deseja encerrar o DB-Data?', 'Atenção', MB_YESNO +
-    MB_ICONQUESTION) = IDYES then
-  begin
-    if FFeaturesHanlder.HasFileToSave then
-      FFeaturesHanlder.CloseFile;
-    Action := caFree;
-  end;
-
-  //if FFeaturesHanlder.HasFileToSave then
-  //begin
-    {if  Application.MessageBox('Deseja salvar as alterações do Modelo atual?', 'ATENÇÃO',
-      MB_YESNO + MB_ICONQUESTION) = IDYES then
-    begin
-      if FFeaturesHanlder.SaveFile then
-      begin
-        FFeaturesHanlder.CloseFile;
-        Action := caFree;
-      end;
-    end
-    else
-    begin   }
-      //FFeaturesHanlder.CloseFile;
-      {Action := caFree;  }
-    //end;
-  {end
-  else
-    Action := caFree; }
-end;
-
 procedure TFormPrincipal.FormDestroy(Sender: TObject);
 begin
   //IniFile.Free;
@@ -209,7 +216,7 @@ begin
     // carrega o aplicativo com um modelo em branco para ser usado
     FFeaturesHanlder.NewFile;
     
-  FFeaturesHanlder.OnChangeFeatureState := HabilitarMenusContexto;
+  FFeaturesHanlder.OnChangeFeatureState := @HabilitarMenusContexto;
   // chama a primeira vez manualmente
   HabilitarMenusContexto(Sender);
 
