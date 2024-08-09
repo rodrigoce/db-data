@@ -3,7 +3,7 @@ unit uFrameQueryEditor;
 {$mode objfpc}{$H+}
 
 {
-Criado por: Rodrigo Castro Eleotério
+Criado por: Rodrigo Castro EleotÃ©rio
 Data: 07/11/2014
 }
 
@@ -20,16 +20,17 @@ type
 
   TFrameQueryEditor = class(TFrame)
     btExecuteQuery: TButton;
-    btFechar: TButton;
+    btClose: TButton;
     buff: TBufDataset;
     GridData: TDBGrid;
+    labRowCount: TLabel;
     memoSQL: TSynEdit;
     Panel1: TPanel;
     Ds: TDataSource;
     Panel2: TPanel;
     sqlHighLight: TSynSQLSyn;
     SQLQuery1: TSQLQuery;
-    procedure btFecharClick(Sender: TObject);
+    procedure btCloseClick(Sender: TObject);
     procedure btExecuteQueryClick(Sender: TObject);
     procedure buffAfterOpen(DataSet: TDataSet);
     procedure buffBeforeOpen(DataSet: TDataSet);
@@ -54,15 +55,15 @@ uses uObterMetaDados, uPrincipal;
 { TFrameQueryEditor }
 
 procedure TFrameQueryEditor.AvaliarEExecutarQuery;
-const securityMsg = 'Por motivos de segurança a primeira palavra da instrução deve iniciar com o key word "select".' +
-  LineEnding + 'Isso porque não foi implementado controle de transações para desfazer updates e deletes.';
+const securityMsg = 'Por motivos de seguranÃ§a a primeira palavra da instruÃ§Ã£o deve iniciar com o key word "select".' +
+  LineEnding + 'Isso porque nÃ£o foi implementado controle de transaÃ§Ãµes para desfazer updates e deletes.';
 var
   passou: Boolean;
 begin
   passou := CompareText(Copy(memoSQL.Lines.Text, 1, 7), 'select ') = 0;
   if not passou then
   begin
-    Application.MessageBox(securityMsg, 'Atenção', MB_OK + MB_ICONSTOP);
+    Application.MessageBox(securityMsg, 'AtenÃ§Ã£o', MB_OK + MB_ICONSTOP);
     Exit;
   end;
 
@@ -71,7 +72,7 @@ begin
   if not passou then
   begin
     Application.MessageBox('A key word "rownum" deve estar presente para evitar travamentos com massa de dado muito longa.',
-      'Atenção', MB_OK + MB_ICONSTOP);
+      'AtenÃ§Ã£o', MB_OK + MB_ICONSTOP);
     Exit;
   end;
 
@@ -79,6 +80,8 @@ begin
     Screen.Cursor := crHourGlass;
     buff.Close;
     TObterMetaDados.PopularBufferComSelect(memoSQL.Lines.Text, buff);
+    GridData.AutoAdjustColumns;
+    labRowCount.Caption := 'Row Count: ' + IntToStr(buff.RecordCount);
   finally
     Screen.Cursor := crDefault;
   end;
@@ -93,9 +96,6 @@ end;
 procedure TFrameQueryEditor.buffAfterOpen(DataSet: TDataSet);
 var
   indexedCol: string;
-  //
-   ColWidth : array of cardinal;
-   Counter, avaliacoes, qtdeMax  : integer;
 begin
   buff.IndexFieldNames := FOldIndex;
   if buff.IndexFieldNames <> '' then
@@ -106,41 +106,6 @@ begin
     else
       GridData.Columns.ColumnByFieldname(indexedCol).Title.Font.Color := clBlue;
   end;
-  GridData.AutoAdjustColumns;
-
-  //
-    SetLength(ColWidth,buff.FieldCount);
-
-  for Counter := 0 to buff.FieldCount - 1 do
-  begin
-    ColWidth[Counter] := Max(ColWidth[Counter],GridData.Canvas.TextWidth(GridData.Columns[Counter].Title.Caption) + 8);
-    GridData.Columns[Counter].Width := ColWidth[Counter];
-  end;
-
-  try
-    with buff do
-    begin
-      DisableControls;
-      avaliacoes := 0;
-      qtdeMax := Min(50, RecordCount);
-
-      while (avaliacoes <= qtdeMax) do
-      begin
-        for Counter := 0 to ( FieldCount - 1 ) do
-        begin
-          ColWidth[Counter] := Max(ColWidth[Counter],GridData.Canvas.TextWidth(Fields[Counter].AsString) + 8);
-          GridData.Columns[Counter].Width := ColWidth[Counter];
-        end;
-        Inc(avaliacoes);
-        Next;
-      end;
-      First;
-      EnableControls;
-    end;
-  finally
-    Finalize(ColWidth);
-  end;
-
 end;
 
 procedure TFrameQueryEditor.buffBeforeOpen(DataSet: TDataSet);
@@ -169,6 +134,7 @@ begin
       buff.IndexFieldNames := Column.FieldName;
       Column.Title.Font.Color := clBlue;
     end;
+    buff.First;
   end;
 end;
 
@@ -178,10 +144,10 @@ procedure TFrameQueryEditor.Panel1Resize(Sender: TObject);
 begin
 {  pnW := Trunc(Panel1.Width / 2);
   btExecuteQuery.Left := Trunc(pnW - btExecuteQuery.Width + btExecuteQuery.Width / 2) - 2;
-  btFechar.Left := Trunc(pnW + btExecuteQuery.Width - btExecuteQuery.Width / 2) + 2;}
+  btClose.Left := Trunc(pnW + btExecuteQuery.Width - btExecuteQuery.Width / 2) + 2;}
 end;
 
-procedure TFrameQueryEditor.btFecharClick(Sender: TObject);
+procedure TFrameQueryEditor.btCloseClick(Sender: TObject);
 begin
   FormPrincipal.FeaturesHandler.FreeOpenedFeature(FOwnerTabela); // this already free this frame
 end;

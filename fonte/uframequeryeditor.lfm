@@ -55,22 +55,29 @@ object FrameQueryEditor: TFrameQueryEditor
       ParentColor = False
       TabOrder = 1
       object btExecuteQuery: TButton
-        Left = 16
-        Height = 96
-        Top = 16
-        Width = 168
-        Caption = 'Executar Consulta'
+        Left = 8
+        Height = 88
+        Top = 8
+        Width = 184
+        Caption = 'Run Query'
         TabOrder = 0
         OnClick = btExecuteQueryClick
       end
-      object btFechar: TButton
-        Left = 16
-        Height = 96
-        Top = 120
-        Width = 168
-        Caption = 'Fechar'
+      object btClose: TButton
+        Left = 8
+        Height = 88
+        Top = 104
+        Width = 184
+        Caption = 'Close'
         TabOrder = 1
-        OnClick = btFecharClick
+        OnClick = btCloseClick
+      end
+      object labRowCount: TLabel
+        Left = 8
+        Height = 15
+        Top = 205
+        Width = 65
+        Caption = 'Row Count: '
       end
     end
     inline memoSQL: TSynEdit

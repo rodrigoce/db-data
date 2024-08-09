@@ -1,6 +1,6 @@
 unit uPesquisarTabelas;
 {
-Criado por: Rodrigo Castro EleotÈrio
+Criado por: Rodrigo Castro Eleot√©rio
 Data: 27/11/2013
 }
 
@@ -60,7 +60,7 @@ begin
   if (cdsTabelas.Active) and  (cdsTabelas.RecordCount > 0) then
       FormPrincipal.FeaturesHandler.CurrentDiagram.AddEntity(cdsTabelas.FieldByName('owner').AsString, cdsTabelas.FieldByName('object_name').AsString, 3, 3, False)
   else
-    Application.MessageBox('Nenhuma Tabela foi selecionada!', 'ATEN«√O', MB_OK + MB_ICONWARNING);
+    Application.MessageBox('Nenhuma Tabela foi selecionada!', 'ATEN√á√ÉO', MB_OK + MB_ICONWARNING);
 end;
 
 procedure TFormPesquisarTabelas.btFecharClick(Sender: TObject);
@@ -86,8 +86,8 @@ begin
     TObterMetaDados.PesquisarObjetos(edOwner.Text, edTabela.Text, rgTipoPesquisa.ItemIndex, FTipoTabela, cdsTabelas);
   end
   else
-    Application.MessageBox('VocÍ n„o informou o nome da tabela a ser pesquisado!',
-      'ATEN«√O', MB_OK + MB_ICONWARNING);
+    Application.MessageBox('Voc√™ n√£o informou o nome da tabela a ser pesquisado!',
+      'ATEN√á√ÉO', MB_OK + MB_ICONWARNING);
 
   count := 0;
   if cdsTabelas.Active then

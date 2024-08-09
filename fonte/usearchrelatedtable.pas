@@ -1,7 +1,7 @@
 unit uSearchRelatedTable;
 
 {
-Criado por: Rodrigo Castro Eleotério
+Criado por: Rodrigo Castro EleotÃ©rio
 Data: 27/05/2013
 }
 
