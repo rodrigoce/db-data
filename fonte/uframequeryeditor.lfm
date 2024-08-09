@@ -9,7 +9,7 @@ object FrameQueryEditor: TFrameQueryEditor
   TabOrder = 0
   DesignLeft = 444
   DesignTop = 205
-  object DBGrid1: TDBGrid
+  object GridData: TDBGrid
     Left = 0
     Height = 143
     Top = 224
@@ -23,10 +23,10 @@ object FrameQueryEditor: TFrameQueryEditor
     Font.Color = clWindowText
     Font.Height = -13
     Font.Name = 'Calibri'
-    Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgAutoSizeColumns]
     ParentFont = False
     ReadOnly = True
     TabOrder = 1
+    OnTitleClick = GridDataTitleClick
   end
   object Panel1: TPanel
     Left = 0
@@ -581,6 +581,8 @@ object FrameQueryEditor: TFrameQueryEditor
   end
   object buff: TBufDataset
     FieldDefs = <>
+    AfterOpen = buffAfterOpen
+    BeforeOpen = buffBeforeOpen
     Left = 96
     Top = 32
   end

@@ -10,7 +10,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="72" Y="17"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="69"/>
       </Unit>
       <Unit>
         <Filename Value="unit1.pas"/>
@@ -21,20 +21,20 @@
         <UnitName Value="Unit1"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="11" Y="23"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="69"/>
       </Unit>
       <Unit>
         <Filename Value="uFuncoes.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="69"/>
       </Unit>
       <Unit>
         <Filename Value="uappfile.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uAppFile"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="69"/>
       </Unit>
       <Unit>
         <Filename Value="uConfigConexao.pas"/>
@@ -42,27 +42,27 @@
         <ComponentName Value="FormConfigConexao"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="69"/>
       </Unit>
       <Unit>
         <Filename Value="uConnection.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="69"/>
       </Unit>
       <Unit>
         <Filename Value="uEntityRelationshipArrowShape.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="69"/>
       </Unit>
       <Unit>
         <Filename Value="uERNotationsCore.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="8"/>
         <TopLine Value="348"/>
         <CursorPos Y="367"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="69"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -71,16 +71,16 @@
         <ComponentName Value="FormExibeTexto"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="69"/>
       </Unit>
       <Unit>
         <Filename Value="ufeatureshandler.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uFeaturesHandler"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="9"/>
         <TopLine Value="388"/>
         <CursorPos Y="476"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="69"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -90,8 +90,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="uFrameQueryEditor"/>
-        <CursorPos X="23" Y="10"/>
-        <UsageCount Value="20"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="112"/>
+        <CursorPos X="19" Y="132"/>
+        <UsageCount Value="69"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -99,7 +101,7 @@
         <Filename Value="uLog.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="69"/>
       </Unit>
       <Unit>
         <Filename Value="uMoverObjetos.pas"/>
@@ -107,7 +109,7 @@
         <ComponentName Value="FormMoverObjetos"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="69"/>
       </Unit>
       <Unit>
         <Filename Value="Unit2.pas"/>
@@ -115,13 +117,16 @@
         <ComponentName Value="Form2"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="69"/>
       </Unit>
       <Unit>
         <Filename Value="uObterMetaDados.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <UsageCount Value="20"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="402"/>
+        <CursorPos X="36" Y="418"/>
+        <UsageCount Value="69"/>
+        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="uPesquisarDiagramas.pas"/>
@@ -129,7 +134,7 @@
         <ComponentName Value="FormPesquisarDiagramas"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="69"/>
       </Unit>
       <Unit>
         <Filename Value="uPesquisarTabelas.pas"/>
@@ -137,7 +142,7 @@
         <ComponentName Value="FormPesquisarTabelas"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="69"/>
       </Unit>
       <Unit>
         <Filename Value="uPrincipal.pas"/>
@@ -145,11 +150,10 @@
         <ComponentName Value="FormPrincipal"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="10"/>
         <TopLine Value="88"/>
-        <CursorPos Y="57"/>
-        <UsageCount Value="20"/>
+        <CursorPos X="47" Y="99"/>
+        <UsageCount Value="69"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -160,9 +164,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uSearchRelatedTable"/>
-        <EditorIndex Value="1"/>
-        <CursorPos Y="2"/>
-        <UsageCount Value="20"/>
+        <EditorIndex Value="7"/>
+        <CursorPos X="45" Y="26"/>
+        <UsageCount Value="69"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -171,13 +175,13 @@
         <ComponentName Value="FormSobre"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="69"/>
       </Unit>
       <Unit>
         <Filename Value="uVariaveisGlobais.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="69"/>
       </Unit>
       <Unit>
         <Filename Value="uVisualizarTriggers.pas"/>
@@ -187,7 +191,7 @@
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="36" Y="10"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="69"/>
       </Unit>
       <Unit>
         <Filename Value="unit3.pas"/>
@@ -198,12 +202,12 @@
         <UnitName Value="Unit3"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="21" Y="11"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="69"/>
       </Unit>
       <Unit>
         <Filename Value="uframequeryeditor.lfm"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="15"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit>
       <Unit>
@@ -212,16 +216,57 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="332"/>
         <CursorPos X="3" Y="351"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="5"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\lcl\include\application.inc"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="55"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="5"/>
+      </Unit>
+      <Unit>
+        <Filename Value="C:\lazarus\lcl\dbgrids.pas"/>
+        <UnitName Value="DBGrids"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="1973"/>
+        <CursorPos X="32" Y="1992"/>
+        <UsageCount Value="12"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\objpas\sysutils\sysstr.inc"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="2378"/>
+        <CursorPos X="3" Y="2381"/>
+        <UsageCount Value="12"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\objpas\sysutils\sysstrh.inc"/>
+        <EditorIndex Value="5"/>
+        <CursorPos X="40" Y="28"/>
+        <UsageCount Value="12"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="C:\lazarus\lcl\graphics.pp"/>
+        <UnitName Value="Graphics"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="271"/>
+        <CursorPos X="3" Y="290"/>
+        <UsageCount Value="12"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\inc\wstrings.inc"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="628"/>
+        <CursorPos X="5" Y="638"/>
+        <UsageCount Value="12"/>
+        <Loaded Value="True"/>
       </Unit>
     </Units>
-    <JumpHistory HistoryIndex="8">
+    <JumpHistory HistoryIndex="27">
       <Position>
         <Filename Value="uframequeryeditor.pas"/>
         <Caret Line="25" Column="29" TopLine="13"/>
@@ -257,6 +302,82 @@
       <Position>
         <Filename Value="uERNotationsCore.pas"/>
         <Caret Line="367" TopLine="348"/>
+      </Position>
+      <Position>
+        <Filename Value="uframequeryeditor.pas"/>
+        <Caret Line="10" Column="23"/>
+      </Position>
+      <Position>
+        <Filename Value="uframequeryeditor.pas"/>
+        <Caret Line="94" Column="18" TopLine="86"/>
+      </Position>
+      <Position>
+        <Filename Value="uframequeryeditor.pas"/>
+        <Caret Line="102" Column="7" TopLine="86"/>
+      </Position>
+      <Position>
+        <Filename Value="uframequeryeditor.pas"/>
+        <Caret Line="94" Column="29" TopLine="75"/>
+      </Position>
+      <Position>
+        <Filename Value="uframequeryeditor.pas"/>
+        <Caret Line="92" Column="23" TopLine="75"/>
+      </Position>
+      <Position>
+        <Filename Value="uframequeryeditor.pas"/>
+        <Caret Line="103" Column="51" TopLine="77"/>
+      </Position>
+      <Position>
+        <Filename Value="uframequeryeditor.pas"/>
+        <Caret Line="97" Column="71" TopLine="77"/>
+      </Position>
+      <Position>
+        <Filename Value="uframequeryeditor.pas"/>
+        <Caret Line="98" Column="78" TopLine="74"/>
+      </Position>
+      <Position>
+        <Filename Value="uframequeryeditor.pas"/>
+        <Caret Line="100" Column="29" TopLine="74"/>
+      </Position>
+      <Position>
+        <Filename Value="uframequeryeditor.pas"/>
+        <Caret Line="121" Column="56" TopLine="87"/>
+      </Position>
+      <Position>
+        <Filename Value="uframequeryeditor.pas"/>
+        <Caret Line="129" Column="10" TopLine="94"/>
+      </Position>
+      <Position>
+        <Filename Value="uframequeryeditor.pas"/>
+        <Caret Line="104" Column="81" TopLine="95"/>
+      </Position>
+      <Position>
+        <Filename Value="uframequeryeditor.pas"/>
+        <Caret Line="101" Column="16" TopLine="93"/>
+      </Position>
+      <Position>
+        <Filename Value="uframequeryeditor.pas"/>
+        <Caret Line="106" Column="19" TopLine="93"/>
+      </Position>
+      <Position>
+        <Filename Value="C:\lazarus\lcl\dbgrids.pas"/>
+        <Caret Line="3718" Column="27" TopLine="3716"/>
+      </Position>
+      <Position>
+        <Filename Value="C:\lazarus\lcl\dbgrids.pas"/>
+        <Caret Line="1989" Column="17" TopLine="1973"/>
+      </Position>
+      <Position>
+        <Filename Value="uframequeryeditor.pas"/>
+        <Caret Line="143" TopLine="107"/>
+      </Position>
+      <Position>
+        <Filename Value="uframequeryeditor.pas"/>
+        <Caret Line="112" Column="28" TopLine="93"/>
+      </Position>
+      <Position>
+        <Filename Value="uframequeryeditor.pas"/>
+        <Caret Line="121" Column="14" TopLine="92"/>
       </Position>
     </JumpHistory>
     <RunParams>

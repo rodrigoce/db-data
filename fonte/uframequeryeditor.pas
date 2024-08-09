@@ -22,7 +22,7 @@ type
     btExecuteQuery: TButton;
     btFechar: TButton;
     buff: TBufDataset;
-    DBGrid1: TDBGrid;
+    GridData: TDBGrid;
     memoSQL: TSynEdit;
     Panel1: TPanel;
     Ds: TDataSource;
@@ -31,10 +31,14 @@ type
     SQLQuery1: TSQLQuery;
     procedure btFecharClick(Sender: TObject);
     procedure btExecuteQueryClick(Sender: TObject);
+    procedure buffAfterOpen(DataSet: TDataSet);
+    procedure buffBeforeOpen(DataSet: TDataSet);
+    procedure GridDataTitleClick(Column: TColumn);
     procedure Panel1Resize(Sender: TObject);
   private
     { Private declarations }
     FOwnerTabela: string;
+    FOldIndex: string;
   public
     { Public declarations }
     procedure AvaliarEExecutarQuery;
@@ -84,6 +88,88 @@ end;
 procedure TFrameQueryEditor.btExecuteQueryClick(Sender: TObject);
 begin
   AvaliarEExecutarQuery;
+end;
+
+procedure TFrameQueryEditor.buffAfterOpen(DataSet: TDataSet);
+var
+  indexedCol: string;
+  //
+   ColWidth : array of cardinal;
+   Counter, avaliacoes, qtdeMax  : integer;
+begin
+  buff.IndexFieldNames := FOldIndex;
+  if buff.IndexFieldNames <> '' then
+  begin
+    indexedCol := StringReplace(buff.IndexFieldNames, ' DESC', '', [rfReplaceAll]);
+    if Pos(' DESC', buff.IndexFieldNames) > 0 then
+      GridData.Columns.ColumnByFieldname(indexedCol).Title.Font.Color := clPurple
+    else
+      GridData.Columns.ColumnByFieldname(indexedCol).Title.Font.Color := clBlue;
+  end;
+  GridData.AutoAdjustColumns;
+
+  //
+    SetLength(ColWidth,buff.FieldCount);
+
+  for Counter := 0 to buff.FieldCount - 1 do
+  begin
+    ColWidth[Counter] := Max(ColWidth[Counter],GridData.Canvas.TextWidth(GridData.Columns[Counter].Title.Caption) + 8);
+    GridData.Columns[Counter].Width := ColWidth[Counter];
+  end;
+
+  try
+    with buff do
+    begin
+      DisableControls;
+      avaliacoes := 0;
+      qtdeMax := Min(50, RecordCount);
+
+      while (avaliacoes <= qtdeMax) do
+      begin
+        for Counter := 0 to ( FieldCount - 1 ) do
+        begin
+          ColWidth[Counter] := Max(ColWidth[Counter],GridData.Canvas.TextWidth(Fields[Counter].AsString) + 8);
+          GridData.Columns[Counter].Width := ColWidth[Counter];
+        end;
+        Inc(avaliacoes);
+        Next;
+      end;
+      First;
+      EnableControls;
+    end;
+  finally
+    Finalize(ColWidth);
+  end;
+
+end;
+
+procedure TFrameQueryEditor.buffBeforeOpen(DataSet: TDataSet);
+
+begin
+  FOldIndex := buff.IndexFieldNames;
+  buff.IndexFieldNames := '';
+end;
+
+procedure TFrameQueryEditor.GridDataTitleClick(Column: TColumn);
+var
+  col: TCollectionItem;
+begin
+  for col in GridData.Columns do
+    (col as TColumn).Title.Font.Color := clBlack;
+
+  if buff.Active then
+  begin
+    if buff.IndexFieldNames = Column.FieldName then
+    begin
+      buff.IndexFieldNames := Column.FieldName + ' DESC';
+      Column.Title.Font.Color := clPurple;
+    end
+    else
+    begin
+      buff.IndexFieldNames := Column.FieldName;
+      Column.Title.Font.Color := clBlue;
+    end;
+  end;
 end;
 
 procedure TFrameQueryEditor.Panel1Resize(Sender: TObject);
