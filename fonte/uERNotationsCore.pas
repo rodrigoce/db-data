@@ -387,6 +387,7 @@ begin
   FEntityArea.BorderStyle := bsNone;
   FEntityArea.Color := clWhite;
   FEntityArea.ParentColor := False;
+  FEntityArea.VertScrollBar.Increment := 100;
   // aqui colocar o pulo do scroll
   // cria o objeto de lista de entidades adicionadas
   FListEntity := TStringList.Create;

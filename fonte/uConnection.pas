@@ -122,6 +122,7 @@ begin
       FConexao.DatabaseName := GetSIDDescription(AppFile.SID, AppFile);
       FConexao.UserName := AppFile.UserName;
       FConexao.Password := AppFile.Password;
+      //FConexao.CharSet := 'utf8'; isso resolve o problema mas meu client parece estar muito desatualizado.
 
       FConexao.Transaction := FTransaction;
       FConexao.Open();

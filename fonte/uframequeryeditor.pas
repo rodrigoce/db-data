@@ -35,6 +35,8 @@ type
     procedure buffAfterOpen(DataSet: TDataSet);
     procedure buffBeforeOpen(DataSet: TDataSet);
     procedure GridDataTitleClick(Column: TColumn);
+    procedure memoSQLKeyDown(Sender: TObject;var Key: Word;Shift: TShiftState);
+    procedure memoSQLKeyPress(Sender: TObject;var Key: char);
     procedure Panel1Resize(Sender: TObject);
   private
     { Private declarations }
@@ -136,6 +138,18 @@ begin
     end;
     buff.First;
   end;
+end;
+
+procedure TFrameQueryEditor.memoSQLKeyDown(Sender: TObject;var Key: Word;
+  Shift: TShiftState);
+begin
+  if (Key = VK_F8) then
+    btExecuteQuery.Click;
+end;
+
+procedure TFrameQueryEditor.memoSQLKeyPress(Sender: TObject;var Key: char);
+begin
+
 end;
 
 procedure TFrameQueryEditor.Panel1Resize(Sender: TObject);
