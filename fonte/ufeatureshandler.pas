@@ -3,8 +3,8 @@ unit uFeaturesHandler;
 {$mode objfpc}{$H+}
 
 {
-Criado por: Rodrigo Castro Eleotério
-Data: 17/10/2013
+  2013 by Rodrigo Castro Eleotério
+  2024 ported from Delphi to FreePascal/Lazarus by Rodrigo Castro Eleotério
 }
 
 interface
@@ -58,7 +58,6 @@ type
     function GetHasFileToSave: boolean;
     function GetIndexOfOpenedFeature(Id: string): Integer;
     procedure CreateOpenedFeatureMenu(OpenedFeature: TOpenedFeature);
-    function TestDBCnn: boolean;
     procedure DoAllFeaturesInvisible;
     procedure DoAnotherFeatureVisible(DestinationIndex: Integer);
   public
@@ -331,62 +330,42 @@ begin
   end;
 end;
 
-function TFeaturesHandler.TestDBCnn: boolean;
-begin
-  try
-    TConexao.FecharConexao;
-    TConexao.GetConexao;
-    Result := True;
-  except
-    Result := False;
-  end;
-end;
-
 procedure TFeaturesHandler.OpenEntityContainer(Id: string);
 var
   container: TEntityContainer;
   index: integer;
 begin
-  if TestDBCnn then
-  begin
-    // verifica se ele já foi aberto, se sim, coloca em tela simplesmente
-    index := GetIndexOfOpenedFeature(Id);
+  // verifica se ele já foi aberto, se sim, coloca em tela simplesmente
+  index := GetIndexOfOpenedFeature(Id);
 
-    DoAllFeaturesInvisible;
-    if index > -1 then
+  DoAllFeaturesInvisible;
+  if index > -1 then
+  begin
+    FOpenedFeatures[index].Diagram.EntityArea.Visible := True;
+  end
+  else // se ele ainda não foi aberto, entao abre
+  begin
+    if FBuffDiagrams.Locate('id', Id, []) then
     begin
-      FOpenedFeatures[index].Diagram.EntityArea.Visible := True;
-    end
-    else // se ele ainda não foi aberto, entao abre
-    begin
-      if FBuffDiagrams.Locate('id', Id, []) then
+      container := TEntityContainer.Create(FParentWinControl);
+      container.DiagramaId := FBuffDiagrams.FieldByName('id').AsString;
+      container.Titulo := FBuffDiagrams.FieldByName('titulo').AsString;
+      FOpenedFeatures.Add(TOpenedFeature.Create(container.DiagramaId, container.Titulo, container, nil, tofDiagram));
+      CreateOpenedFeatureMenu(FOpenedFeatures.Last);
+      // só abre os diagramas já carregados do disco (0) e muda o status para alterado (A)
+      // pois todos os demais entrarão na lógica do blodo dos diagramas já em memória
+      if FBuffDiagrams.FieldByName('status').AsString = '0' then
       begin
-        container := TEntityContainer.Create(FParentWinControl);
-        container.DiagramaId := FBuffDiagrams.FieldByName('id').AsString;
-        container.Titulo := FBuffDiagrams.FieldByName('titulo').AsString;
-        FOpenedFeatures.Add(TOpenedFeature.Create(container.DiagramaId, container.Titulo, container, nil, tofDiagram));
-        CreateOpenedFeatureMenu(FOpenedFeatures.Last);
-        // só abre os diagramas já carregados do disco (0) e muda o status para alterado (A)
-        // pois todos os demais entrarão na lógica do blodo dos diagramas já em memória
-        if FBuffDiagrams.FieldByName('status').AsString = '0' then
-        begin
-          RenderDiagram(Id, container);
-          FBuffDiagrams.Edit;
-          FBuffDiagrams.FieldByName('status').AsString := 'A';
-          FBuffDiagrams.Post;
-        end;
+        RenderDiagram(Id, container);
+        FBuffDiagrams.Edit;
+        FBuffDiagrams.FieldByName('status').AsString := 'A';
+        FBuffDiagrams.Post;
       end;
     end;
-
-    if Assigned(FOnChangeFeatureState) then
-      FOnChangeFeatureState(Self);
-  end
-  else
-  begin
-    Application.MessageBox(
-      'Não foi possível estabelecer conexão como banco de dados. Verifique os dados de conexão.',
-      'Atenção', MB_ICONEXCLAMATION + MB_OK);
   end;
+
+  if Assigned(FOnChangeFeatureState) then
+    FOnChangeFeatureState(Self);
 end;
 
 procedure TFeaturesHandler.FreeOpenedFeature(Id: string);

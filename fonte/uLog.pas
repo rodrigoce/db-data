@@ -3,9 +3,10 @@ unit uLog;
 {$MODE Delphi}
 
 {
-Criado por: Rodrigo Castro Eleotério
-Data: 18/10/2013
+  2013 by Rodrigo Castro Eleotério
+  2024 ported from Delphi to FreePascal/Lazarus by Rodrigo Castro Eleotério
 }
+
 
 interface
 

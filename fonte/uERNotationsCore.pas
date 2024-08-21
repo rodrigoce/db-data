@@ -3,8 +3,8 @@ unit uERNotationsCore;
 {$MODE Delphi}
 
 {
-Criado por: Rodrigo Castro Eleotério
-Data: 12/02/2014
+  2013 by Rodrigo Castro Eleotério
+  2024 ported from Delphi to FreePascal/Lazarus by Rodrigo Castro Eleotério
 }
 
 interface

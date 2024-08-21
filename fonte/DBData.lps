@@ -9,32 +9,33 @@
         <Filename Value="DBData.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="72" Y="17"/>
-        <UsageCount Value="188"/>
+        <CursorPos X="5" Y="6"/>
+        <UsageCount Value="314"/>
       </Unit>
       <Unit>
         <Filename Value="unit1.pas"/>
-        <IsPartOfProject Value="True"/>
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Unit1"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="11" Y="23"/>
-        <UsageCount Value="188"/>
+        <CursorPos X="20" Y="11"/>
+        <UsageCount Value="305"/>
       </Unit>
       <Unit>
         <Filename Value="uFuncoes.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="188"/>
+        <CursorPos X="3" Y="8"/>
+        <UsageCount Value="314"/>
       </Unit>
       <Unit>
         <Filename Value="uappfile.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uAppFile"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="188"/>
+        <CursorPos X="5" Y="8"/>
+        <UsageCount Value="314"/>
       </Unit>
       <Unit>
         <Filename Value="uConfigConexao.pas"/>
@@ -42,50 +43,54 @@
         <ComponentName Value="FormConfigConexao"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="188"/>
+        <TopLine Value="58"/>
+        <CursorPos X="25" Y="64"/>
+        <UsageCount Value="314"/>
       </Unit>
       <Unit>
         <Filename Value="uConnection.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="4"/>
-        <TopLine Value="97"/>
-        <CursorPos X="109" Y="125"/>
-        <UsageCount Value="188"/>
-        <Loaded Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="120"/>
+        <CursorPos X="7" Y="144"/>
+        <UsageCount Value="314"/>
+        <Bookmarks Count="1">
+          <Item0 Y="136" ID="1"/>
+        </Bookmarks>
       </Unit>
       <Unit>
         <Filename Value="uEntityRelationshipArrowShape.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="188"/>
+        <TopLine Value="76"/>
+        <CursorPos X="5" Y="100"/>
+        <UsageCount Value="314"/>
       </Unit>
       <Unit>
         <Filename Value="uERNotationsCore.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="8"/>
-        <TopLine Value="391"/>
-        <CursorPos X="45" Y="390"/>
-        <UsageCount Value="188"/>
-        <Loaded Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="5" Y="8"/>
+        <UsageCount Value="314"/>
       </Unit>
       <Unit>
         <Filename Value="uExibeTexto.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="FormExibeTexto"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="188"/>
+        <CursorPos X="5" Y="8"/>
+        <UsageCount Value="314"/>
       </Unit>
       <Unit>
         <Filename Value="ufeatureshandler.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uFeaturesHandler"/>
-        <EditorIndex Value="9"/>
-        <TopLine Value="388"/>
-        <CursorPos Y="476"/>
-        <UsageCount Value="188"/>
-        <Loaded Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="333"/>
+        <CursorPos X="34" Y="351"/>
+        <UsageCount Value="314"/>
       </Unit>
       <Unit>
         <Filename Value="uframequeryeditor.pas"/>
@@ -94,17 +99,16 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="uFrameQueryEditor"/>
-        <TopLine Value="136"/>
-        <CursorPos X="25" Y="147"/>
-        <UsageCount Value="188"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos Y="5"/>
+        <UsageCount Value="314"/>
       </Unit>
       <Unit>
         <Filename Value="uLog.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="188"/>
+        <CursorPos X="3" Y="8"/>
+        <UsageCount Value="314"/>
       </Unit>
       <Unit>
         <Filename Value="uMoverObjetos.pas"/>
@@ -112,23 +116,24 @@
         <ComponentName Value="FormMoverObjetos"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="188"/>
+        <CursorPos X="3" Y="8"/>
+        <UsageCount Value="314"/>
       </Unit>
       <Unit>
         <Filename Value="Unit2.pas"/>
-        <IsPartOfProject Value="True"/>
         <ComponentName Value="Form2"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="188"/>
+        <CursorPos X="33"/>
+        <UsageCount Value="305"/>
       </Unit>
       <Unit>
         <Filename Value="uObterMetaDados.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="1"/>
-        <TopLine Value="401"/>
-        <CursorPos X="7" Y="420"/>
-        <UsageCount Value="188"/>
+        <IsVisibleTab Value="True"/>
+        <CursorPos X="57"/>
+        <UsageCount Value="314"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -137,15 +142,18 @@
         <ComponentName Value="FormPesquisarDiagramas"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="188"/>
+        <CursorPos Y="3"/>
+        <UsageCount Value="314"/>
       </Unit>
       <Unit>
         <Filename Value="uPesquisarTabelas.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="FormPesquisarTabelas"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="188"/>
+        <CursorPos Y="5"/>
+        <UsageCount Value="314"/>
       </Unit>
       <Unit>
         <Filename Value="uPrincipal.pas"/>
@@ -153,12 +161,9 @@
         <ComponentName Value="FormPrincipal"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="10"/>
-        <TopLine Value="88"/>
-        <CursorPos X="47" Y="99"/>
-        <UsageCount Value="188"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="5" Y="8"/>
+        <UsageCount Value="314"/>
       </Unit>
       <Unit>
         <Filename Value="usearchrelatedtable.pas"/>
@@ -167,10 +172,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uSearchRelatedTable"/>
-        <EditorIndex Value="7"/>
-        <CursorPos X="45" Y="26"/>
-        <UsageCount Value="188"/>
-        <Loaded Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="5" Y="6"/>
+        <UsageCount Value="314"/>
       </Unit>
       <Unit>
         <Filename Value="uSobre.pas"/>
@@ -178,13 +182,15 @@
         <ComponentName Value="FormSobre"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="188"/>
+        <CursorPos X="5" Y="8"/>
+        <UsageCount Value="314"/>
       </Unit>
       <Unit>
         <Filename Value="uVariaveisGlobais.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="188"/>
+        <CursorPos X="5" Y="8"/>
+        <UsageCount Value="314"/>
       </Unit>
       <Unit>
         <Filename Value="uVisualizarTriggers.pas"/>
@@ -193,219 +199,98 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="36" Y="10"/>
-        <UsageCount Value="188"/>
+        <CursorPos X="15" Y="3"/>
+        <UsageCount Value="314"/>
       </Unit>
       <Unit>
         <Filename Value="unit3.pas"/>
-        <IsPartOfProject Value="True"/>
         <ComponentName Value="Frame1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="Unit3"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="21" Y="11"/>
-        <UsageCount Value="188"/>
-      </Unit>
-      <Unit>
-        <Filename Value="uframequeryeditor.lfm"/>
-        <EditorIndex Value="-1"/>
-        <UsageCount Value="3"/>
-        <DefaultSyntaxHighlighter Value="LFM"/>
-      </Unit>
-      <Unit>
-        <Filename Value="C:\lazarus\lcl\dbgrids.pas"/>
-        <UnitName Value="DBGrids"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="1973"/>
-        <CursorPos X="32" Y="1992"/>
-        <UsageCount Value="22"/>
-      </Unit>
-      <Unit>
-        <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\objpas\sysutils\sysstr.inc"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="2378"/>
-        <CursorPos X="3" Y="2381"/>
-        <UsageCount Value="22"/>
-      </Unit>
-      <Unit>
-        <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\objpas\sysutils\sysstrh.inc"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="40" Y="28"/>
-        <UsageCount Value="22"/>
-      </Unit>
-      <Unit>
-        <Filename Value="C:\lazarus\lcl\graphics.pp"/>
-        <UnitName Value="Graphics"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="40"/>
-        <CursorPos X="42"/>
-        <UsageCount Value="20"/>
-      </Unit>
-      <Unit>
-        <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\inc\wstrings.inc"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="628"/>
-        <CursorPos X="5" Y="638"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="305"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\fcl-db\src\sqldb\oracle\oracleconnection.pp"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="75"/>
         <CursorPos X="15" Y="75"/>
-        <UsageCount Value="52"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="106"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\fcl-db\src\sqldb\sqldb.pp"/>
         <UnitName Value="SQLDB"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="1590"/>
         <CursorPos X="62" Y="1593"/>
-        <UsageCount Value="52"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="106"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\fcl-db\src\base\dataset.inc"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="407"/>
         <CursorPos X="8" Y="410"/>
-        <UsageCount Value="35"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="90"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\fcl-db\src\base\db.pas"/>
         <UnitName Value="DB"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="1610"/>
         <CursorPos X="26" Y="1636"/>
-        <UsageCount Value="35"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="90"/>
+      </Unit>
+      <Unit>
+        <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\inc\astrings.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="948"/>
+        <CursorPos X="3" Y="958"/>
+        <UsageCount Value="2"/>
+      </Unit>
+      <Unit>
+        <Filename Value="C:\lazarus\lcl\lclintf.pas"/>
+        <UnitName Value="LCLIntf"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="10"/>
+        <UsageCount Value="9"/>
+      </Unit>
+      <Unit>
+        <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\rtl-generics\src\generics.collections.pas"/>
+        <UnitName Value="Generics.Collections"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="9"/>
+      </Unit>
+      <Unit>
+        <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\fcl-xml\src\xmlread.pp"/>
+        <UnitName Value="XMLRead"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="9"/>
+      </Unit>
+      <Unit>
+        <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\rtl-objpas\src\inc\dateutils.pp"/>
+        <UnitName Value="DateUtils"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="7"/>
+        <UsageCount Value="11"/>
+      </Unit>
+      <Unit>
+        <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\rtl-objpas\src\inc\dateutil.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="243"/>
+        <CursorPos X="16" Y="274"/>
+        <UsageCount Value="11"/>
+      </Unit>
+      <Unit>
+        <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\fcl-db\src\base\database.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="740"/>
+        <CursorPos X="3" Y="759"/>
+        <UsageCount Value="10"/>
       </Unit>
     </Units>
-    <JumpHistory HistoryIndex="29">
-      <Position>
-        <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\fcl-db\src\sqldb\oracle\oracleconnection.pp"/>
-        <Caret Line="75" Column="25" TopLine="61"/>
-      </Position>
-      <Position>
-        <Filename Value="uObterMetaDados.pas"/>
-        <Caret Line="192" Column="18" TopLine="167"/>
-      </Position>
-      <Position>
-        <Filename Value="uObterMetaDados.pas"/>
-        <Caret Line="23" Column="23" TopLine="11"/>
-      </Position>
-      <Position>
-        <Filename Value="uObterMetaDados.pas"/>
-        <Caret Line="50" Column="40" TopLine="36"/>
-      </Position>
-      <Position>
-        <Filename Value="uObterMetaDados.pas"/>
-        <Caret Line="26" Column="26" TopLine="4"/>
-      </Position>
-      <Position>
-        <Filename Value="uObterMetaDados.pas"/>
-        <Caret Line="237" Column="15" TopLine="217"/>
-      </Position>
-      <Position>
-        <Filename Value="uObterMetaDados.pas"/>
-        <Caret Line="27" Column="25" TopLine="7"/>
-      </Position>
-      <Position>
-        <Filename Value="uObterMetaDados.pas"/>
-        <Caret Line="296" Column="3" TopLine="282"/>
-      </Position>
-      <Position>
-        <Filename Value="uObterMetaDados.pas"/>
-        <Caret Line="28" Column="23" TopLine="8"/>
-      </Position>
-      <Position>
-        <Filename Value="uObterMetaDados.pas"/>
-        <Caret Line="322" Column="3" TopLine="303"/>
-      </Position>
-      <Position>
-        <Filename Value="uObterMetaDados.pas"/>
-        <Caret Line="29" Column="23" TopLine="9"/>
-      </Position>
-      <Position>
-        <Filename Value="uObterMetaDados.pas"/>
-        <Caret Line="277" Column="3" TopLine="263"/>
-      </Position>
-      <Position>
-        <Filename Value="uObterMetaDados.pas"/>
-        <Caret Line="34" Column="31" TopLine="10"/>
-      </Position>
-      <Position>
-        <Filename Value="uObterMetaDados.pas"/>
-        <Caret Line="333" Column="3" TopLine="325"/>
-      </Position>
-      <Position>
-        <Filename Value="uObterMetaDados.pas"/>
-        <Caret Line="35" Column="23" TopLine="15"/>
-      </Position>
-      <Position>
-        <Filename Value="uObterMetaDados.pas"/>
-        <Caret Line="414" Column="3" TopLine="407"/>
-      </Position>
-      <Position>
-        <Filename Value="uConnection.pas"/>
-        <Caret Line="56" Column="36" TopLine="40"/>
-      </Position>
-      <Position>
-        <Filename Value="uConnection.pas"/>
-        <Caret Line="27" Column="23" TopLine="10"/>
-      </Position>
-      <Position>
-        <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\fcl-db\src\sqldb\oracle\oracleconnection.pp"/>
-        <Caret Line="399" Column="30" TopLine="376"/>
-      </Position>
-      <Position>
-        <Filename Value="uConnection.pas"/>
-        <Caret Line="125" Column="7" TopLine="97"/>
-      </Position>
-      <Position>
-        <Filename Value="uObterMetaDados.pas"/>
-        <Caret Line="420" Column="7" TopLine="401"/>
-      </Position>
-      <Position>
-        <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\fcl-db\src\base\dataset.inc"/>
-        <Caret Line="2075" Column="8" TopLine="2072"/>
-      </Position>
-      <Position>
-        <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\fcl-db\src\base\db.pas"/>
-        <Caret Line="1744" Column="36" TopLine="1712"/>
-      </Position>
-      <Position>
-        <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\fcl-db\src\base\dataset.inc"/>
-        <Caret Line="1093" Column="12" TopLine="1076"/>
-      </Position>
-      <Position>
-        <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\fcl-db\src\base\dataset.inc"/>
-        <Caret Line="957" Column="11" TopLine="952"/>
-      </Position>
-      <Position>
-        <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\fcl-db\src\base\dataset.inc"/>
-        <Caret Line="410" Column="8" TopLine="407"/>
-      </Position>
-      <Position>
-        <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\fcl-db\src\sqldb\oracle\oracleconnection.pp"/>
-        <Caret Line="398" Column="36" TopLine="376"/>
-      </Position>
-      <Position>
-        <Filename Value="uframequeryeditor.pas"/>
-        <Caret Line="31" Column="81" TopLine="13"/>
-      </Position>
-      <Position>
-        <Filename Value="uframequeryeditor.pas"/>
-        <Caret Line="151" Column="3" TopLine="136"/>
-      </Position>
-      <Position>
-        <Filename Value="uERNotationsCore.pas"/>
-        <Caret Line="89" Column="31" TopLine="76"/>
-      </Position>
-    </JumpHistory>
+    <JumpHistory HistoryIndex="-1"/>
     <RunParams>
       <FormatVersion Value="2"/>
       <Modes ActiveMode=""/>

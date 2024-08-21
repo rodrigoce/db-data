@@ -3,8 +3,8 @@ unit uObterMetaDados;
 {$MODE Delphi}
 
 {
-Criado por: Rodrigo Castro Eleotério
-Data: 19/06/2013
+  2013 by Rodrigo Castro Eleotério
+  2024 ported from Delphi to FreePascal/Lazarus by Rodrigo Castro Eleotério
 }
 
 interface
@@ -185,7 +185,7 @@ var
   i: Integer;
 begin
   q := TSQLQuery.Create(nil);
-  q.DataBase := TConexao.GetConexao;
+  q.DataBase := TDBConnection.GetCnn;
 
   q.SQL.Add('select column_name, data_type, data_length from all_tab_columns where owner = :owner and table_name = :tabela');
 
@@ -220,7 +220,7 @@ var
 begin
   FormPrincipal.SetarAtividadeStatusPanelBar('Obtendo metada de ' + EntityOndeInserir.SchemaOwner + '.' + EntityOndeInserir.NomeTabela);
   q := TSQLQuery.Create(nil);
-  q.DataBase := TConexao.GetConexao;
+  q.DataBase := TDBConnection.GetCnn;
   q.SQL.Add('select b.CONSTRAINT_TYPE, b.CONSTRAINT_NAME, b.OWNER, c.POSITION, a.COLUMN_NAME, a.DATA_TYPE, a.COLUMN_ID, b.R_OWNER, b.R_CONSTRAINT_NAME, a.DATA_LENGTH ');
   q.SQL.Add('from all_tab_columns a ');
   q.SQL.Add('join all_constraints b on a.OWNER = b.OWNER and a.TABLE_NAME = b.TABLE_NAME ');
@@ -247,7 +247,7 @@ begin
     CacheDeOwners := TStringList.Create;
 
   q := TSQLQuery.Create(nil);
-  q.DataBase := TConexao.GetConexao;
+  q.DataBase := TDBConnection.GetCnn;
   q.SQL.Add('select distinct owner from all_tables order by owner');
   q.Open;
 
@@ -266,7 +266,7 @@ var
   q: TSQLQuery;
 begin
   q := TSQLQuery.Create(nil);
-  q.DataBase := TConexao.GetConexao;
+  q.DataBase := TDBConnection.GetCnn;
   q.SQL.Add('select owner, table_name, column_name from all_cons_columns where constraint_name = :constraintName AND owner = :owner');
   q.Params[0].Value := EntityConstraint.RConstraintName;
   q.Params[1].Value := EntityConstraint.ROwner;
@@ -285,7 +285,7 @@ var
   q: TSQLQuery;
 begin
   q := TSQLQuery.Create(nil);
-  q.DataBase := TConexao.GetConexao;
+  q.DataBase := TDBConnection.GetCnn;
 
   q.SQL.Add('select distinct Lower(owner) Owner, Lower(table_name) Tabela from all_constraints where r_owner = :owner and r_constraint_name = :constraint and constraint_type = ''R''');
 
@@ -306,7 +306,7 @@ var
   q: TSQLQuery;
 begin
   q := TSQLQuery.Create(nil);
-  q.DataBase := TConexao.GetConexao;
+  q.DataBase := TDBConnection.GetCnn;
 
   q.SQL.Add('select distinct Lower(b.owner) Owner, Lower(b.table_name) Tabela from all_constraints a ');
   q.SQL.Add('join all_constraints b on a.r_owner = b.owner and a.r_constraint_name = b.constraint_name and b.constraint_type = ''P''');
@@ -328,7 +328,7 @@ var
   q: TSQLQuery;
 begin
   q := TSQLQuery.Create(nil);
-  q.DataBase := TConexao.GetConexao;
+  q.DataBase := TDBConnection.GetCnn;
 
   q.SQL.Add('select lower(a.owner) owner, lower(a.trigger_name) trigger_name, lower(a.trigger_type) trigger_type, lower(a.triggering_event) triggering_event, lower(a.status) status, a.description, a.trigger_body');
   q.SQL.Add('from all_triggers a where a.owner = :owner and a.table_name = :tabela');
@@ -351,7 +351,7 @@ var
   where: string;
 begin
   q := TSQLQuery.Create(nil);
-  q.DataBase := TConexao.GetConexao;
+  q.DataBase := TDBConnection.GetCnn;
 
   q.SQL.Add('select a.owner');
 
@@ -412,7 +412,7 @@ var
   q: TSQLQuery;
 begin
   q := TSQLQuery.Create(nil);
-  q.DataBase := TConexao.GetConexao;
+  q.DataBase := TDBConnection.GetCnn;
   q.PacketRecords := 15;
 
   q.SQL.Add(sql);
@@ -429,7 +429,7 @@ var
   q: TSQLQuery;
 begin
   q := TSQLQuery.Create(nil);
-  q.DataBase := TConexao.GetConexao;
+  q.DataBase := TDBConnection.GetCnn;
 
   q.SQL.Add('select 1 from all_tables where owner = :owner and table_name = :tabela');
 

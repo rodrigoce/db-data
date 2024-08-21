@@ -3,9 +3,10 @@ unit uConfigConexao;
 {$MODE Delphi}
 
 {
-Criado por: Rodrigo Castro Eleotério
-Data: 01/10/2013
+  2013 by Rodrigo Castro Eleotério
+  2024 ported from Delphi to FreePascal/Lazarus by Rodrigo Castro Eleotério
 }
+
 interface
 
 uses
@@ -57,10 +58,10 @@ begin
   AppFile.Password := edSenha.Text;
   AppFile.TNSPath := edTNS.Text;
 
-  TConexao.FecharConexao;
+  TDBConnection.CloseCnn;
   try
     erro := False;
-    TConexao.GetConexao;
+    TDBConnection.GetCnn;
   except on e: Exception do
     begin
       erro := True;

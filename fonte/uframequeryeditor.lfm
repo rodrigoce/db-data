@@ -59,7 +59,7 @@ object FrameQueryEditor: TFrameQueryEditor
         Height = 88
         Top = 8
         Width = 184
-        Caption = 'Run Query (F8 in Editor)'
+        Caption = 'Run Query'
         TabOrder = 0
         OnClick = btExecuteQueryClick
       end
@@ -93,8 +93,9 @@ object FrameQueryEditor: TFrameQueryEditor
       ParentColor = False
       ParentFont = False
       TabOrder = 0
+      OnEnter = memoSQLEnter
+      OnExit = memoSQLExit
       OnKeyDown = memoSQLKeyDown
-      OnKeyPress = memoSQLKeyPress
       Gutter.Width = 57
       Gutter.MouseActions = <>
       RightGutter.Width = 0

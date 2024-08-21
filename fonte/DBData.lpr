@@ -1,5 +1,10 @@
 program DBData;
 
+{
+  2013 by Rodrigo Castro Eleotério
+  2024 ported from Delphi to FreePascal/Lazarus by Rodrigo Castro Eleotério
+}
+
 {$mode objfpc}{$H+}
 
 uses
@@ -10,11 +15,11 @@ uses
   athreads,
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, unit1, uFuncoes, uVisualizarTriggers, uVariaveisGlobais, uSobre,
+  Forms, uFuncoes, uVisualizarTriggers, uVariaveisGlobais, uSobre,
   uSearchRelatedTable, uPrincipal, uPesquisarTabelas, uPesquisarDiagramas,
-  uObterMetaDados, Unit2, uMoverObjetos, uLog, uFeaturesHandler, uExibeTexto,
+  uObterMetaDados, uMoverObjetos, uLog, uFeaturesHandler, uExibeTexto,
   uERNotationsCore, uEntityRelationshipArrowShape, uConnection, uConfigConexao,
-  uAppFile, unit3, uFrameQueryEditor
+  uAppFile, uFrameQueryEditor
   { you can add units after this };
 
 {$R *.res}

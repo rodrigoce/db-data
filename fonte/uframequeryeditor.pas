@@ -3,8 +3,8 @@ unit uFrameQueryEditor;
 {$mode objfpc}{$H+}
 
 {
-Criado por: Rodrigo Castro Eleotério
-Data: 07/11/2014
+  2013 by Rodrigo Castro Eleotério
+  2024 ported from Delphi to FreePascal/Lazarus by Rodrigo Castro Eleotério
 }
 
 interface
@@ -35,13 +35,16 @@ type
     procedure buffAfterOpen(DataSet: TDataSet);
     procedure buffBeforeOpen(DataSet: TDataSet);
     procedure GridDataTitleClick(Column: TColumn);
-    procedure memoSQLKeyDown(Sender: TObject;var Key: Word;Shift: TShiftState);
-    procedure memoSQLKeyPress(Sender: TObject;var Key: char);
+    procedure memoSQLEnter(Sender: TObject);
+    procedure memoSQLExit(Sender: TObject);
+    procedure memoSQLKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure Panel1Resize(Sender: TObject);
   private
     { Private declarations }
     FOwnerTabela: string;
     FOldIndex: string;
+    function IncludeText(Source: string; NewText: String): string;
+    function ExcludeText(Source: string; NewText: String): string;
   public
     { Public declarations }
     procedure AvaliarEExecutarQuery;
@@ -140,16 +143,21 @@ begin
   end;
 end;
 
+procedure TFrameQueryEditor.memoSQLEnter(Sender: TObject);
+begin
+  btExecuteQuery.Caption := IncludeText(btExecuteQuery.Caption, '(F8)');
+end;
+
+procedure TFrameQueryEditor.memoSQLExit(Sender: TObject);
+begin
+  btExecuteQuery.Caption := ExcludeText(btExecuteQuery.Caption, '(F8)');
+end;
+
 procedure TFrameQueryEditor.memoSQLKeyDown(Sender: TObject;var Key: Word;
   Shift: TShiftState);
 begin
   if (Key = VK_F8) then
     btExecuteQuery.Click;
-end;
-
-procedure TFrameQueryEditor.memoSQLKeyPress(Sender: TObject;var Key: char);
-begin
-
 end;
 
 procedure TFrameQueryEditor.Panel1Resize(Sender: TObject);
@@ -159,6 +167,19 @@ begin
 {  pnW := Trunc(Panel1.Width / 2);
   btExecuteQuery.Left := Trunc(pnW - btExecuteQuery.Width + btExecuteQuery.Width / 2) - 2;
   btClose.Left := Trunc(pnW + btExecuteQuery.Width - btExecuteQuery.Width / 2) + 2;}
+end;
+
+function TFrameQueryEditor.IncludeText(Source: string; NewText: String): string;
+begin
+  Result := Source + ' ' +  NewText;
+end;
+
+function TFrameQueryEditor.ExcludeText(Source: string; NewText: String): string;
+var
+  index: Integer;
+begin
+  index := Pos(' ' + NewText, Source);
+  Result := Copy(Source, 1, Index -1);
 end;
 
 procedure TFrameQueryEditor.btCloseClick(Sender: TObject);

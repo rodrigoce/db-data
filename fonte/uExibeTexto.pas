@@ -2,6 +2,11 @@ unit uExibeTexto;
 
 {$MODE Delphi}
 
+{
+  2013 by Rodrigo Castro Eleotério
+  2024 ported from Delphi to FreePascal/Lazarus by Rodrigo Castro Eleotério
+}
+
 interface
 
 uses

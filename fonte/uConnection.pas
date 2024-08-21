@@ -3,51 +3,50 @@ unit uConnection;
 {$MODE Delphi}
 
 {
-Criado por: Rodrigo Castro Eleotério
-Data: 21/05/2013
+  2013 by Rodrigo Castro Eleotério
+  2024 ported from Delphi to FreePascal/Lazarus by Rodrigo Castro Eleotério
 }
 
 interface
 
 uses
   LCLIntf, LCLType, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, DB, sqldb, oracleconnection, uAppFile;
+  Dialogs, ExtCtrls, DB, sqldb, oracleconnection, uAppFile, DateUtils;
 
 type
 
-  // singleton parttner
+  { TDBConnection }
 
-  { TConexao }
-
-  TConexao = class
+  TDBConnection = class
   private
-    FConexao: TOracleConnection;
-    FTransaction: TSQLTransaction;
+    class var FCnn: TOracleConnection;
+    class var FTransaction: TSQLTransaction;
+    class var lastUsedTime: TDateTime;
+    class procedure RenewCnn;
+    class procedure ExecPingTest;
   public
-    class function GetConexao: TOracleConnection;
-    class procedure FecharConexao;
+    class function GetCnn: TOracleConnection;
+    class procedure CloseCnn;
     class function GetSIDDescription(SID: string; AppFile: TAppFile): string;
   end;
 
-var
-  __Conexao: TConexao;
 
 implementation
 
 uses uFuncoes, uVariaveisGlobais;
 
-  { TConexao }
+  { TDBConnection }
 
-class procedure TConexao.FecharConexao;
+class procedure TDBConnection.CloseCnn;
 begin
-  if __Conexao <> nil then
+  if FCnn <> nil then
   begin
-    __Conexao.FConexao.Close;
-    FreeAndNil(__Conexao);
+    FCnn.Close;
+    FreeAndNil(FCnn);
   end;
 end;
 
-class function TConexao.GetSIDDescription(SID: string; AppFile: TAppFile
+class function TDBConnection.GetSIDDescription(SID: string; AppFile: TAppFile
   ): string;
 var
   slOrigTNS, slCleanTNS: TStringList;
@@ -102,34 +101,57 @@ begin
   Result := StringReplace(Result, SID + '=', '', [rfReplaceAll]);
 end;
 
-class function TConexao.GetConexao: TOracleConnection;
+class procedure TDBConnection.RenewCnn;
 begin
-  if __Conexao = nil then
+  CloseCnn;
+
+  FTransaction := TSQLTransaction.Create(nil);
+  FTransaction.Active := False;
+  //FTransaction.Params.Add('isc_tpb_read_committed');
+  //FTransaction.Params.Add('isc_tpb_wait');
+
+  FCnn := TOracleConnection.Create(nil);
+  FCnn.LoginPrompt := False;
+  FCnn.KeepConnection := True;
+
+  FCnn.DatabaseName := GetSIDDescription(AppFile.SID, AppFile);
+  FCnn.UserName := AppFile.UserName;
+  FCnn.Password := AppFile.Password;
+  //FCnn.CharSet := 'utf8'; isso resolve o problema mas meu client parece estar muito desatualizado.
+
+  FCnn.Transaction := FTransaction;
+  FCnn.Open();
+
+  lastUsedTime := Now;
+end;
+
+class procedure TDBConnection.ExecPingTest;
+var
+  q: TSQLQuery;
+begin
+  if MinutesBetween(lastUsedTime, Now) > 1 then
   begin
-    __Conexao := TConexao.Create;
-    with __Conexao do
-    begin
-      FTransaction := TSQLTransaction.Create(nil);
-      FTransaction.Active := False;
-      //FTransaction.Params.Add('isc_tpb_read_committed');
-      //FTransaction.Params.Add('isc_tpb_wait');
-
-      FConexao := TOracleConnection.Create(nil);
-      FConexao.LoginPrompt := False;
-      FConexao.KeepConnection := True;
-
-
-      FConexao.DatabaseName := GetSIDDescription(AppFile.SID, AppFile);
-      FConexao.UserName := AppFile.UserName;
-      FConexao.Password := AppFile.Password;
-      //FConexao.CharSet := 'utf8'; isso resolve o problema mas meu client parece estar muito desatualizado.
-
-      FConexao.Transaction := FTransaction;
-      FConexao.Open();
+    q := TSQLQuery.Create(nil);
+    q.DataBase := FCnn;
+    q.SQL.Text := 'select 1 as PingTest from dual';
+    try
+      q.ExecSQL;
+      lastUsedTime := Now;
+    except
+      RenewCnn;
     end;
+    q.Free;
   end;
+end;
 
-  Result := __Conexao.FConexao;
+class function TDBConnection.GetCnn: TOracleConnection;
+begin
+  if FCnn = nil then
+    RenewCnn;
+
+  ExecPingTest;
+
+  Result := FCnn;
 end;
 
 end.

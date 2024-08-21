@@ -3,8 +3,8 @@ unit uPrincipal;
 {$mode objfpc}{$H+}
 
 {
-Criado por: Rodrigo Castro Eleotério
-Data: 24/05/2013
+  2013 by Rodrigo Castro Eleotério
+  2024 ported from Delphi to FreePascal/Lazarus by Rodrigo Castro Eleotério
 }
 
 interface
