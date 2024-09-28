@@ -12,7 +12,7 @@ interface
 uses
   Windows, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, Menus, StdCtrls, Buttons,
-  uFeaturesHandler, ComCtrls, IniFiles;
+  uFeaturesHandler, uIncludeTables, ComCtrls, IniFiles;
 
 type
 
@@ -21,6 +21,7 @@ type
   TFormPrincipal = class(TForm)
     MainMenu1: TMainMenu;
     Arquivo11: TMenuItem;
+    TabelasIncluidas1: TMenuItem;
     pnEntidades: TPanel;
     eladeTestes1: TMenuItem;
     SalvarModelo1: TMenuItem;
@@ -46,7 +47,6 @@ type
     Ferramentas1: TMenuItem;
     PesquisarObjetos1: TMenuItem;
     MoverObjetos1: TMenuItem;
-    procedure eladeTestes1Click(Sender: TObject);
     procedure AdicionarEntidade1Click(Sender: TObject);
     procedure FormClose(Sender: TObject;var CloseAction: TCloseAction);
     procedure SalvarModelo1Click(Sender: TObject);
@@ -66,6 +66,7 @@ type
     procedure ExportarparaImagem1Click(Sender: TObject);
     procedure PesquisarObjetos1Click(Sender: TObject);
     procedure MoverObjetos1Click(Sender: TObject);
+    procedure TabelasIncluidas1Click(Sender: TObject);
   private
     { Private declarations }
     FCaptionInicial: string;
@@ -84,7 +85,7 @@ var
 
 implementation
 
-uses Unit2, uVariaveisGlobais, uPesquisarDiagramas, uSobre, uConfigConexao,
+uses uVariaveisGlobais, uPesquisarDiagramas, uSobre, uConfigConexao,
   uPesquisarTabelas, uAppFile, uMoverObjetos;
 
 {$R *.lfm}
@@ -161,11 +162,6 @@ begin
     FFeaturesHanlder.OpenFile('');
 end;
 
-procedure TFormPrincipal.eladeTestes1Click(Sender: TObject);
-begin
-  form2.ShowModal;
-end;
-
 procedure TFormPrincipal.ExportarparaImagem1Click(Sender: TObject);
 begin
   FFeaturesHanlder.CurrentDiagram.ScreenShot;
@@ -224,7 +220,8 @@ begin
 
   // ganhar tempo em debug
   FFeaturesHanlder.OpenFile('C:\Users\rceleoterio\Documents\sistemas hc.dbdata');
-  FFeaturesHanlder.OpenEntityContainer('{6BB6AC5E-6013-433E-926E-BBF4962CDA66}');
+  //FFeaturesHanlder.OpenEntityContainer('{6BB6AC5E-6013-433E-926E-BBF4962CDA66}');
+  FFeaturesHanlder.OpenEntityContainer('{1C34F577-13EA-4310-AA28-8AE1B7BF6364}');
 end;
 
 procedure TFormPrincipal.HabilitarMenusContexto(Sender: TObject);
@@ -232,7 +229,8 @@ begin
   // define os menus que devem estar habilitados
   Fechar1.Enabled := FFeaturesHanlder.HasFileToSave;
   SalvarModelo1.Enabled := FFeaturesHanlder.HasFileToSave;
-  ConfigurarConexo1.Enabled := FFeaturesHanlder.HasFileToSave;;
+  ConfigurarConexo1.Enabled := FFeaturesHanlder.HasFileToSave;
+  TabelasIncluidas1.Enabled := FFeaturesHanlder.HasFileToSave;
   AdicionarEntidade1.Enabled := FFeaturesHanlder.CurrentDiagram <> nil;
   Abrirdiagrama1.Enabled := FFeaturesHanlder.HasFileToSave;
   Remover1.Enabled := FFeaturesHanlder.CurrentDiagram <> nil;
@@ -259,6 +257,11 @@ end;
 procedure TFormPrincipal.MoverObjetos1Click(Sender: TObject);
 begin
   TFormMoverObjetos.MoverObjetos;
+end;
+
+procedure TFormPrincipal.TabelasIncluidas1Click(Sender: TObject);
+begin
+  TFormIncludedTables.Open();
 end;
 
 procedure TFormPrincipal.Novo1Click(Sender: TObject);

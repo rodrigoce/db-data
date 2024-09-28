@@ -19,7 +19,7 @@ uses
   uSearchRelatedTable, uPrincipal, uPesquisarTabelas, uPesquisarDiagramas,
   uObterMetaDados, uMoverObjetos, uLog, uFeaturesHandler, uExibeTexto,
   uERNotationsCore, uEntityRelationshipArrowShape, uConnection, uConfigConexao,
-  uAppFile, uFrameQueryEditor
+  uAppFile, uFrameQueryEditor, uIncludeTables
   { you can add units after this };
 
 {$R *.res}

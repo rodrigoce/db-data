@@ -34,6 +34,9 @@
     </RunParams>
     <RequiredPackages>
       <Item>
+        <PackageName Value="FCL"/>
+      </Item>
+      <Item>
         <PackageName Value="SynEditDsgn"/>
       </Item>
       <Item>
@@ -153,6 +156,14 @@
         <ComponentName Value="FormVisualizarTriggers"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uincludetables.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormIncludedTables"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uIncludeTables"/>
       </Unit>
     </Units>
   </ProjectOptions>

@@ -1,0 +1,102 @@
+object FormIncludedTables: TFormIncludedTables
+  Left = 478
+  Height = 432
+  Top = 251
+  Width = 689
+  Caption = 'Tabelas Incluídas (Inventário)'
+  ClientHeight = 432
+  ClientWidth = 689
+  LCLVersion = '3.4.0.0'
+  WindowState = wsMaximized
+  object grid: TDBGrid
+    Left = 8
+    Height = 388
+    Top = 32
+    Width = 672
+    AlternateColor = clInfoBk
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    Color = clWindow
+    Columns = <    
+      item
+        Title.Caption = 'Owner'
+        Width = 50
+        FieldName = 'owner'
+      end    
+      item
+        Title.Caption = 'Tabela'
+        Width = 49
+        FieldName = 'tabela'
+      end    
+      item
+        Title.Caption = 'Ocorrencias'
+        Width = 78
+        FieldName = 'ocorrencias'
+      end    
+      item
+        Title.Caption = 'Diagramas'
+        Width = 71
+        FieldName = 'diagramas'
+      end>
+    DataSource = ds
+    Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgAutoSizeColumns]
+    ReadOnly = True
+    TabOrder = 0
+    OnTitleClick = gridTitleClick
+  end
+  object labCount: TLabel
+    Left = 8
+    Height = 15
+    Top = 8
+    Width = 49
+    Caption = 'labCount'
+  end
+  object buf: TBufDataset
+    FieldDefs = <>
+    Left = 100
+    Top = 115
+    object bufowner: TStringField
+      FieldKind = fkData
+      FieldName = 'owner'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 60
+    end
+    object buftabela: TStringField
+      FieldKind = fkData
+      FieldName = 'tabela'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 120
+    end
+    object bufocorrencias: TLongintField
+      FieldKind = fkData
+      FieldName = 'ocorrencias'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object bufdiagramas: TStringField
+      FieldKind = fkData
+      FieldName = 'diagramas'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 4096
+    end
+  end
+  object ds: TDataSource
+    DataSet = buf
+    Left = 182
+    Top = 128
+  end
+end

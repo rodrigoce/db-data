@@ -123,12 +123,13 @@ var
 begin
   temp := TBufDataSet.Create(nil);
   //clona a estrututa de dados da tabela fonte criando seus fields
-  temp.CopyFromDataset(fonte, False); //CopyFields(fonte, temp, False); temp.CreateDataSet;
+  temp.CopyFromDataset(fonte, False);
   // indexa por position para inserir na mesna ordem da constraint
   temp.IndexFieldNames := 'POSITION';
   // filtra a chave primária
   fonte.Filter := 'CONSTRAINT_TYPE = ''P''';
   fonte.Filtered := True;
+  fonte.First;
   //define o nome da constraint da chave primária
   EntityOndeInserir.PrimaryKeyConstraintName := fonte.FieldByName('CONSTRAINT_NAME').AsString;
   // copia a chave primaria ordenando pos position
@@ -137,22 +138,24 @@ begin
   InserirNaEnity(temp);
   // filtra as chaves estrageiras
   fonte.Filter := 'CONSTRAINT_TYPE = ''R''';
+  fonte.First;
   // copia as chaves estrangeiras ordenando por column id
   temp.IndexFieldNames := 'COLUMN_ID';
+  temp.First;
   copiarEOrdenar(temp, fonte);
   // agora que está ordenado por column id, copiar para outra cds ordenando por position
   temp2 := TBufDataSet.Create(nil);
   // clona estrututa de dados
-  temp2.CopyFromDataset(fonte, False); //CopyFields(fonte, temp2, False); temp2.CreateDataSet;
+  temp2.CopyFromDataset(fonte, False);
   // ordena por position
   temp2.IndexFieldNames := 'POSITION';
-  temp.First;
   //enquanto tiver registos
   while not temp.Eof do
   begin
     // filtra pelo nome das contraint para pegar todos os campos dessa constraint
     temp.Filter := 'CONSTRAINT_NAME = ' + QuotedStr(temp.FieldByName('CONSTRAINT_NAME').AsString);
     temp.Filtered := True;
+    temp.First;
     copiarEOrdenar(temp2, temp);
     InserirNaEnity(temp2);
     temp.First;

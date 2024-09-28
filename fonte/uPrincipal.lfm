@@ -85,6 +85,10 @@ object FormPrincipal: TFormPrincipal
         Caption = 'Configurar Conexão'
         OnClick = ConfigurarConexo1Click
       end
+      object TabelasIncluidas1: TMenuItem
+        Caption = 'Tabelas Incluídas'
+        OnClick = TabelasIncluidas1Click
+      end
       object N1: TMenuItem
         Caption = '-'
       end
@@ -143,7 +147,6 @@ object FormPrincipal: TFormPrincipal
       object eladeTestes1: TMenuItem
         Caption = 'Tela de Testes'
         Visible = False
-        OnClick = eladeTestes1Click
       end
     end
   end
