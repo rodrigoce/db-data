@@ -16,9 +16,9 @@ type
   { Forward Decls }
 
   TAppFile = class;
-  TDiagrama = class;
-  TEntidade = class;
-  TRelacionamento = class;
+  TFileDiagram = class;
+  TFileEntity = class;
+  TFileRelationship = class;
 
   { Types }
 
@@ -30,69 +30,69 @@ type
     FSID: string;
     FTNSPath: string;
     FUserName: string;
-    FVersao: string;
-    FDiagramas: specialize TObjectList<TDiagrama>;
+    FVersion: string;
+    FDiagrams: specialize TObjectList<TFileDiagram>;
     function GetDefaultText(Node: TDOMNode): DOMString;
   public
     constructor Create;
     destructor Destroy; override;
     procedure OpenFile(FileName: string);
     procedure SaveFile(FileName: string);
-    property Versao: string read FVersao write FVersao;
+    property Version: string read FVersion write FVersion;
     property TNSPath: string read FTNSPath write FTNSPath;
     property SID: string read FSID write FSID;
     property UserName: string read FUserName write FUserName;
     property Password: string read FPassword write FPassword;
-    property Diagramas: specialize TObjectList<TDiagrama> read FDiagramas write FDiagramas;
+    property Diagrams: specialize TObjectList<TFileDiagram> read FDiagrams write FDiagrams;
   end;
 
-  { TDiagrama }
+  { TFileDiagram }
 
-  TDiagrama = class
+  TFileDiagram = class
   private
-    FTitulo: string;
+    FTitle: string;
     FID: string;
-    FEntidades: specialize TObjectList<TEntidade>;
-    FRelacionamentos: specialize TObjectList<TRelacionamento>;
+    FFileEntities: specialize TObjectList<TFileEntity>;
+    FFileRelationships: specialize TObjectList<TFileRelationship>;
   public
     constructor Create(ATitle: string; AID: string);
     destructor Destroy; override;
-    property Titulo: string read FTitulo write FTitulo;
+    property Title: string read FTitle write FTitle;
     property ID: string read FID write FID;
-    property Entidades: specialize TObjectList<TEntidade> read FEntidades write FEntidades;
-    property Relacionamentos: specialize TObjectList<TRelacionamento> read FRelacionamentos write FRelacionamentos;
+    property Entities: specialize TObjectList<TFileEntity> read FFileEntities write FFileEntities;
+    property Relationships: specialize TObjectList<TFileRelationship> read FFileRelationships write FFileRelationships;
   end;
 
-  { TEntidade }
+  { TFileEntity }
 
-  TEntidade = class
+  TFileEntity = class
   private
     FTop: integer;
     FLeft: integer;
     FOwner: string;
-    FTabela: string;
-    FTodosOsCampos: boolean;
+    FTable: string;
+    FShowAllColumns: boolean;
   public
     constructor Create(ATop: integer; ALeft: integer; AOwner: string; ATabela: string; ATodosOsCampos: boolean);
     property Top: integer read FTop write FTop;
     property Left: integer read FLeft write FLeft;
     property Owner: string read FOwner write FOwner;
-    property Tabela: string read FTabela write FTabela;
-    property TodosOsCampos: boolean read FTodosOsCampos write FTodosOsCampos;
+    property Table: string read FTable write FTable;
+    property ShowAllColumns: boolean read FShowAllColumns write FShowAllColumns;
   end;
 
-  { TRelacionamento }
+  { TFileRelationship }
 
-  TRelacionamento = class
+  TFileRelationship = class
   private
-    FNomeCaminho: string;
-    FDistanciaLateral: integer;
+    FPathName: string;
+    FSideDistance: integer;
     FOwner: string;
     FConstraintName: string;
   public
     constructor Create(ANomeCaminho: string; ADistanciaLateral: integer; AOwner: string; AConstraintName: string);
-    property NomeCaminho: string read FNomeCaminho write FNomeCaminho;
-    property DistanciaLateral: integer read FDistanciaLateral write FDistanciaLateral;
+    property PathName: string read FPathName write FPathName;
+    property SideDistance: integer read FSideDistance write FSideDistance;
     property Owner: string read FOwner write FOwner;
     property ConstraintName: string read FConstraintName write FConstraintName;
   end;
@@ -115,45 +115,45 @@ begin
       Result := True;
 end;
 
-{ TDiagrama }
+{ TFileDiagram }
 
-constructor TDiagrama.Create(ATitle: string; AID: string);
+constructor TFileDiagram.Create(ATitle: string; AID: string);
 begin
   inherited Create;
-  FTitulo := ATitle;
+  FTitle := ATitle;
   FID := AID;
-  FEntidades := specialize TObjectList<TEntidade>.Create;
-  FRelacionamentos := specialize TObjectList<TRelacionamento>.Create;
+  FFileEntities := specialize TObjectList<TFileEntity>.Create;
+  FFileRelationships := specialize TObjectList<TFileRelationship>.Create;
 end;
 
-destructor TDiagrama.Destroy;
+destructor TFileDiagram.Destroy;
 begin
-  FreeAndNil(FEntidades);
-  FreeAndNil(FRelacionamentos);
+  FreeAndNil(FFileEntities);
+  FreeAndNil(FFileRelationships);
   inherited;
 end;
 
-{ TEntidade }
+{ TFileEntity }
 
-constructor TEntidade.Create(ATop: integer; ALeft: integer; AOwner: string;
+constructor TFileEntity.Create(ATop: integer; ALeft: integer; AOwner: string;
   ATabela: string; ATodosOsCampos: boolean);
 begin
   inherited Create;
   FTop := ATop;
   FLeft := ALeft;
   FOwner := AOwner;
-  FTabela := ATabela;
-  FTodosOsCampos := ATodosOsCampos;
+  FTable := ATabela;
+  FShowAllColumns := ATodosOsCampos;
 end;
 
-{ TRelacionamento }
+{ TFileRelationship }
 
-constructor TRelacionamento.Create(ANomeCaminho: string;
+constructor TFileRelationship.Create(ANomeCaminho: string;
   ADistanciaLateral: integer; AOwner: string; AConstraintName: string);
 begin
   inherited Create;
-  FNomeCaminho := ANomeCaminho;
-  FDistanciaLateral := ADistanciaLateral;
+  FPathName := ANomeCaminho;
+  FSideDistance := ADistanciaLateral;
   FOwner := AOwner;
   FConstraintName := AConstraintName;
 end;
@@ -171,80 +171,80 @@ end;
 constructor TAppFile.Create;
 begin
   inherited;
-  FDiagramas := specialize TObjectList<TDiagrama>.Create;
+  FDiagrams := specialize TObjectList<TFileDiagram>.Create;
 end;
 
 destructor TAppFile.Destroy;
 begin
-  FDiagramas.Free;
+  FDiagrams.Free;
   inherited;
 end;
 
 procedure TAppFile.OpenFile(FileName: string);
 var
   Doc: TXMLDocument;
-  diagrama: TDiagrama;
-  entidade: TEntidade;
-  relacionamento: TRelacionamento;
-  diagramasNode, diagramaNode: TDOMNode;
-  entidadesNode, entidadeNode: TDOMNode;
-  relacionamentosNode, relacionamentoNode: TDOMNode;
+  fileDiagram: TFileDiagram;
+  entity: TFileEntity;
+  relationship: TFileRelationship;
+  diagramsNode, diagramNode: TDOMNode;
+  entitiesNode, entityNode: TDOMNode;
+  relationshipsNode, relationshipNode: TDOMNode;
 begin
   ReadXMLFile(Doc, FileName);
 
-  diagramasNode := Doc.DocumentElement;
-  Versao := GetDefaultText(diagramasNode.Attributes.GetNamedItem('versao'));
-  TNSPath :=  GetDefaultText(diagramasNode.Attributes.GetNamedItem('tnsPath'));
-  SID := GetDefaultText(diagramasNode.Attributes.GetNamedItem('SID'));
-  UserName := DeCrypt(GetDefaultText(diagramasNode.Attributes.GetNamedItem('userName')));
-  Password := DeCrypt(GetDefaultText(diagramasNode.Attributes.GetNamedItem('password')));
+  diagramsNode := Doc.DocumentElement;
+  Version := GetDefaultText(diagramsNode.Attributes.GetNamedItem('versao'));
+  TNSPath :=  GetDefaultText(diagramsNode.Attributes.GetNamedItem('tnsPath'));
+  SID := GetDefaultText(diagramsNode.Attributes.GetNamedItem('SID'));
+  UserName := DeCrypt(GetDefaultText(diagramsNode.Attributes.GetNamedItem('userName')));
+  Password := DeCrypt(GetDefaultText(diagramsNode.Attributes.GetNamedItem('password')));
 
-  diagramaNode := diagramasNode.FirstChild;
+  diagramNode := diagramsNode.FirstChild;
 
-  while Assigned(diagramaNode) do
+  while Assigned(diagramNode) do
   begin
-    diagrama := TDiagrama.Create(
-      diagramaNode.Attributes.GetNamedItem('titulo').TextContent,
-      diagramaNode.Attributes.GetNamedItem('id').TextContent);
-    FDiagramas.Add(diagrama);
+    fileDiagram := TFileDiagram.Create(
+      diagramNode.Attributes.GetNamedItem('titulo').TextContent,
+      diagramNode.Attributes.GetNamedItem('id').TextContent);
+    FDiagrams.Add(fileDiagram);
 
     // lê as entidades
-    entidadesNode := diagramaNode.FindNode('entidades');
-    entidadeNode := entidadesNode.FirstChild;
-    while Assigned(entidadeNode) do
+    entitiesNode := diagramNode.FindNode('entidades');
+    entityNode := entitiesNode.FirstChild;
+    while Assigned(entityNode) do
     begin
-      entidade := TEntidade.Create(
-        StrToInt(entidadeNode.Attributes.GetNamedItem('top').TextContent),
-        StrToInt(entidadeNode.Attributes.GetNamedItem('left').TextContent),
-        entidadeNode.Attributes.GetNamedItem('owner').TextContent,
-        entidadeNode.Attributes.GetNamedItem('tabela').TextContent,
-        StrToBool(entidadeNode.Attributes.GetNamedItem('todosOsCampos').TextContent));
+      entity := TFileEntity.Create(
+        StrToInt(entityNode.Attributes.GetNamedItem('top').TextContent),
+        StrToInt(entityNode.Attributes.GetNamedItem('left').TextContent),
+        entityNode.Attributes.GetNamedItem('owner').TextContent,
+        entityNode.Attributes.GetNamedItem('tabela').TextContent,
+        StrToBool(entityNode.Attributes.GetNamedItem('todosOsCampos').TextContent));
 
-      diagrama.Entidades.Add(entidade);
+      fileDiagram.Entities.Add(entity);
 
-      // próxima entidade
-      entidadeNode := entidadeNode.NextSibling;
+      // próxima entity
+      entityNode := entityNode.NextSibling;
     end;
 
     // lê os relacinamentos
-    relacionamentosNode := diagramaNode.FindNode('relacionamentos');
-    relacionamentoNode := relacionamentosNode.FirstChild;
-    while Assigned(relacionamentoNode) do
+    relationshipsNode := diagramNode.FindNode('relacionamentos');
+    relationshipNode := relationshipsNode.FirstChild;
+    while Assigned(relationshipNode) do
     begin
-      relacionamento := TRelacionamento.Create(
-        relacionamentoNode.Attributes.GetNamedItem('nomeCaminho').TextContent,
-        StrToInt(relacionamentoNode.Attributes.GetNamedItem('distanciaLateral').TextContent),
-        relacionamentoNode.Attributes.GetNamedItem('owner').TextContent,
-        relacionamentoNode.Attributes.GetNamedItem('constraintName').TextContent);
+      relationship := TFileRelationship.Create(
+        relationshipNode.Attributes.GetNamedItem('nomeCaminho').TextContent,
+        StrToInt(relationshipNode.Attributes.GetNamedItem('distanciaLateral').TextContent),
+        relationshipNode.Attributes.GetNamedItem('owner').TextContent,
+        relationshipNode.Attributes.GetNamedItem('constraintName').TextContent);
 
-      diagrama.Relacionamentos.Add(relacionamento);
+      fileDiagram.Relationships.Add(relationship);
 
-      // próximo relacionamento
-      relacionamentoNode := relacionamentoNode.NextSibling;
+      // próximo relationship
+      relationshipNode := relationshipNode.NextSibling;
     end;
 
-    // próximo diagrama
-    diagramaNode := diagramaNode.NextSibling;
+    // próximo fileDiagram
+    diagramNode := diagramNode.NextSibling;
   end;
 
   Doc.Free;
@@ -253,61 +253,61 @@ end;
 procedure TAppFile.SaveFile(FileName: string);
 var
   Doc: TXMLDocument;
-  diagrama: TDiagrama;
-  entidade: TEntidade;
-  relacionamento: TRelacionamento;
-  diagramasNode, diagramaNode: TDOMNode;
-  entidadesNode, entidadeNode: TDOMNode;
-  relacionamentosNode, relacionamentoNode: TDOMNode;
+  fileDiagram: TFileDiagram;
+  entity: TFileEntity;
+  relationship: TFileRelationship;
+  diagramsNode, diagramNode: TDOMNode;
+  entitiesNode, entityNode: TDOMNode;
+  relationshipsNode, relationshipNode: TDOMNode;
 begin
   Doc := TXMLDocument.Create;
 
   // cria o Document Element
-  diagramasNode := Doc.CreateElement('diagramas');
-  TDOMElement(diagramasNode).SetAttribute('versao', '1.0');
-  TDOMElement(diagramasNode).SetAttribute('tnsPath', TNSPath);
-  TDOMElement(diagramasNode).SetAttribute('SID', SID);
-  TDOMElement(diagramasNode).SetAttribute('userName', EnCrypt(UserName));
-  TDOMElement(diagramasNode).SetAttribute('password', EnCrypt(Password));
-  Doc.AppendChild(diagramasNode);
+  diagramsNode := Doc.CreateElement('diagramas');
+  TDOMElement(diagramsNode).SetAttribute('versao', '1.0');
+  TDOMElement(diagramsNode).SetAttribute('tnsPath', TNSPath);
+  TDOMElement(diagramsNode).SetAttribute('SID', SID);
+  TDOMElement(diagramsNode).SetAttribute('userName', EnCrypt(UserName));
+  TDOMElement(diagramsNode).SetAttribute('password', EnCrypt(Password));
+  Doc.AppendChild(diagramsNode);
 
-  for diagrama in Diagramas do
+  for fileDiagram in Diagrams do
   begin
-    // cria o diagrama
-    diagramaNode := Doc.CreateElement('diagrama');
-    TDOMElement(diagramaNode).SetAttribute('titulo', diagrama.Titulo);
-    TDOMElement(diagramaNode).SetAttribute('id', diagrama.ID);
-    diagramasNode.AppendChild(diagramaNode);
+    // cria o fileDiagram
+    diagramNode := Doc.CreateElement('diagrama');
+    TDOMElement(diagramNode).SetAttribute('titulo', fileDiagram.Title);
+    TDOMElement(diagramNode).SetAttribute('id', fileDiagram.ID);
+    diagramsNode.AppendChild(diagramNode);
 
     // cria o entidades
-    entidadesNode := Doc.CreateElement('entidades');
-    diagramaNode.AppendChild(entidadesNode);
+    entitiesNode := Doc.CreateElement('entidades');
+    diagramNode.AppendChild(entitiesNode);
 
-    for entidade in diagrama.Entidades do
+    for entity in fileDiagram.Entities do
     begin
-      // cria o entidade
-      entidadeNode := Doc.CreateElement('entidade');
-      TDOMElement(entidadeNode).SetAttribute('top', IntToStr(entidade.Top));
-      TDOMElement(entidadeNode).SetAttribute('left', IntToStr(entidade.Left));
-      TDOMElement(entidadeNode).SetAttribute('owner', entidade.Owner);
-      TDOMElement(entidadeNode).SetAttribute('tabela', entidade.Tabela);
-      TDOMElement(entidadeNode).SetAttribute('todosOsCampos', BoolToStr(entidade.TodosOsCampos, True));
-      entidadesNode.AppendChild(entidadeNode);
+      // cria o entity
+      entityNode := Doc.CreateElement('entidade');
+      TDOMElement(entityNode).SetAttribute('top', IntToStr(entity.Top));
+      TDOMElement(entityNode).SetAttribute('left', IntToStr(entity.Left));
+      TDOMElement(entityNode).SetAttribute('owner', entity.Owner);
+      TDOMElement(entityNode).SetAttribute('tabela', entity.Table);
+      TDOMElement(entityNode).SetAttribute('todosOsCampos', BoolToStr(entity.ShowAllColumns, True));
+      entitiesNode.AppendChild(entityNode);
     end;
 
     // cria o relacionamentos
-    relacionamentosNode := Doc.CreateElement('relacionamentos');
-    diagramaNode.AppendChild(relacionamentosNode);
+    relationshipsNode := Doc.CreateElement('relacionamentos');
+    diagramNode.AppendChild(relationshipsNode);
 
-    for relacionamento in diagrama.Relacionamentos do
+    for relationship in fileDiagram.Relationships do
     begin
-      // cria o relacionamento
-      relacionamentoNode := Doc.CreateElement('relacionamento');
-      TDOMElement(relacionamentoNode).SetAttribute('nomeCaminho', relacionamento.NomeCaminho);
-      TDOMElement(relacionamentoNode).SetAttribute('distanciaLateral', IntToStr(relacionamento.DistanciaLateral));
-      TDOMElement(relacionamentoNode).SetAttribute('owner', relacionamento.Owner);
-      TDOMElement(relacionamentoNode).SetAttribute('constraintName', relacionamento.ConstraintName);
-      relacionamentosNode.AppendChild(relacionamentoNode);
+      // cria o relationship
+      relationshipNode := Doc.CreateElement('relacionamento');
+      TDOMElement(relationshipNode).SetAttribute('nomeCaminho', relationship.PathName);
+      TDOMElement(relationshipNode).SetAttribute('distanciaLateral', IntToStr(relationship.SideDistance));
+      TDOMElement(relationshipNode).SetAttribute('owner', relationship.Owner);
+      TDOMElement(relationshipNode).SetAttribute('constraintName', relationship.ConstraintName);
+      relationshipsNode.AppendChild(relationshipNode);
     end;
   end;
 

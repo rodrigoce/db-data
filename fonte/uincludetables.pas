@@ -63,8 +63,8 @@ end;
 
 class procedure TFormIncludedTables.Open;
 var
-  diagrama: TDiagrama;
-  entidade: TEntidade;
+  diagrama: TFileDiagram;
+  entidade: TFileEntity;
   dic: specialize TDictionary<string, TStringList>;
   fullTableName: string;
   sl: TStringList;
@@ -75,17 +75,17 @@ begin
   with FormIncludedTables do
   begin
     dic := specialize TDictionary<string, TStringList>.Create();
-    for diagrama in AppFile.Diagramas do
+    for diagrama in AppFile.Diagrams do
     begin
-      for entidade in diagrama.Entidades do
+      for entidade in diagrama.Entities do
       begin
-        fullTableName := entidade.Owner + '.' + entidade.Tabela;
+        fullTableName := entidade.Owner + '.' + entidade.Table;
         if dic.ContainsKey(fullTableName) then
-          dic[fullTableName].Add(diagrama.Titulo)
+          dic[fullTableName].Add(diagrama.Title)
         else
         begin
           sl := TStringList.Create;
-          sl.Add(diagrama.Titulo);
+          sl.Add(diagrama.Title);
           sl.Delimiter := ',';
           dic.Add(fullTableName, sl);
         end;

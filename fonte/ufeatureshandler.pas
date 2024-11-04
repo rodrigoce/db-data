@@ -48,7 +48,7 @@ type
     FParentWinControl: TWinControl;
     FOnChangeFeatureState: TNotifyEvent;
     FMenuItemOpenedFeatures: TMenuItem;
-    FBuffDiagrams: TBufDataSet;     // buff data set com os nomes dos diagramas
+    FBuffDiagrams: TBufDataSet; // buff data set com os nomes dos diagramas
 
     function GetCurrentDiagram: TEntityContainer;
     procedure WriteFile;
@@ -255,7 +255,7 @@ end;
 procedure TFeaturesHandler.OpenFile(DBDataFileName: string);
 var
   i: integer;
-  diagrama: TDiagrama;
+  diagrama: TFileDiagram;
 begin
   // se o nome do arquivo não vier como parâmetro, então carregar pela janela
   if DBDataFileName = '' then
@@ -271,12 +271,12 @@ begin
     AppFile := TAppFile.Create;
     AppFile.OpenFile(FOpenedFile);
 
-    for i := 0 to AppFile.Diagramas.Count - 1 do
+    for i := 0 to AppFile.Diagrams.Count - 1 do
     begin
-      diagrama := AppFile.Diagramas[i];
+      diagrama := AppFile.Diagrams[i];
       FBuffDiagrams.Append;
       FBuffDiagrams.FieldByName('id').AsString := diagrama.Id;
-      FBuffDiagrams.FieldByName('titulo').AsString := diagrama.Titulo;
+      FBuffDiagrams.FieldByName('titulo').AsString := diagrama.Title;
       FBuffDiagrams.FieldByName('status').AsString := '0';
       FBuffDiagrams.Post;
     end;
@@ -435,35 +435,35 @@ end;
 procedure TFeaturesHandler.RenderDiagram(Id: string;
   entityContainer: TEntityContainer);
 var
-  diagrama: TDiagrama;
-  entidade: TEntidade;
-  relacionamento: TRelacionamento;
+  diagrama: TFileDiagram;
+  entidade: TFileEntity;
+  relacionamento: TFileRelationship;
   relationship: TEntityRelationship;
   i, k: integer;
 begin
   // nao processar a posição das setas sem ter terminado de carregar o diagrama
   entityContainer.NaoRenderizarArrows := True;
 
-  for i := 0 to AppFile.Diagramas.Count - 1 do
-    if AppFile.Diagramas[i].Id = Id then
+  for i := 0 to AppFile.Diagrams.Count - 1 do
+    if AppFile.Diagrams[i].Id = Id then
     begin
-      diagrama := AppFile.Diagramas[i];
+      diagrama := AppFile.Diagrams[i];
       // adiciona as entidades
-      for k := 0 to diagrama.Entidades.Count - 1 do
+      for k := 0 to diagrama.Entities.Count - 1 do
       begin
-        entidade := diagrama.Entidades[k];
-        entityContainer.AddEntity(entidade.Owner, entidade.Tabela,
-          entidade.Top, entidade.Left, entidade.TodosOsCampos);
+        entidade := diagrama.Entities[k];
+        entityContainer.AddEntity(entidade.Owner, entidade.Table,
+          entidade.Top, entidade.Left, entidade.ShowAllColumns);
       end;
       // reposiciona o relacionamento conforme salvo em disco
-      for k := 0 to diagrama.Relacionamentos.Count - 1 do
+      for k := 0 to diagrama.Relationships.Count - 1 do
       begin
-        relacionamento := diagrama.Relacionamentos[k];
+        relacionamento := diagrama.Relationships[k];
         relationship := entityContainer.FindRelacionamento(relacionamento.Owner,
           relacionamento.ConstraintName);
         if relationship <> nil then
         begin
-          relationship.DistanciaLateral := relacionamento.DistanciaLateral;
+          relationship.DistanciaLateral := relacionamento.SideDistance;
           relationship.AplicarPosicaoCalculada;
         end;
       end;
@@ -518,7 +518,7 @@ end;
 
 procedure TFeaturesHandler.WriteFile;
 
-  procedure WriteEntidades(diagramaId: string; diagramaDest: TDiagrama);
+  procedure WriteEntidades(diagramaId: string; diagramaDest: TFileDiagram);
   var
     i, indexOpenedFeature: integer;
     container: TEntityContainer;
@@ -535,7 +535,7 @@ procedure TFeaturesHandler.WriteFile;
       begin
         entity := TEntity(container.ListEntity.Objects[i]);
 
-        diagramaDest.Entidades.Add(TEntidade.Create(
+        diagramaDest.Entities.Add(TFileEntity.Create(
           TPanel(entity).Top, TPanel(entity).Left, entity.SchemaOwner,
           entity.NomeTabela, entity.ExibindoTodosOsCampos));
       end;
@@ -544,7 +544,7 @@ procedure TFeaturesHandler.WriteFile;
       for i := 0 to container.ListRelationship.Count - 1 do
       begin
         relationship := TEntityRelationship(container.ListRelationship.Objects[i]);
-        diagramaDest.Relacionamentos.Add(TRelacionamento.Create(
+        diagramaDest.Relationships.Add(TFileRelationship.Create(
           relationship.NomeCaminhoUsado, relationship.DistanciaLateral,
           relationship.SchemaOwner, relationship.ConstraintName));
       end;
@@ -553,7 +553,7 @@ procedure TFeaturesHandler.WriteFile;
 
 var
   i: integer;
-  diagrama: TDiagrama;
+  diagrama: TFileDiagram;
 begin
   FBuffDiagrams.First;
   while not FBuffDiagrams.EOF do
@@ -561,9 +561,9 @@ begin
     // se tem algo de novo no diagrama
     if FBuffDiagrams.FieldByName('status').AsString = 'N' then // novo
     begin
-      diagrama := TDiagrama.Create(FBuffDiagrams.FieldByName('titulo').AsString,
+      diagrama := TFileDiagram.Create(FBuffDiagrams.FieldByName('titulo').AsString,
         FBuffDiagrams.FieldByName('id').AsString);
-      AppFile.Diagramas.Add(diagrama);
+      AppFile.Diagrams.Add(diagrama);
       WriteEntidades(diagrama.Id, diagrama);
       FBuffDiagrams.Edit;
       FBuffDiagrams.FieldByName('status').AsString := 'A';
@@ -571,30 +571,30 @@ begin
     end
     else if FBuffDiagrams.FieldByName('status').AsString = 'E' then // excluído
     begin
-      for i := AppFile.Diagramas.Count - 1 downto 0 do
+      for i := AppFile.Diagrams.Count - 1 downto 0 do
       begin
-        if AppFile.Diagramas[i].Id = FBuffDiagrams.FieldByName('id').AsString then
+        if AppFile.Diagrams[i].Id = FBuffDiagrams.FieldByName('id').AsString then
         begin
-          AppFile.Diagramas.Delete(i);
+          AppFile.Diagrams.Delete(i);
         end;
       end;
     end
     else if FBuffDiagrams.FieldByName('status').AsString = 'A' then // alterado
     begin
-      for i := 0 to AppFile.Diagramas.Count - 1 do
+      for i := 0 to AppFile.Diagrams.Count - 1 do
       begin
-        if AppFile.Diagramas[i].Id = FBuffDiagrams.FieldByName('id').AsString then
+        if AppFile.Diagrams[i].Id = FBuffDiagrams.FieldByName('id').AsString then
         begin
-          diagrama := AppFile.Diagramas[i];
-          diagrama.Titulo := FBuffDiagrams.FieldByName('titulo').AsString;
+          diagrama := AppFile.Diagrams[i];
+          diagrama.Title := FBuffDiagrams.FieldByName('titulo').AsString;
 
-          while diagrama.Entidades.Count > 0 do
+          while diagrama.Entities.Count > 0 do
           begin
-            diagrama.Entidades.Delete(0);
+            diagrama.Entities.Delete(0);
           end;
-          while diagrama.Relacionamentos.Count > 0 do
+          while diagrama.Relationships.Count > 0 do
           begin
-            diagrama.Relacionamentos.Delete(0);
+            diagrama.Relationships.Delete(0);
           end;
 
           WriteEntidades(diagrama.Id, diagrama);
