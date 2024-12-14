@@ -53,7 +53,7 @@ object FormPesquisarDiagramas: TFormPesquisarDiagramas
     Height = 25
     Top = 282
     Width = 174
-    Caption = 'Carregar Diagrama Selecionado'
+    Caption = '&Carregar Diagrama Selecionado'
     TabOrder = 2
     OnClick = btCarregarClick
   end
@@ -62,7 +62,7 @@ object FormPesquisarDiagramas: TFormPesquisarDiagramas
     Height = 25
     Top = 282
     Width = 75
-    Caption = 'Fechar'
+    Caption = '&Fechar'
     TabOrder = 3
     OnClick = btFecharClick
   end

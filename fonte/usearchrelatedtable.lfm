@@ -66,7 +66,7 @@ object FormSearchRelatedTable: TFormSearchRelatedTable
     Height = 25
     Top = 271
     Width = 117
-    Caption = 'Adicionar ao diagrama'
+    Caption = '&Adicionar ao diagrama'
     TabOrder = 1
     OnClick = btAddClick
   end

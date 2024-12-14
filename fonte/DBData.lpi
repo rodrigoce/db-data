@@ -116,6 +116,7 @@
         <Filename Value="uPesquisarDiagramas.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="FormPesquisarDiagramas"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit>
       <Unit>

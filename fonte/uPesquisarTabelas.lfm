@@ -146,7 +146,7 @@ object FormPesquisarTabelas: TFormPesquisarTabelas
     Height = 25
     Top = 371
     Width = 129
-    Caption = 'Adicionar no Diagrama'
+    Caption = '&Adicionar no Diagrama'
     TabOrder = 6
     OnClick = btAdicionarNoDiagramaClick
   end
@@ -155,7 +155,7 @@ object FormPesquisarTabelas: TFormPesquisarTabelas
     Height = 25
     Top = 372
     Width = 75
-    Caption = 'Fechar'
+    Caption = '&Fechar'
     TabOrder = 7
     OnClick = btFecharClick
   end

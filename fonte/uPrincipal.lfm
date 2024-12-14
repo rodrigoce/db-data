@@ -1,7 +1,7 @@
 object FormPrincipal: TFormPrincipal
-  Left = 498
+  Left = 499
   Height = 340
-  Top = 292
+  Top = 294
   Width = 672
   Caption = 'DB-Data - Analisador de Banco de Dados'
   ClientHeight = 340
