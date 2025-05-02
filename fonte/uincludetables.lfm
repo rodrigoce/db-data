@@ -1,7 +1,7 @@
 object FormIncludedTables: TFormIncludedTables
-  Left = 479
+  Left = 482
   Height = 432
-  Top = 252
+  Top = 255
   Width = 689
   Caption = 'Tabelas Incluídas (Inventário)'
   ClientHeight = 432

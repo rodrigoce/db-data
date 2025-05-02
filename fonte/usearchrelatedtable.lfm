@@ -1,7 +1,7 @@
 object FormSearchRelatedTable: TFormSearchRelatedTable
-  Left = 793
+  Left = 796
   Height = 302
-  Top = 409
+  Top = 412
   Width = 541
   ActiveControl = edNome
   BorderStyle = bsToolWindow

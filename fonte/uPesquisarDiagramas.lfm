@@ -1,7 +1,7 @@
 object FormPesquisarDiagramas: TFormPesquisarDiagramas
-  Left = 696
+  Left = 699
   Height = 317
-  Top = 332
+  Top = 335
   Width = 646
   BorderStyle = bsDialog
   Caption = 'Pesquisar Diagramas'
