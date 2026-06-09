@@ -86,7 +86,7 @@ var
 implementation
 
 uses uVariaveisGlobais, uPesquisarDiagramas, uSobre, uConfigConexao,
-  uPesquisarTabelas, uAppFile, uMoverObjetos;
+  uPesquisarTabelas, uAppFile, uMoverObjetos, uConnection;
 
 {$R *.lfm}
 
@@ -178,6 +178,7 @@ begin
   end
   else  }
     FFeaturesHanlder.CloseFile;
+    TDBConnection.CloseCnn;
 end;
 
 procedure TFormPrincipal.FormDestroy(Sender: TObject);
@@ -221,7 +222,7 @@ begin
   // ganhar tempo em debug
   FFeaturesHanlder.OpenFile('C:\Users\rceleoterio\Documents\sistemas hc.dbdata');
   //FFeaturesHanlder.OpenEntityContainer('{6BB6AC5E-6013-433E-926E-BBF4962CDA66}');
-  FFeaturesHanlder.OpenEntityContainer('{1C34F577-13EA-4310-AA28-8AE1B7BF6364}');
+  //FFeaturesHanlder.OpenEntityContainer('{1C34F577-13EA-4310-AA28-8AE1B7BF6364}');
 end;
 
 procedure TFormPrincipal.HabilitarMenusContexto(Sender: TObject);
@@ -281,6 +282,7 @@ begin
     begin     }
       FFeaturesHanlder.CloseFile;
       FFeaturesHanlder.NewFile;
+      TDBConnection.CloseCnn;
     //end;
   end
   else
